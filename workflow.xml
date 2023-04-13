@@ -1,0 +1,15 @@
+<tool id='alvaro_singlecluster_parsl_demo' name='alvaro_singlecluster_parsl_demo'>
+  <command interpreter='bash'>parsl_wrapper.sh</command>
+  <inputs>
+      <param name='repeats' label='Number of parallel MPI runs' type='integer' min='1' max='8' help='Number of times the run_mpi parsl app is launched in parallel' value='4' width='25%'>
+      </param>
+      <param name='np' label='Number processors to run on per MPI run' type='integer' min='2' max='128' help='Number of times the run_mpi parsl app is launched in parallel' value='4' width='25%'>
+      </param>
+      <param name='mpi_dir' label='Directory with MPI installation' type='integer' min='1' max='255' help='Noise is added as a uniform random value between -Intensity and + Intensity. Resulting values are trimmed between 0 and 255' value='25' width='25%'>
+      </param>
+      <param name='mpi_dir' label='Directory with MPI installation' help='' type='text' value='/contrib/__PW_USER__/ompi/' width='75%'>
+      </param> 
+  </inputs>
+  <outputs>
+  </outputs>
+</tool>

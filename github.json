@@ -1,0 +1,9 @@
+{
+    "repo": "https://github.com/parallelworks/simple_parsl_demo.git",
+    "branch": "main",
+    "dir": ".",
+    "xml": "workflow.xml",
+    "thumbnail": "thumb/parsl.png",
+    "readme": "README.md"
+}
+
