@@ -24,3 +24,4 @@ slots that were requested by the application:
  
  The reason for this is that it uses the SLURM environment variables that Parsl sets for the pilot job, in which `--ntasks-per-node=1` is hardcoded. 
  
+One solution would be to overwrite these variables on the bash app itself. 
