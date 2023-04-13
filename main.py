@@ -37,12 +37,12 @@ if __name__ == '__main__':
             inputs = [compile_fut],
             outputs = [
                 PWFile(
-                    url = './output-' + str(i) + '.out' ,
-                    local_path = './output-' + str(i) + '.out' 
+                    url = './hello-' + str(i) + '.out' ,
+                    local_path = './hello-' + str(i) + '.out' 
                 )
             ],
-            stdout = 'std-' + str(i) + '.out',
-            stderr = 'std-' + str(i) + '.err'
+            stdout = 'run-' + str(i) + '.out',
+            stderr = 'run-' + str(i) + '.err'
         )
         run_futs.append(run_fut)
 
