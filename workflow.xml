@@ -6,7 +6,7 @@
           label='SLURM srun command' 
           help='' 
           type='text' 
-          value='srun --nodes=1 --partition=compute --ntasks-per-node=2' 
+          value='srun --exclusive --nodes=1 --partition=compute --ntasks-per-node=2' 
           width='100%'>
       </param>
       <param 
