@@ -18,13 +18,15 @@ if __name__ == '__main__':
     parsl.load(config)
     args = read_args()
 
-    print('\n\nCompiling test: ' + str(i), flush = True)
+    print('\n\nCompiling test', flush = True)
     compile_fut = compile_mpi_hello_world_ompi(
         args['mpi_dir'],
-        inputs = PWFile(
-            url = './mpitest.c',
-            local_path = './mpitest.c'
-        ),
+        inputs = [
+            PWFile(
+                url = './mpitest.c',
+                local_path = './mpitest.c'
+            )
+        ],
     )
 
     run_futs = []
@@ -33,11 +35,13 @@ if __name__ == '__main__':
         run_fut = run_mpi_hello_world_ompi(
             args['np'], args['mpi_dir'],
             inputs = [compile_fut],
-            outputs = PWFile(
-                url = './output-' + str(i) + '.out' ,
-                local_path = './output-' + str(i) + '.out' 
-            ),
-            stdout = 'std-' + str(i) + '.out'
+            outputs = [
+                PWFile(
+                    url = './output-' + str(i) + '.out' ,
+                    local_path = './output-' + str(i) + '.out' 
+                )
+            ],
+            stdout = 'std-' + str(i) + '.out',
             stderr = 'std-' + str(i) + '.err'
         )
         run_futs.append(run_fut)
