@@ -33,7 +33,7 @@ if __name__ == '__main__':
     for i in range(int(args['repeats'])):
         print('\n\nRunning case: ' + str(i), flush = True)
         run_fut = run_mpi_hello_world_ompi(
-            args['srun_cmd'].split('___', ' '),
+            args['srun_cmd'].replace('___', ' '),
             args['np'], 
             args['mpi_dir'],
             inputs = [compile_fut],
