@@ -1,42 +1,73 @@
 <tool id='alvaro_singlecluster_parsl_demo' name='alvaro_singlecluster_parsl_demo'>
   <command interpreter='bash'>parsl_wrapper.sh</command>
   <inputs>
+    <section name='mpi_inputs' type='section' title='MPI Inputs' expanded='true'>
       <param 
-          name='srun_cmd' 
-          label='SLURM srun command' 
-          help='' 
-          type='text' 
-          value='srun --exclusive --nodes=1 --partition=compute --ntasks-per-node=2' 
-          width='100%'>
+        name='repeats' 
+        label='Number of parallel MPI runs' 
+        type='integer' 
+        min='1' 
+        max='8' 
+        help='Number of times the run_mpi parsl app is launched in parallel' 
+        value='1' 
+        width='25%'>
       </param>
       <param 
-          name='repeats' 
-          label='Number of parallel MPI runs' 
-          type='integer' 
-          min='1' 
-          max='8' 
-          help='Number of times the run_mpi parsl app is launched in parallel' 
-          value='1' 
-          width='25%'>
+        name='np' 
+        label='Number processors to run on per MPI run' 
+        type='integer' 
+        min='2' 
+        max='128' 
+        help='Number of times the run_mpi parsl app is launched in parallel' 
+        value='2'
+        width='25%'>
       </param>
       <param 
-          name='np' 
-          label='Number processors to run on per MPI run' 
-          type='integer' 
-          min='2' 
-          max='128' 
-          help='Number of times the run_mpi parsl app is launched in parallel' 
-          value='2'
-          width='25%'>
+        name='mpi_dir' 
+        label='Directory with MPI installation' 
+        help='' 
+        type='text' 
+        value='/contrib/__PW_USER__/ompi/' 
+        width='50%'>
+      </param>
+    </section>
+    <section name='slurm_options' type='section' title='SLURM Options' expanded='true'>
+      <param 
+        name='slurm_account' 
+        label='Account' 
+        help='--account option' 
+        type='text' 
+        value='' 
+        width='50%'>
       </param>
       <param 
-          name='mpi_dir' 
-          label='Directory with MPI installation' 
-          help='' 
-          type='text' 
-          value='/contrib/__PW_USER__/ompi/' 
-          width='50%'>
-      </param> 
+        name='slurm_partition' 
+        label='partition' 
+        help='--partition option' 
+        type='text' 
+        value='' 
+        width='50%'>
+      </param>
+      <param 
+        name='slurm_nodes' 
+        label='Nodes' 
+        type='integer' 
+        min='1' 
+        max='8' 
+        help='--nodes option' 
+        value='2'
+        width='25%'>
+      </param>
+      <param 
+        name='slurm_ntasks_per_node' 
+        label='Nodes' 
+        type='integer' 
+        min='1' 
+        max='96' 
+        help='--ntasks_per_node option' 
+        value='2'
+        width='25%'>
+      </param>
   </inputs>
   <outputs>
   </outputs>
