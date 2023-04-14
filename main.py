@@ -31,7 +31,7 @@ class SbatchOptions:
         for oname in option_names:
             oval = getattr(self, oname)
             if oval:
-                header_str += '\nSBATCH --' + oname.replace('_','-') + '=' + str(oval) 
+                header_str += '\n#SBATCH --' + oname.replace('_','-') + '=' + str(oval) 
 
         return header_str
 
@@ -67,9 +67,7 @@ if __name__ == '__main__':
         )
 
         run_fut = run_mpi_hello_world_ompi(
-            sbatch_options.header,
-            args['np'], 
-            args['mpi_dir'],
+            str(i), sbatch_options.header, args['np'], args['mpi_dir'],
             inputs = [compile_fut],
             outputs = [
                 PWFile(
@@ -82,6 +80,8 @@ if __name__ == '__main__':
         )
         run_futs.append(run_fut)
 
-    for fut in run_futs:
-        fut.result()
+    for i,fut in enumerate(run_futs):
+        print('\n\nResults for case: ' + str(i), flush = True)
+        with open(fut.outputs[0].result(), 'r') as f:
+            print(f.read())
 

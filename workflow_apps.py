@@ -23,7 +23,7 @@ def compile_mpi_hello_world_ompi(ompi_dir: str, inputs: list = None,
 
 @parsl_utils.parsl_wrappers.log_app
 @bash_app(executors=['myexecutor_1'])
-def run_mpi_hello_world_ompi(sbatch_header: str, np: int, ompi_dir: str,
+def run_mpi_hello_world_ompi(case: str, sbatch_header: str, np: int, ompi_dir: str,
                              inputs: list = None, outputs: list = None, 
                              stdout: str ='std.out', stderr: str = 'std.err'):
     """
@@ -32,16 +32,18 @@ def run_mpi_hello_world_ompi(sbatch_header: str, np: int, ompi_dir: str,
       - Using srun results in duplication of the output lines, see https://github.com/parallelworks/issues/issues/1102
     """
     return '''
-    cat > run_mpi_hello_world_ompi_{case}.sh <<EOF
-    #!/bin/bash
-    {sbatch_header}
+cat > run_mpi_hello_world_ompi_{case}.sh <<EOF
+#!/bin/bash
+{sbatch_header}
+export OMPI_DIR={ompi_dir}
+export PATH={ompi_dir}/bin:$PATH
 
-    export OMPI_DIR={ompi_dir}
-    export PATH=$OMPI_DIR/bin:$PATH
-    mpirun -n {np} mpitest > {output}
-    EOF
-    sbatch -W run_mpi_hello_world_ompi_{case}.sh
-    '''.format(
+mpirun -n {np} mpitest > {output}
+EOF
+chmod +x run_mpi_hello_world_ompi_{case}.sh
+sbatch -W run_mpi_hello_world_ompi_{case}.sh
+'''.format(
+        case = case,
         sbatch_header = sbatch_header,
         np = np,
         ompi_dir = ompi_dir,
