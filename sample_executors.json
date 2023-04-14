@@ -1,0 +1,11 @@
+{
+    "myexecutor_1": {
+      "POOL": "gcpv2",
+      "REQUIRED": "false",
+      "CONDA_ENV": "parsl-1.2",
+      "CONDA_DIR": "/contrib/alvaro/pw/miniconda",
+      "CORES_PER_WORKER": 0.00001,
+      "INSTALL_CONDA": "false",
+      "LOCAL_CONDA_YAML": "./requirements/conda_env_remote.yaml"
+    }
+  }
