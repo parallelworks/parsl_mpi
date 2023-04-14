@@ -56,17 +56,17 @@
         max='8' 
         help='--nodes option' 
         value='2'
-        width='25%'>
+        width='50%'>
       </param>
       <param 
         name='slurm_ntasks_per_node' 
-        label='Nodes' 
+        label='Tasks per node' 
         type='integer' 
         min='1' 
         max='96' 
         help='--ntasks_per_node option' 
         value='2'
-        width='25%'>
+        width='50%'>
       </param>
     </section>
   </inputs>
