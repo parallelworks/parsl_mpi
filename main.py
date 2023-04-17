@@ -60,7 +60,8 @@ if __name__ == '__main__':
     for i in range(int(args['repeats'])):
         print('\n\nRunning case: ' + str(i), flush = True)
         
-        if False:
+        if args['parsl_provider'] == 'LocalProvider':
+            # Launch MPI job using sbatch
             sbatch_options = SbatchOptions(
                 **slurm_args, 
                 job_name = f'run_mpi_hello_world_ompi_{i}',
@@ -80,6 +81,7 @@ if __name__ == '__main__':
                 stderr = 'run-' + str(i) + '.err'
             )
         else:
+            # Launch MPI directly
             run_fut = run_mpi_hello_world_ompi_slurmprovider(
                 args['np'], args['mpi_dir'],
                 inputs = [compile_fut],

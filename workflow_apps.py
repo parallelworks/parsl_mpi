@@ -66,6 +66,10 @@ def run_mpi_hello_world_ompi_slurmprovider(np: int, ompi_dir: str,
     export SLURM_TASKS_PER_NODE="{SLURM_TASKS_PER_NODE}(x{SLURM_NNODES})"
     export OMPI_DIR={ompi_dir}
     export PATH={ompi_dir}/bin:$PATH
+    # Without the sleep command below this app runs very fast. Therefore, when launched multiple times
+    # in parallel (nrepeats > 1) it ends up on the same group of nodes. Note that the goal of this 
+    # experiment is to return the host names of the different nodes running the app. 
+    sleep 60
     mpirun -n {np} mpitest > {output}
 '''.format(
         SLURM_NNODES = os.environ['SLURM_NNODES'],
