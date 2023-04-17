@@ -27,7 +27,7 @@ def run_mpi_hello_world_ompi(case: str, sbatch_header: str, np: int, ompi_dir: s
                              inputs: list = None, outputs: list = None, 
                              stdout: str ='std.out', stderr: str = 'std.err'):
     """
-    Runs the binary using the specified srun command and number of processors.
+    Runs the binary using sbatch
     NOTES:
       - Using srun results in duplication of the output lines, see https://github.com/parallelworks/issues/issues/1102
     """
