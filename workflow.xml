@@ -32,42 +32,50 @@
       </param>
     </section>
     <section name='slurm_options' type='section' title='SLURM Options' expanded='true'>
-      <param 
-        name='slurm_account' 
-        label='Account' 
-        help='--account option' 
-        type='text' 
-        value='' 
-        width='50%'>
-      </param>
-      <param 
-        name='slurm_partition' 
-        label='partition' 
-        help='--partition option' 
-        type='text' 
-        value='' 
-        width='50%'>
-      </param>
-      <param 
-        name='slurm_nodes' 
-        label='Nodes' 
-        type='integer' 
-        min='1' 
-        max='8' 
-        help='--nodes option' 
-        value='1'
-        width='50%'>
-      </param>
-      <param 
-        name='slurm_ntasks_per_node' 
-        label='Tasks per node' 
-        type='integer' 
-        min='1' 
-        max='96' 
-        help='--ntasks_per_node option' 
-        value='2'
-        width='50%'>
-      </param>
+      <conditional name="parsl_provider_cond">
+        <param name='parsl_provider' type='select' label='Select LocalProvider or SlurmProvider' help='' width='50%_none' multiple='false'>
+          <option value="LocalProvider">LocalProvider</option>
+          <option value="SlurmProvider" selected="true">SlurmProvider</option>
+        </param>
+        <when value="LocalProvider">
+          <param 
+            name='slurm_account' 
+            label='Account' 
+            help='--account option' 
+            type='text' 
+            value='' 
+            width='50%'>
+          </param>
+          <param 
+            name='slurm_partition' 
+            label='partition' 
+            help='--partition option' 
+            type='text' 
+            value='' 
+            width='50%'>
+          </param>
+         <param 
+           name='slurm_nodes' 
+           label='Nodes' 
+           type='integer' 
+           min='1' 
+           max='8' 
+           help='--nodes option' 
+           value='1'
+           width='50%'>
+         </param>
+         <param 
+           name='slurm_ntasks_per_node' 
+           label='Tasks per node' 
+           type='integer' 
+           min='1' 
+           max='96' 
+           help='--ntasks_per_node option' 
+           value='2'
+           width='50%'>
+         </param>
+        </when>
+      </conditional>
     </section>
   </inputs>
   <outputs>

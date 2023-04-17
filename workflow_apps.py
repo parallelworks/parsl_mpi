@@ -63,7 +63,6 @@ def run_mpi_hello_world_ompi_slurmprovider(np: int, ompi_dir: str,
     return '''
     # Override Parsl SLURM parameter
     # In Parsl the ntasks-per-node parameter is hardcoded to 1
-    env | grep SLURM > SLURM_ENV.txt
     export SLURM_TASKS_PER_NODE="{SLURM_TASKS_PER_NODE}(x{SLURM_NNODES})"
     export OMPI_DIR={ompi_dir}
     export PATH={ompi_dir}/bin:$PATH
