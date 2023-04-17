@@ -64,6 +64,7 @@ def run_mpi_hello_world_ompi_slurmprovider(np: int, ompi_dir: str,
     # Override Parsl SLURM parameter
     # In Parsl the ntasks-per-node parameter is hardcoded to 1
     export SLURM_TASKS_PER_NODE={SLURM_TASKS_PER_NODE}
+    export SLURM_NTASKS_PER_NODE={SLURM_TASKS_PER_NODE}
     export SLURM_NTASKS={np}
 
     export OMPI_DIR={ompi_dir}
