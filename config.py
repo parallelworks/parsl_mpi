@@ -120,13 +120,6 @@ for exec_label, exec_conf_i in exec_conf.items():
             channel = channel
         )
 
-    if 'cores_per_worker' in exec_conf_i:
-        cores_per_worker = float(exec_conf_i['cores_per_worker'])
-    elif 'CORES_PER_WORKER' in exec_conf_i:
-        cores_per_worker = float(exec_conf_i['CORES_PER_WORKER'])
-    else:
-        cores_per_worker = 1.0
-
     executors.append(
         HighThroughputExecutor(
             worker_ports=((
@@ -136,7 +129,6 @@ for exec_label, exec_conf_i in exec_conf.items():
             label = exec_label,
             worker_debug = True,             # Default False for shorter logs
             working_dir =  exec_conf_i['RUN_DIR'],
-            cores_per_worker = cores_per_worker,
             worker_logdir_root = worker_logdir_root,
             address = exec_conf_i['ADDRESS'],
             provider = provider,
