@@ -1,0 +1,26 @@
+1.2.0
+Loading Parsl Config
+
+
+Compiling test
+
+
+Running case: 0
+
+
+Running case: 1
+
+
+Results for case: 0
+Hello world from processor alvaro-gcpv2-00036-1-0001, rank 0 out of 4 processors
+Hello world from processor alvaro-gcpv2-00036-1-0001, rank 1 out of 4 processors
+Hello world from processor alvaro-gcpv2-00036-1-0002, rank 2 out of 4 processors
+Hello world from processor alvaro-gcpv2-00036-1-0002, rank 3 out of 4 processors
+
+
+
+Results for case: 1
+Hello world from processor alvaro-gcpv2-00036-1-0003, rank 1 out of 4 processors
+Hello world from processor alvaro-gcpv2-00036-1-0003, rank 0 out of 4 processors
+Hello world from processor alvaro-gcpv2-00036-1-0004, rank 2 out of 4 processors
+Hello world from processor alvaro-gcpv2-00036-1-0004, rank 3 out of 4 processors

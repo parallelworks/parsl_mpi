@@ -1,0 +1,18 @@
+{
+    "myexecutor_1": {
+      "POOL": "gcpv2",
+      "REQUIRED": "true",
+      "CONDA_ENV": "parsl-1.2",
+      "CONDA_DIR": "/contrib/__USER__/pw/miniconda",
+      "INSTALL_CONDA": "true",
+      "LOCAL_CONDA_YAML": "./requirements/conda_env_remote.yaml",
+      "cores_per_worker": "2",
+      "SlurmProvider": {
+        "partition": "compute",
+        "nodes_per_block": 2,
+        "min_blocks": 0,
+        "max_blocks": 10,
+        "walltime": "01:00:00"
+      }
+    }
+  }

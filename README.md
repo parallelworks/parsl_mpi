@@ -6,10 +6,21 @@ Hello world from processor alvaro-gcpslurmv2dev-00091-1-0001, rank 0 out of 2 pr
 Hello world from processor alvaro-gcpslurmv2dev-00091-1-0002, rank 1 out of 2 processors
 ```
 
-The OpenMPI code is compiled and executed in the Parsl `bash_app` decorated functions `compile_mpi_hello_world_ompi` and `run_mpi_hello_world_ompi`, respectively. The `run_mpi_hello_world_ompi` is executed multiple times in parallel as defined by the `repeats` workflow input parameter. 
+## Apps
+
+Parsl apps are defined as `bash_app` decorated functions in the `workflow_apps.py` script. The OpenMPI code is compiled by `compile_mpi_hello_world_ompi` and executed by `compile_mpi_hello_world_ompi_localprovider` or `compile_mpi_hello_world_ompi_slurmprovider`, depending on the selected provider (see execution), multiple times in parallel as defined by the `repeats` workflow input parameter. 
 
 ## Execution
-This workflow uses the [parsl_utils](https://github.com/parallelworks/parsl_utils) repository to run on PW clusters. This repository defines the Parsl configuration object from a JSON file. A sample JSON file is provided in `sample_executors.json`. This file tells the `parsl_utils` repository to use the Parsl [LocalProvider](https://parsl.readthedocs.io/en/stable/stubs/parsl.providers.LocalProvider.html) to execute the workflow. The LocalProvider is started on the controller node of the SLURM cluster using the Parsl [SSHChannel](https://parsl.readthedocs.io/en/stable/stubs/parsl.channels.SSHChannel.html). The nodes for the jobs are allocated with the `sbatch -W` command in the `run_mpi_hello_world_ompi` function. The workflow generates the the `#SBATCH` options from the SLURM parameters in the `workflow.xml` file. The name of these parameters starts with `slurm_` to indicate that they correspond to [SLURM sbatch options](https://slurm.schedmd.com/sbatch.html). 
+The workflow can be executed using the [LocalProvider](https://parsl.readthedocs.io/en/stable/stubs/parsl.providers.LocalProvider.html) or the [SlurmProvider](https://parsl.readthedocs.io/en/stable/stubs/parsl.providers.SlurmProvider.html). The [parsl_utils](https://github.com/parallelworks/parsl_utils) repository is used to integrate Parsl on the PW clusters. This repository defines the Parsl configuration object from a JSON file. Sample JSON files are provided in the `executors` directory. The selected Parsl provider is started on the controller node of the SLURM cluster using the Parsl [SSHChannel](https://parsl.readthedocs.io/en/stable/stubs/parsl.channels.SSHChannel.html). 
+
+### LocalProvider
+The nodes for the jobs are allocated with the `sbatch -W` command in the 
+`run_mpi_hello_world_ompi` function. The workflow generates the `#SBATCH`
+options from the SLURM parameters in the `workflow.xml` file. The name of these parameters starts with `slurm_` to indicate that they correspond to [SLURM sbatch options](https://slurm.schedmd.com/sbatch.html). 
+
+### SlurmProvider
+The nodes for the jobs are allocated by the pilot job and the MPI code is executed directly on these without using a SLURM command. 
+
 
 ## MPI Parsl Challenges
 Running MPI jobs using Parsl's [SlurmProvider](https://parsl.readthedocs.io/en/stable/stubs/parsl.providers.SlurmProvider.html) can be challenging as discussed in [this video](https://www.youtube.com/watch?v=0V4Hs4kTyJs&t=398s). Here are a list of challenges:
@@ -27,4 +38,11 @@ slots that were requested by the application:
  
  The reason for this is that it uses the SLURM environment variables that Parsl sets for the pilot job, in which `--ntasks-per-node=1` is hardcoded. 
  
-One solution would be to overwrite these variables on the bash app itself. 
+One solution would be to overwrite these variables on the bash app itself.
+
+### 2. Cannot Get More Than 1 Node Per Worker
+No combination of `cores_per_worker`, `nodes_per_block` and `cores_per_node` returns the right MPI output. The only combination that works is shown in the `run_on_cluster/slurmprovider.py` config object. It requires the following setup:
+1. Use the `SimpleLauncher`
+2. Set `nodes_per_block` to the desired number of nodes per MPI task
+3. Set `cores_per_worker` to the number of cores in a single node
+4. Set `parallelism` to the desired number of nodes per MPI task

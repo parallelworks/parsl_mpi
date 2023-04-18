@@ -7,10 +7,10 @@ from parsl.app.app import python_app
 print(parsl.__version__, flush = True)
 
 import parsl_utils
-from parsl_utils.config import config, exec_conf, read_args
+from config import config, read_args
 from parsl_utils.data_provider import PWFile
 
-from workflow_apps import compile_mpi_hello_world_ompi, run_mpi_hello_world_ompi
+from workflow_apps import compile_mpi_hello_world_ompi, run_mpi_hello_world_ompi_localprovider,run_mpi_hello_world_ompi_slurmprovider
 
 from dataclasses import dataclass, fields
 from typing import Optional
@@ -60,24 +60,40 @@ if __name__ == '__main__':
     for i in range(int(args['repeats'])):
         print('\n\nRunning case: ' + str(i), flush = True)
         
-        sbatch_options = SbatchOptions(
-            **slurm_args, 
-            job_name = f'run_mpi_hello_world_ompi_{i}',
-            output = f'run_mpi_hello_world_ompi_{i}.out',
-        )
+        if args['parsl_provider'] == 'LocalProvider':
+            # Launch MPI job using sbatch
+            sbatch_options = SbatchOptions(
+                **slurm_args, 
+                job_name = f'run_mpi_hello_world_ompi_{i}',
+                output = f'run_mpi_hello_world_ompi_{i}.out',
+            )
 
-        run_fut = run_mpi_hello_world_ompi(
-            str(i), sbatch_options.header, args['np'], args['mpi_dir'],
-            inputs = [compile_fut],
-            outputs = [
-                PWFile(
-                    url = './hello-' + str(i) + '.out' ,
-                    local_path = './hello-' + str(i) + '.out' 
-                )
-            ],
-            stdout = 'run-' + str(i) + '.out',
-            stderr = 'run-' + str(i) + '.err'
-        )
+            run_fut = run_mpi_hello_world_ompi_localprovider(
+                str(i), sbatch_options.header, args['np'], args['mpi_dir'],
+                inputs = [compile_fut],
+                outputs = [
+                    PWFile(
+                        url = './hello-' + str(i) + '.out' ,
+                        local_path = './hello-' + str(i) + '.out' 
+                    )
+                ],
+                stdout = 'run-' + str(i) + '.out',
+                stderr = 'run-' + str(i) + '.err'
+            )
+        else:
+            # Launch MPI directly
+            run_fut = run_mpi_hello_world_ompi_slurmprovider(
+                args['np'], args['mpi_dir'],
+                inputs = [compile_fut],
+                outputs = [
+                    PWFile(
+                        url = './hello-' + str(i) + '.out' ,
+                        local_path = './hello-' + str(i) + '.out' 
+                    )
+                ],
+                stdout = 'run-' + str(i) + '.out',
+                stderr = 'run-' + str(i) + '.err'
+            )
         run_futs.append(run_fut)
 
     for i,fut in enumerate(run_futs):
