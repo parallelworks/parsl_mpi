@@ -7,7 +7,7 @@ from parsl.app.app import python_app
 print(parsl.__version__, flush = True)
 
 import parsl_utils
-from parsl_utils.config import config, exec_conf, read_args
+from config import config, read_args
 from parsl_utils.data_provider import PWFile
 
 from workflow_apps import compile_mpi_hello_world_ompi, run_mpi_hello_world_ompi_localprovider,run_mpi_hello_world_ompi_slurmprovider
