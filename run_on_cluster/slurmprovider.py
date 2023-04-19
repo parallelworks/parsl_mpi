@@ -12,6 +12,60 @@ from parsl.providers import SlurmProvider
 from parsl.executors import HighThroughputExecutor
 from parsl.launchers import SimpleLauncher
 
+################
+# DESCRIPTION  #
+################
+"""
+This is an MPI Hello World test using parsl. It has two apps:
+1. compile_mpi_hello_world_ompi: To compile the MPI code
+2. run_mpi_hello_world_ompi: To execute the MPI code
+
+The test has the following goals:
+1. Use multiple nodes per execution of the "run" app 
+2. Execute the the "run" apps in parallel (repeats > 1)
+3. Every "run" app execution returns hello from all the nodes and cores on the
+   nodes without overlapping with the other "run" app executions.
+
+For example, with the input values below (see inputs section) the output is:
+  Results for case: 0
+  Hello world from processor alvaro-gcpv2-00036-1-0001, rank 0 out of 4 processors
+  Hello world from processor alvaro-gcpv2-00036-1-0001, rank 1 out of 4 processors
+  Hello world from processor alvaro-gcpv2-00036-1-0002, rank 2 out of 4 processors
+  Hello world from processor alvaro-gcpv2-00036-1-0002, rank 3 out of 4 processors
+
+  Results for case: 1
+  Hello world from processor alvaro-gcpv2-00036-1-0003, rank 1 out of 4 processors
+  Hello world from processor alvaro-gcpv2-00036-1-0003, rank 0 out of 4 processors
+  Hello world from processor alvaro-gcpv2-00036-1-0004, rank 2 out of 4 processors
+  Hello world from processor alvaro-gcpv2-00036-1-0004, rank 3 out of 4 processors
+
+Where the first "run" app runs on the nodes alvaro-gcpv2-00036-1-0001 and 
+alvaro-gcpv2-00036-1-0002, and the second "run" app runs on the nodes
+alvaro-gcpv2-00036-1-0003 and alvaro-gcpv2-00036-1-0004. Note that these nodes
+only have two cores (cores_per_node=2) and both apps use all the cores in the nodes.
+
+Also, note that a sleep command is included in the "run" app to give the SLURM resource
+manager enough time to provision all the resources and prevent Parsl from running all
+the apps on the first provisioned block of resources. 
+
+To satisfy the goals above, we defined an executor with as many nodes per block as 
+nodes per "run" app. This way, every block can only execute one "run" app at once. 
+However, to get this to the following "tricks" were used:
+1. Override the "SLURM_TASKS_PER_NODE" environment variable on the "run" app
+2. Set the "parallelism" parameter of the SlurmProvider to the number of nodes 
+   per block (nodes_per_block) (>1).
+
+We understand that (1) is required because Parsl hardcodes the SLURM parameter
+--ntasks-per-node to 1. However, we do not understand why (2) is required. If
+parallelism is set to 1 then only repeats/noces_per_block "run" apps are executed
+in parallel. For example, if repeats=4 and nodes_per_block=2 then only 2 "run"
+apps are executed in parallel. 
+
+We tried to set the cores_per_worker parameter in the HighThroughputExecutor to
+(cores_per_node x nodes_per_block) in an attempt to get one worker per two nodes
+but increaing this parameter beyond the "cores_per_node" value has no effect. 
+"""
+
 ##########
 # INPUTS #
 ##########
