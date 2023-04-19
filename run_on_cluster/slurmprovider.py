@@ -142,7 +142,7 @@ def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
     # Without the sleep command below this app runs very fast. Therefore, when launched multiple times
     # in parallel (nrepeats > 1) it ends up on the same group of nodes. Note that the goal of this 
     # experiment is to return the host names of the different nodes running the app. 
-    sleep 10
+    sleep 120
     mpirun -np {np} mpitest > {output}
 '''.format(
         SLURM_NNODES = os.environ['SLURM_NNODES'],
@@ -156,6 +156,25 @@ def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
 ############
 # WORKFLOW #
 ############
+mpi_c_source_code = './mpitest.c'
+
+# Write file <mpi_c_source_code> if it does not exist
+if not os.path.isfile(mpi_c_source_code):
+    with open(mpi_c_source_code, "w") as f:
+        f.write("#include <mpi.h>\n")
+        f.write("#include <stdio.h>\n")
+        f.write("int main(int argc, char** argv) {\n")
+        f.write("  MPI_Init(NULL, NULL);\n")
+        f.write("  int world_size;\n")
+        f.write("  MPI_Comm_size(MPI_COMM_WORLD, &world_size);\n")
+        f.write("  int world_rank;\n")
+        f.write("  MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);\n")
+        f.write("  char processor_name[MPI_MAX_PROCESSOR_NAME];\n")
+        f.write("  int name_len;\n")
+        f.write("  MPI_Get_processor_name(processor_name, &name_len);\n")
+        f.write("  printf(\"Hello world from processor %s, rank %d out of %d processors\\n\",processor_name, world_rank, world_size);\n")
+        f.write("  MPI_Finalize();\n")
+        f.write("}\n")
 
 if __name__ == '__main__':
     print('Loading Parsl Config', flush = True)
@@ -164,7 +183,7 @@ if __name__ == '__main__':
     print('\n\nCompiling test', flush = True)
     compile_fut = compile_mpi_hello_world_ompi(
         mpi_dir,
-        inputs = [File('./mpitest.c')]
+        inputs = [File(mpi_c_source_code)]
     )
 
     run_futs = []
