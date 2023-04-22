@@ -19,6 +19,7 @@ source $HOME/pw/miniconda3/etc/profile.d/conda.sh
 conda activate parsl-mpi
 python slurmprovider.py
 ```
+3. There is also a `clean_up.sh` that will delete all the files created by the workflow. The comments in this script also describe the purpose of each file/directory it deletes.
 
 PW cloud clusters are elastic; after a few minutes, any idle worker nodes are
 released so they don't add to the cost of running the cluster.  However, since
