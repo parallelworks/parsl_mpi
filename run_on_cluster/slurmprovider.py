@@ -58,8 +58,9 @@ in parallel. For example, if repeats=4 and nodes_per_block=2 then only 2 "run"
 apps are executed in parallel. 
 
 We tried to set the cores_per_worker parameter in the HighThroughputExecutor to
-(cores_per_node x nodes_per_block) in an attempt to get one worker per two nodes
-but increaing this parameter beyond the "cores_per_node" value has no effect. 
+(cores_per_node x nodes_per_block) in an attempt to get one worker per two nodes.
+However, if this parameter is increased beyond the "cores_per_node" value the blocks
+hang in "pending" state (0 connected workers) and never reach the "running" state.
 """
 
 ##########
