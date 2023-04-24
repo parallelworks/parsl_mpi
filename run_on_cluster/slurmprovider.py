@@ -1,7 +1,3 @@
-import sys, os, json, time
-from random import randint
-import argparse
-
 import parsl
 from parsl.app.app import bash_app
 print(parsl.__version__, flush = True)
