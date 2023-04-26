@@ -10,10 +10,14 @@ def compile_mpi_hello_world_ompi(ompi_dir: str, inputs: list = None,
     Creates the mpitest binary in the working directory
     """
     return '''
-    export OMPI_DIR={ompi_dir}
-    export PATH=$OMPI_DIR/bin:$PATH
-    export LD_LIBRARY_PATH=$OMPI_DIR/lib:$LD_LIBRARY_PATH
-    export MANPATH=$OMPI_DIR/share/man:$MANPATH
+    if [ -d "{ompi_dir}" ]; then 
+        export OMPI_DIR={ompi_dir}
+        export PATH=$OMPI_DIR/bin:$PATH
+        export LD_LIBRARY_PATH=$OMPI_DIR/lib:$LD_LIBRARY_PATH
+        export MANPATH=$OMPI_DIR/share/man:$MANPATH
+    else
+        module load {ompi_dir}
+    fi
     mpicc -o mpitest {mpi_c}
     '''.format(
         ompi_dir = ompi_dir,
@@ -64,8 +68,12 @@ def run_mpi_hello_world_ompi_slurmprovider(np: int, ompi_dir: str,
     # Override Parsl SLURM parameter
     # In Parsl the ntasks-per-node parameter is hardcoded to 1
     export SLURM_TASKS_PER_NODE="{SLURM_TASKS_PER_NODE}(x{SLURM_NNODES})"
-    export OMPI_DIR={ompi_dir}
-    export PATH={ompi_dir}/bin:$PATH
+    if [ -d "{ompi_dir}" ]; then 
+        export OMPI_DIR={ompi_dir}
+        export PATH={ompi_dir}/bin:$PATH
+    else
+        module load {ompi_dir}
+    fi
     # Without the sleep command below this app runs very fast. Therefore, when launched multiple times
     # in parallel (nrepeats > 1) it ends up on the same group of nodes. Note that the goal of this 
     # experiment is to return the host names of the different nodes running the app. Sleeping time
