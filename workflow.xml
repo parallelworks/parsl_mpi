@@ -17,7 +17,7 @@
         label='Number processors to run on per MPI run' 
         type='integer' 
         min='2' 
-        max='128' 
+        max='192' 
         help='Number of times the run_mpi parsl app is launched in parallel' 
         value='2'
         width='50%'>
