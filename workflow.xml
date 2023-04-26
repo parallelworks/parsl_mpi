@@ -17,15 +17,15 @@
         label='Number processors to run on per MPI run' 
         type='integer' 
         min='2' 
-        max='128' 
+        max='192' 
         help='Number of times the run_mpi parsl app is launched in parallel' 
         value='2'
         width='50%'>
       </param>
       <param 
         name='mpi_dir' 
-        label='Directory with MPI installation' 
-        help='' 
+        label='Directory path or module name with MPI installation' 
+        help='If a module name is specified it will be loaded with module load' 
         type='text' 
         value='/contrib/__PW_USER__/ompi/' 
         width='50%'>
