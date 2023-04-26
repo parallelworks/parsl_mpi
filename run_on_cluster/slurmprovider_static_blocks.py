@@ -8,6 +8,12 @@ from parsl.providers import SlurmProvider
 from parsl.executors import HighThroughputExecutor
 from parsl.launchers import SimpleLauncher
 
+# Force workflow to sleep at end to give time to
+# the user to verify that the number of blocks is
+# held constant
+import time
+end_sleep_time = 300
+
 # Need os here to create config
 import os
 
@@ -69,35 +75,52 @@ hang in "pending" state (0 connected workers) and never reach the "running" stat
 ##########
 # INPUTS #
 ##########
+
+# This config is based on the recommendations
+# of the Parsl team here:
+# https://parsl-project.slack.com/archives/C4KBVPJG0/p1682100321387449
+# to bypass the scaling out of resources and
+# force Parsl to allocate exactly the number of
+# blocks that we will want to run on and also force
+# exactly one worker per block.
 mpi_dir = '/contrib/alvaro/ompi/'
 repeats = 2
 cores_per_node = 2
 nodes_per_block = 2
-np = cores_per_node * nodes_per_block
+np = cores_per_node
 partition = "compute"
+
+# Tasks per node are enforced by
+# setting
+# init_blocks = min_blocks = max_blocks = repeats
+# This forces Parsl to bypass its scaling code
+# so we have a static number of blocks.
 
 ##########
 # CONFIG #
 ##########
 
-exec_label = 'slurm_provider'
+# Label also sets directory of where 
+# resource-level execution happens
+exec_label = 'slurm_provider_static_blocks'
 
 config = Config(
     executors = [
         HighThroughputExecutor(
             label = exec_label,
-            cores_per_worker =  cores_per_node,
             worker_debug = True,            
             working_dir =  os.getcwd(),
             worker_logdir_root = os.getcwd(),
             provider = SlurmProvider(
                 partition = partition,
                 nodes_per_block = nodes_per_block,
-                min_blocks = 0,
-                max_blocks = 10,
+                cores_per_node = cores_per_node,
+                init_blocks = repeats,
+                min_blocks = repeats,
+                max_blocks = repeats,
                 walltime ="01:00:00",
                 launcher = SimpleLauncher(),
-                parallelism = float(nodes_per_block) 
+                parallelism = 1.0 
             )
         )
     ]
@@ -177,8 +200,6 @@ if not os.path.isfile(mpi_c_source_code):
         f.write("}\n")
 
 if __name__ == '__main__':
-    import os
-
     print('Loading Parsl Config', flush = True)
     parsl.load(config)
 
@@ -207,3 +228,5 @@ if __name__ == '__main__':
         with open(fut.outputs[0].result(), 'r') as f:
             print(f.read())
 
+    print('Sleep for '+str(end_sleep_time)+'s to check for static block hold.')
+    time.sleep(end_sleep_time)
