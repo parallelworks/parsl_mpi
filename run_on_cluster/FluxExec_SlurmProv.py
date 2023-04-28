@@ -80,16 +80,19 @@ partition = "compute"
 # CONFIG #
 ##########
 
-exec_label = 'slurm_provider'
+exec_label = 'myFluxExecSlurmProv'
 
 config = Config(
     executors = [
-        HighThroughputExecutor(
+        FluxExecutor(
+            working_dir =  os.getcwd()+"/FluxExecWorkDir",
             label = exec_label,
             cores_per_worker =  cores_per_node,
             worker_debug = True,            
-            working_dir =  os.getcwd(),
-            worker_logdir_root = os.getcwd(),
+            worker_logdir_root = os.getcwd()+"/FluxExecWorkerLogs",
+            flux_executor_kwargs = {},
+            flux_path = None,
+            launch_cmd = None,
             provider = SlurmProvider(
                 partition = partition,
                 nodes_per_block = nodes_per_block,

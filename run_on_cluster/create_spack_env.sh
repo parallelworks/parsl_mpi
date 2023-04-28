@@ -75,12 +75,21 @@ echo Installing spack packages...
 # instance types.
 echo 'source ~/.bashrc; \
 spack compiler find; \
-spack install -j 2 patchelf; \
+spack install -j 30 patchelf; \
 spack compiler find; \
 spack unload; \
-spack install -j 2 openmpi; \
-spack install -j 2 flux-sched; \
-spack install -j 2 miniconda3' | scl enable devtoolset-7 bash
+spack install -j 30 openmpi; \
+spack install -j 30 flux-sched; \
+spack install -j 30 miniconda3' | scl enable devtoolset-7 bash
+
+#==============================
+echo Install Parsl in Spack Miniconda
+#==============================
+spack load miniconda3
+conda install -c conda-forge parsl
+conda install sqlalchemy
+conda install sqlalchemy-utils
+pip install parsl[monitoring]
 
 #==============================
 echo Install local Miniconda...
