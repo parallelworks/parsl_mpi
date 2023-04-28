@@ -5,7 +5,7 @@ from parsl.data_provider.files import File
 
 from parsl.config import Config
 from parsl.providers import SlurmProvider
-from parsl.executors import HighThroughputExecutor
+from parsl.executors import FluxExecutor
 from parsl.launchers import SimpleLauncher
 
 # Need os here to create config
@@ -87,9 +87,6 @@ config = Config(
         FluxExecutor(
             working_dir =  os.getcwd()+"/FluxExecWorkDir",
             label = exec_label,
-            cores_per_worker =  cores_per_node,
-            worker_debug = True,            
-            worker_logdir_root = os.getcwd()+"/FluxExecWorkerLogs",
             flux_executor_kwargs = {},
             flux_path = None,
             launch_cmd = None,
@@ -100,7 +97,8 @@ config = Config(
                 max_blocks = 10,
                 walltime ="01:00:00",
                 launcher = SimpleLauncher(),
-                parallelism = float(nodes_per_block) 
+                parallelism = float(nodes_per_block),
+                worker_init = 'spack load flux-sched; spack load miniconda3'
             )
         )
     ]
