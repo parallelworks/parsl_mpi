@@ -79,17 +79,18 @@ spack install -j 30 patchelf; \
 spack compiler find; \
 spack unload; \
 spack install -j 30 openmpi; \
-spack install -j 30 flux-sched; \
-spack install -j 30 miniconda3' | scl enable devtoolset-7 bash
+spack install -j 30 flux-sched' | scl enable devtoolset-7 bash
 
 #==============================
-echo Install Parsl in Spack Miniconda
+echo Install Parsl in Spack Miniconda...
 #==============================
+source $HOME/.bashrc
+spack install miniconda3
 spack load miniconda3
 conda install -y -c conda-forge parsl
 conda install -y sqlalchemy
 conda install -y sqlalchemy-utils
-pip install parsl[monitoring]
+pip install "parsl[monitoring]"
 
 #==============================
 echo Install local Miniconda...
