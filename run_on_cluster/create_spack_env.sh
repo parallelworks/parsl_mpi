@@ -86,9 +86,9 @@ spack install -j 30 miniconda3' | scl enable devtoolset-7 bash
 echo Install Parsl in Spack Miniconda
 #==============================
 spack load miniconda3
-conda install -c conda-forge parsl
-conda install sqlalchemy
-conda install sqlalchemy-utils
+conda install -y -c conda-forge parsl
+conda install -y sqlalchemy
+conda install -y sqlalchemy-utils
 pip install parsl[monitoring]
 
 #==============================
