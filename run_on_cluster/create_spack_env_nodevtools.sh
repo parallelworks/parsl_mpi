@@ -11,11 +11,11 @@ install_dir=${HOME}/parsl_flux
 #install_dir=/var/lib/pworks
 
 #==============================
-echo Install newer version of gcc...
+#echo Install newer version of gcc...
 #==============================
 
-sudo yum install -y centos-release-scl
-sudo yum install -y devtoolset-7
+#sudo yum install -y centos-release-scl
+#sudo yum install -y devtoolset-7
 
 #==============================
 echo Setting up SPACK_ROOT...
@@ -49,22 +49,22 @@ echo Install some dependencies to check download certificates...
 pip3 install botocore==1.23.46 boto3==1.20.46
 
 #==============================
-echo Configuring external packages...
+#echo Configuring external packages...
 #==============================
 
-spack_packages=${SPACK_ROOT}/etc/spack/packages.yaml
-echo "packages:" > $spack_packages
-echo "    gcc:" >> $spack_packages
-echo "        externals:" >> $spack_packages
-echo "        - spec: gcc@7.3.1" >> $spack_packages
-echo "          prefix: /opt/rh/devtoolset-7/root/usr" >> $spack_packages
-echo "        buildable: False" >> $spack_packages
-echo "    slurm:" >> $spack_packages
-echo "        variants: +pmix sysconfdir=/mnt/shared/etc/slurm" >> $spack_packages
-echo "        externals:" >> $spack_packages
-echo "        - spec: slurm@20.02.7 +pmix sysconfdir=/mnt/shared/etc/slurm" >> $spack_packages
-echo "          prefix: /usr" >> $spack_packages
-echo "        buildable: False" >> $spack_packages
+#spack_packages=${SPACK_ROOT}/etc/spack/packages.yaml
+#echo "packages:" > $spack_packages
+#echo "    gcc:" >> $spack_packages
+#echo "        externals:" >> $spack_packages
+#echo "        - spec: gcc@7.3.1" >> $spack_packages
+#echo "          prefix: /opt/rh/devtoolset-7/root/usr" >> $spack_packages
+#echo "        buildable: False" >> $spack_packages
+#echo "    slurm:" >> $spack_packages
+#echo "        variants: +pmix sysconfdir=/mnt/shared/etc/slurm" >> $spack_packages
+#echo "        externals:" >> $spack_packages
+#echo "        - spec: slurm@20.02.7 +pmix sysconfdir=/mnt/shared/etc/slurm" >> $spack_packages
+#echo "          prefix: /usr" >> $spack_packages
+#echo "        buildable: False" >> $spack_packages
 
 #==============================
 echo Installing spack packages...
@@ -79,7 +79,7 @@ spack install -j 30 patchelf; \
 spack compiler find; \
 spack unload; \
 spack install -j 30 openmpi; \
-spack install -j 30 flux-sched' | scl enable devtoolset-7 bash
+spack install -j 30 flux-sched' | /bin/bash #scl enable devtoolset-7 bash
 
 #==============================
 echo Install Parsl in Spack Miniconda...

@@ -74,7 +74,7 @@ repeats = 2
 cores_per_node = 2
 nodes_per_block = 2
 np = cores_per_node * nodes_per_block
-partition = "compute"
+partition = "small"
 
 ##########
 # CONFIG #
@@ -89,7 +89,7 @@ config = Config(
             label = exec_label,
             flux_executor_kwargs = {},
             flux_path = None,
-            launch_cmd = None,
+            launch_cmd = "{flux} start -v 3 {python} {manager} {protocol} {hostname} {port}",
             provider = SlurmProvider(
                 partition = partition,
                 nodes_per_block = nodes_per_block,
