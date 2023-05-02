@@ -73,6 +73,19 @@ echo Installing spack packages...
 # because 30 CPU is the typical minimum
 # amount of CPU for high-speed networking
 # instance types.
+#
+# Note that this session first finds the
+# default system gcc (v4) and then installs,
+# loads and finds Spack preferred gcc (v12).
+# Because the loaded gcc12 is NOT unloaded
+# after it is found, gcc12 
+# is used for subsequent build ops as the
+# (implicitly) default compiler. Several 
+# packages are compiled TWICE, once for the 
+# system gcc during the initial bootstrap of
+# gcc12 and once for when gcc12 installed in 
+# Spack crunches through all the dependencies
+# of subsquent packages.
 echo 'source ~/.bashrc; \
 spack compiler find; \
 spack install -j 30 patchelf; \
