@@ -76,8 +76,10 @@ echo Installing spack packages...
 echo 'source ~/.bashrc; \
 spack compiler find; \
 spack install -j 30 patchelf; \
-spack compiler find; \
 spack unload; \
+spack install -j 30 gcc; \
+spack load gcc; \
+spack compiler find; \
 spack install -j 30 openmpi; \
 spack install -j 30 flux-sched' | /bin/bash #scl enable devtoolset-7 bash
 
