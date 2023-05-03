@@ -12,7 +12,7 @@ from parsl.launchers import SimpleLauncher
 # the user to verify that the number of blocks is
 # held constant
 import time
-end_sleep_time = 300
+end_sleep_time = 30
 
 # Need os here to create config
 import os
@@ -83,7 +83,7 @@ hang in "pending" state (0 connected workers) and never reach the "running" stat
 # force Parsl to allocate exactly the number of
 # blocks that we will want to run on and also force
 # exactly one worker per block.
-mpi_dir = '/contrib/alvaro/ompi/'
+mpi_dir = '~/ompi/'
 repeats = 2
 cores_per_node = 2
 nodes_per_block = 2
@@ -165,7 +165,7 @@ def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
     # Without the sleep command below this app runs very fast. Therefore, when launched multiple times
     # in parallel (nrepeats > 1) it ends up on the same group of nodes. Note that the goal of this 
     # experiment is to return the host names of the different nodes running the app. 
-    sleep 120
+    sleep 60
     mpirun -np {np} mpitest > {output}
 '''.format(
         SLURM_NNODES = os.environ['SLURM_NNODES'],

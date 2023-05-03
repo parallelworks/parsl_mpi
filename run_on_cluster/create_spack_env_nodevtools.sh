@@ -18,18 +18,59 @@ install_dir=${HOME}/parsl_flux
 #sudo yum install -y devtoolset-7
 
 #==============================
+echo Explicit install of OpenMPI outside of Spack
+#==============================
+
+gcc_version=$(gcc --version | awk 'NR==1{print $3}')
+echo "===> Will build OpenMPI with gcc v$gcc_version"
+
+echo "===> Set up OpenMPI build environment variables"
+# OpenMPI needs to be installed in a shared directory
+export OMPI_DIR=${HOME}/ompi
+# Update OpenMPI version as needed
+export OMPI_MAJOR_VERSION=4.1
+export OMPI_MINOR_VERSION=.1
+export OMPI_VERSION=${OMPI_MAJOR_VERSION}${OMPI_MINOR_VERSION}
+export OMPI_URL_PREFIX="https://download.open-mpi.org/release/open-mpi"
+export OMPI_URL="$OMPI_URL_PREFIX/v$OMPI_MAJOR_VERSION/openmpi-$OMPI_VERSION.tar.gz"
+export PATH=$OMPI_DIR/bin:$PATH
+export LD_LIBRARY_PATH=$OMPI_DIR/lib:$LD_LIBRARY_PATH
+export MANPATH=$OMPI_DIR/share/man:$MANPATH
+# For SLURM-OpenMPI integration (i.e. launch via srun)
+export OMPI_SLURM_PMI_INCLUDE=/usr/include/slurm
+export OMPI_SLURM_PMI_LIBDIR=/usr/lib64
+
+echo "===> Making /tmp/ompi work dir"
+# Do not delete existing temporary OMPI dir to speed
+# up development testing of downstream Spack actions
+#rm -rf /tmp/ompi
+mkdir -p /tmp/ompi
+
+echo "===> Downloading OpenMPI v$OMPI_VERSION"
+cd /tmp/ompi && wget -O openmpi-$OMPI_VERSION.tar.gz $OMPI_URL && tar -xzf openmpi-$OMPI_VERSION.tar.gz
+
+echo "===> Compile and install OMPI"
+# Allow for up to 30 concurrent compile jobs with -j
+cd /tmp/ompi/openmpi-$OMPI_VERSION && ./configure --prefix=$OMPI_DIR --with-flux-pmi --with-pmi=$OMPI_SLURM_PMI_INCLUDE --with-pmi-libdir=$OMPI_SLURM_PMI_LIBDIR && make install -j 30
+
+#==============================
 echo Setting up SPACK_ROOT...
 #==============================
 
 export SPACK_ROOT=${install_dir}/spack
 sudo mkdir -p $SPACK_ROOT
 sudo chmod --recursive a+rwx ${install_dir}
+cd $SPACK_ROOT
 
 #==============================
 echo Downloading spack...
 #==============================
 
-git clone -b v0.19.2 -c feature.manyFiles=true https://github.com/spack/spack $SPACK_ROOT
+#git clone -b v0.19.2 -c feature.manyFiles=true https://github.com/spack/spack $SPACK_ROOT
+
+# --depth shortens the history contained in the clone
+# --branch selects a specific release, UPDATE THIS
+git clone --depth=100 --branch=releases/v0.19 https://github.com/spack/spack.git $SPACK_ROOT
 
 #==============================
 echo Set up Spack environment...
@@ -46,25 +87,35 @@ source $HOME/.bashrc
 echo Install some dependencies to check download certificates...
 #==============================
 
-pip3 install botocore==1.23.46 boto3==1.20.46
+#pip3 install botocore==1.23.46 boto3==1.20.46
+pip3 install botocore
+pip3 install boto3
 
 #==============================
-#echo Configuring external packages...
+echo Configuring external packages for Spack...
 #==============================
+# Examples here:
+# https://spack.readthedocs.io/en/latest/getting_started.html#system-packages
+# More detail here:
+# https://spack.readthedocs.io/en/latest/build_settings.html
 
-#spack_packages=${SPACK_ROOT}/etc/spack/packages.yaml
-#echo "packages:" > $spack_packages
-#echo "    gcc:" >> $spack_packages
-#echo "        externals:" >> $spack_packages
-#echo "        - spec: gcc@7.3.1" >> $spack_packages
-#echo "          prefix: /opt/rh/devtoolset-7/root/usr" >> $spack_packages
-#echo "        buildable: False" >> $spack_packages
-#echo "    slurm:" >> $spack_packages
-#echo "        variants: +pmix sysconfdir=/mnt/shared/etc/slurm" >> $spack_packages
-#echo "        externals:" >> $spack_packages
-#echo "        - spec: slurm@20.02.7 +pmix sysconfdir=/mnt/shared/etc/slurm" >> $spack_packages
-#echo "          prefix: /usr" >> $spack_packages
-#echo "        buildable: False" >> $spack_packages
+spack_packages=${SPACK_ROOT}/etc/spack/packages.yaml
+echo "packages:" > $spack_packages
+#echo "  gcc:" >> $spack_packages
+#echo "    externals:" >> $spack_packages
+#echo "    - spec: gcc@7.3.1" >> $spack_packages
+#echo "      prefix: /opt/rh/devtoolset-7/root/usr" >> $spack_packages
+#echo "    buildable: False" >> $spack_packages
+echo "  slurm:" >> $spack_packages
+echo "    externals:" >> $spack_packages
+echo "    - spec: slurm@20.02.7 sysconfdir=/mnt/shared/etc/slurm" >> $spack_packages
+echo "      prefix: /usr" >> $spack_packages
+echo "    buildable: False" >> $spack_packages
+echo "  openmpi:" >> $spack_packages
+echo "    externals:" >> $spack_packages
+echo "    - spec: openmpi@$OMPI_VERSION%gcc@$gcc_version" >> $spack_packages
+echo "      prefix: $OMPI_DIR" >> $spack_packages
+echo "    buildable: False" >> $spack_packages
 
 #==============================
 echo Installing spack packages...
@@ -86,26 +137,39 @@ echo Installing spack packages...
 # gcc12 and once for when gcc12 installed in 
 # Spack crunches through all the dependencies
 # of subsquent packages.
+spack_gcc_version=12.2.0
 echo 'source ~/.bashrc; \
+spack install -j 30 gcc@$spack_gcc_version; \
+spack load gcc@$spack_gcc_version;
 spack compiler find; \
-spack install -j 30 patchelf; \
 spack unload; \
-spack install -j 30 gcc; \
-spack load gcc; \
+spack install -j 30 flux-sched%gcc@$spack_gcc_version; \
+spack install -j 30 flux-sched%gcc@$gcc_version ^openmpi%gcc@gcc_version; \
+spack install -j 30 intel-oneapi-compilers; \
+spack load intel-oneapi-compilers; \
 spack compiler find; \
-spack install -j 30 openmpi; \
-spack install -j 30 flux-sched' | /bin/bash #scl enable devtoolset-7 bash
+spack unload; \
+spack install -j 30 intel-oneapi-mpi%intel; \
+spack install -j 30 flux-sched%intel ^intel-oneapi-mpi' | /bin/bash #scl enable devtoolset-7 bash
+
+# Setup Spack env
+#source ~/.bashrc
+#spack install -j 30 gcc
+#spack load gcc
+#spack compiler find
+#spack install -j 30 openmpi
+#spack install -j 30 flux-sched
 
 #==============================
-echo Install Parsl in Spack Miniconda...
+#echo Install Parsl in Spack Miniconda...
 #==============================
-source $HOME/.bashrc
-spack install miniconda3
-spack load miniconda3
-conda install -y -c conda-forge parsl
-conda install -y sqlalchemy
-conda install -y sqlalchemy-utils
-pip install "parsl[monitoring]"
+#source $HOME/.bashrc
+#spack install miniconda3
+#spack load miniconda3
+#conda install -y -c conda-forge parsl
+#conda install -y sqlalchemy
+#conda install -y sqlalchemy-utils
+#pip install "parsl[monitoring]"
 
 #==============================
 echo Install local Miniconda...
