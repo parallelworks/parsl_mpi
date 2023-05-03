@@ -35,3 +35,28 @@ To cancel this holding pattern job on the nodes, type `Cntl+C` twice
 immediately launch a job on those nodes without having to wait for 
 them to spin up.
 
+## Running Parsl with the FluxExecutor
+
+Flux cannot be installed with Conda, so here we install it with Spack
+since there are many dependencies. Spack can have Conda inside it, so in 
+`create_spack_env.sh`, the `miniconda3` module is installed and Parsl + Parsl
+dependencies can be installed there.
+
+The Conda environment in Spack may be fragile; I broke it and had to reinstall
+Conda (e.g. `spack uninstall miniconda3` and then `spack install miniconda3`)
+after running `conda init bash`.  What has worked for me so far is to install 
+everything in the `base` environment of the Conda in Spack, e.g.:
+```bash
+./create_spack_env.sh
+spack load miniconda3
+conda install -c conda-forge parsl
+conda install sqlalchemy
+conda install sqlalchemy-utils
+pip install parsl[monitoring]
+```
+(`which pip` shows that this `pip` is the one inside the Conda env inside Spack.)
+
+I've also noticed that Conda doesn't work if you `spack load flux-sched` **after**
+`spack load miniconda3`. Instead, always `spack load miniconda3` after all the other
+load operations. Also, it looks like once Flux is built, we may not need to activate
+the newer version of gcc with `scl enable devtoolset-7 bash`.
