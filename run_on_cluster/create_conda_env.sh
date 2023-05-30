@@ -76,9 +76,11 @@ conda activate $my_env
 conda install -y -c conda-forge parsl
 conda install -y sqlalchemy
 conda install -y sqlalchemy-utils
+conda install -y -c conda-forge flux-core
+conda install -y -c conda-forge flux-sched
 
 # Pip packages last
-# SMOGN on pip does not allow for seed option.  Use dev.
+# I don't know how to enable the monitoring option with Conda.
 pip install parsl[monitoring]
 
 echo Finished $0

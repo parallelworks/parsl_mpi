@@ -25,11 +25,15 @@ gcc_version=$(gcc --version | awk 'NR==1{print $3}')
 echo "===> Will build OpenMPI with gcc v$gcc_version"
 
 echo "===> Set up OpenMPI build environment variables"
+
 # OpenMPI needs to be installed in a shared directory
 export OMPI_DIR=${HOME}/ompi
+mkdir -p $OMPI_DIR/bin
+mkdir -p $OMPI_DIR/lib
+
 # Update OpenMPI version as needed
 export OMPI_MAJOR_VERSION=4.1
-export OMPI_MINOR_VERSION=.1
+export OMPI_MINOR_VERSION=.5
 export OMPI_VERSION=${OMPI_MAJOR_VERSION}${OMPI_MINOR_VERSION}
 export OMPI_URL_PREFIX="https://download.open-mpi.org/release/open-mpi"
 export OMPI_URL="$OMPI_URL_PREFIX/v$OMPI_MAJOR_VERSION/openmpi-$OMPI_VERSION.tar.gz"
@@ -39,6 +43,7 @@ export MANPATH=$OMPI_DIR/share/man:$MANPATH
 # For SLURM-OpenMPI integration (i.e. launch via srun)
 export OMPI_SLURM_PMI_INCLUDE=/usr/include/slurm
 export OMPI_SLURM_PMI_LIBDIR=/usr/lib64
+export C_INCLUDE_PATH=/usr/include/slurm
 
 echo "===> Making /tmp/ompi work dir"
 # Do not delete existing temporary OMPI dir to speed
@@ -108,14 +113,14 @@ echo "packages:" > $spack_packages
 #echo "    buildable: False" >> $spack_packages
 echo "  slurm:" >> $spack_packages
 echo "    externals:" >> $spack_packages
-echo "    - spec: slurm@20.02.7 sysconfdir=/mnt/shared/etc/slurm" >> $spack_packages
+echo "    - spec: slurm@20.02.7 +pmix sysconfdir=/mnt/shared/etc/slurm" >> $spack_packages
 echo "      prefix: /usr" >> $spack_packages
 echo "    buildable: False" >> $spack_packages
-echo "  openmpi:" >> $spack_packages
-echo "    externals:" >> $spack_packages
-echo "    - spec: openmpi@$OMPI_VERSION%gcc@$gcc_version" >> $spack_packages
-echo "      prefix: $OMPI_DIR" >> $spack_packages
-echo "    buildable: False" >> $spack_packages
+#echo "  openmpi:" >> $spack_packages
+#echo "    externals:" >> $spack_packages
+#echo "    - spec: openmpi@$OMPI_VERSION%gcc@$gcc_version" >> $spack_packages
+#echo "      prefix: $OMPI_DIR" >> $spack_packages
+#echo "    buildable: False" >> $spack_packages
 
 #==============================
 echo Installing spack packages...
@@ -138,13 +143,18 @@ echo Installing spack packages...
 # Spack crunches through all the dependencies
 # of subsquent packages.
 spack_gcc_version=12.2.0
+
+#spack install -j 30 gcc@$spack_gcc_version; \
+#spack load gcc@$spack_gcc_version; \
+#spack compiler find; \
+#spack unload; \
+#spack install -j 30 flux-sched%gcc@$spack_gcc_version; \
+#spack install -j 30 flux-sched%gcc@$gcc_version ^openmpi%gcc@gcc_version; \
+
 echo 'source ~/.bashrc; \
-spack install -j 30 gcc@$spack_gcc_version; \
-spack load gcc@$spack_gcc_version;
 spack compiler find; \
 spack unload; \
-spack install -j 30 flux-sched%gcc@$spack_gcc_version; \
-spack install -j 30 flux-sched%gcc@$gcc_version ^openmpi%gcc@gcc_version; \
+spack install -j 30 flux-sched ^openmpi ^slurm; \
 spack install -j 30 intel-oneapi-compilers; \
 spack load intel-oneapi-compilers; \
 spack compiler find; \
@@ -172,7 +182,7 @@ spack install -j 30 flux-sched%intel ^intel-oneapi-mpi' | /bin/bash #scl enable 
 #pip install "parsl[monitoring]"
 
 #==============================
-echo Install local Miniconda...
+#echo Install local Miniconda...
 #==============================
 #miniconda_loc=${install_dir}/miniconda
 #wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.9.2-Linux-x86_64.sh
