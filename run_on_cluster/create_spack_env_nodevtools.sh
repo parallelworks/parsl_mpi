@@ -151,9 +151,13 @@ spack_gcc_version=12.2.0
 #spack install -j 30 flux-sched%gcc@$spack_gcc_version; \
 #spack install -j 30 flux-sched%gcc@$gcc_version ^openmpi%gcc@gcc_version; \
 
+# mbedtls requires gcc -std=c99.
+# Try build with all code?
+# causes follow on failures of libarchive, flux-core, flux-shed
 echo 'source ~/.bashrc; \
 spack compiler find; \
 spack unload; \
+spack install mbedtls@2.28.0 cflags=="-std=c99" \
 spack install -j 30 flux-sched ^openmpi ^slurm; \
 spack install -j 30 intel-oneapi-compilers; \
 spack load intel-oneapi-compilers; \
