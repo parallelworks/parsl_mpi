@@ -98,7 +98,8 @@ config = Config(
                 walltime ="01:00:00",
                 launcher = SimpleLauncher(),
                 parallelism = float(nodes_per_block),
-                worker_init = 'spack load flux-sched; spack load miniconda3'
+                worker_init = 'source ~/pw/miniconda3/etc/profile.d/conda.sh; conda activate parsl-mpi'
+                #worker_init = 'spack load flux-sched; spack load miniconda3'
             )
         )
     ]
