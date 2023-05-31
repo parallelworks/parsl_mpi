@@ -18,6 +18,7 @@ rm -rf runinfo
 # running on a cloud cluster, these are the
 # logs on the cluster.
 rm -rf slurm_provider
+rm -rf FluxExecWorkDir
 
 # Stdout and stderr for the Parsl Apps in the workflow
 rm -f compile*.out
@@ -29,3 +30,7 @@ rm -f run-*.err
 # Explicit output from the Parsl Apps (not just stdout/stderr)
 rm -f hello-*.out
 rm -f mpitest*
+
+# Remove SLURM SrunLauncher wrapper scripts
+rm cmd_parsl.slurm.*
+

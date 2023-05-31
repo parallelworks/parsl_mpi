@@ -7,6 +7,7 @@ from parsl.config import Config
 from parsl.providers import SlurmProvider
 from parsl.executors import FluxExecutor
 from parsl.launchers import SimpleLauncher
+from parsl.launchers import SrunLauncher
 
 # Need os here to create config
 import os
@@ -89,16 +90,17 @@ config = Config(
             label = exec_label,
             flux_executor_kwargs = {},
             flux_path = None,
-            launch_cmd = "{flux} start -v 3 {python} {manager} {protocol} {hostname} {port}",
+            launch_cmd = "{flux} start -v {python} {manager} {protocol} {hostname} {port}",
             provider = SlurmProvider(
                 partition = partition,
                 nodes_per_block = nodes_per_block,
                 min_blocks = 0,
                 max_blocks = 10,
                 walltime ="01:00:00",
-                launcher = SimpleLauncher(),
+                launcher = SrunLauncher(),
                 parallelism = float(nodes_per_block),
-                worker_init = 'source ~/pw/miniconda3/etc/profile.d/conda.sh; conda activate parsl-mpi'
+                exclusive= False
+                #worker_init = 'source ~/pw/miniconda3/etc/profile.d/conda.sh; conda activate parsl-mpi'
                 #worker_init = 'spack load flux-sched; spack load miniconda3'
             )
         )
@@ -116,10 +118,13 @@ def compile_mpi_hello_world_ompi(ompi_dir: str, inputs: list = None,
     Creates the mpitest binary in the working directory
     """
     return '''
-    export OMPI_DIR={ompi_dir}
-    export PATH=$OMPI_DIR/bin:$PATH
-    export LD_LIBRARY_PATH=$OMPI_DIR/lib:$LD_LIBRARY_PATH
-    export MANPATH=$OMPI_DIR/share/man:$MANPATH
+    #export OMPI_DIR={ompi_dir}
+    #export PATH=$OMPI_DIR/bin:$PATH
+    #export LD_LIBRARY_PATH=$OMPI_DIR/lib:$LD_LIBRARY_PATH
+    #export MANPATH=$OMPI_DIR/share/man:$MANPATH
+    # Parsl worker_init is ignored, so do it here
+    source /home/sfgary/parsl_flux/spack/share/spack/setup-env.sh
+    spack load openmpi
     mpicc -o mpitest {mpi_c}
     '''.format(
         ompi_dir = ompi_dir,
@@ -137,23 +142,28 @@ def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
     """
     return '''
     # Override Parsl SLURM parameter
-    # In Parsl the ntasks-per-node parameter is hardcoded to 1
-    export SLURM_TASKS_PER_NODE="{SLURM_TASKS_PER_NODE}(x{SLURM_NNODES})"
-    export OMPI_DIR={ompi_dir}
-    export PATH={ompi_dir}/bin:$PATH
     # Without the sleep command below this app runs very fast. Therefore, when launched multiple times
     # in parallel (nrepeats > 1) it ends up on the same group of nodes. Note that the goal of this 
     # experiment is to return the host names of the different nodes running the app. 
     sleep 120
-    mpirun -np {np} mpitest > {output}
+    #mpirun -np {np} mpitest > {output}
+    ./mpitest
 '''.format(
-        SLURM_NNODES = os.environ['SLURM_NNODES'],
-        SLURM_TASKS_PER_NODE = int(int(np) / int(os.environ['SLURM_NNODES'])),
         np = np,
         ompi_dir = ompi_dir,
         output = outputs[0].path
     )
 
+# Was inside the app:
+    # Override Parsl SLURM parameter                                                   
+    # In Parsl the ntasks-per-node parameter is hardcoded to 1
+    #export SLURM_TASKS_PER_NODE="{SLURM_TASKS_PER_NODE}(x{SLURM_NNODES})"            
+    #export OMPI_DIR={ompi_dir}
+    #export PATH={ompi_dir}/bin:$PATH    
+
+# Was iniside the .format()
+    #SLURM_NNODES = os.environ['SLURM_NNODES'],
+    #SLURM_TASKS_PER_NODE = int(int(np) / int(os.environ['SLURM_NNODES'])),
 
 ############
 # WORKFLOW #
