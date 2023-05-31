@@ -118,7 +118,7 @@ echo "      prefix: /usr" >> $spack_packages
 echo "    buildable: False" >> $spack_packages
 #echo "  openmpi:" >> $spack_packages
 #echo "    externals:" >> $spack_packages
-#echo "    - spec: openmpi@$OMPI_VERSION%gcc@$gcc_version" >> $spack_packages
+#echo "    - spec: openmpi@$OMPI_VERSION%gcc@$gcc_version +pmi schedulers=slurm" >> $spack_packages
 #echo "      prefix: $OMPI_DIR" >> $spack_packages
 #echo "    buildable: False" >> $spack_packages
 
@@ -151,14 +151,43 @@ spack_gcc_version=12.2.0
 #spack install -j 30 flux-sched%gcc@$spack_gcc_version; \
 #spack install -j 30 flux-sched%gcc@$gcc_version ^openmpi%gcc@gcc_version; \
 
-# mbedtls requires gcc -std=c99.
+# Different compilers have different issues:
+# gcc@4.8.5:
+# mbedtls requires gcc -std=c99. This is achieved with:
+# spack install mbedtls@2.28.0 cflags=="-std=c99", however,
+# even when I specify the package cflags recursively
+# (e.g. spack install flux-sched cflags=="-std=c99" , need 
+# space at the end) or specify the hash of the successfully
+# built mbedtls, installing flux-core/sched still fails.
+#
+# gcc@12.2.0:
+# spack install flux-core%gcc@12.2.0 ^slurm+pmix
+# compiles most of Flux.  One downside is it takes an
+# extra ~22 minutes (on 8 CPU) to compile the compiler itself.
+# Also, hwloc does not compile because missing OpenMPI. So,
+# also need to:
+# spack install openmpi%gcc@12.2.0+pmi ^slurm+pmix
+# (when then installs hwloc as part of openmpi!)
+# Note need the +pmi to work with srun
+# Note SLURM has +pmix, OpenMPI has +pmi
+# spack install flux-sched%gcc@12.2.0  ^openmpi%gcc@12.2.0+pmi ^slurm+pmix
+# Then, we can test the OpenMPI+PMI+SLURM installation
+# with:
+# spack load openmpi%gcc@12.2.0+pmi
+# mpicc <test_code>
+# srun -N 2 -n 4 -p small test_code.out
+
+# intel-oneapi
+# I have not gotten this compiler to build flux-core 
+# end-to-end. It fails on mbedtls as well as other
+# packages.
+
 # Try build with all code?
 # causes follow on failures of libarchive, flux-core, flux-shed
 echo 'source ~/.bashrc; \
 spack compiler find; \
 spack unload; \
-spack install mbedtls@2.28.0 cflags=="-std=c99" \
-spack install -j 30 flux-sched ^openmpi ^slurm; \
+spack install -j 30 flux-sched cflags=="-std=c99" ^openmpi+pmix ^slurm+pmix; \
 spack install -j 30 intel-oneapi-compilers; \
 spack load intel-oneapi-compilers; \
 spack compiler find; \
