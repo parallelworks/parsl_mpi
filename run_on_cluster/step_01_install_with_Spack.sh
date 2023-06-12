@@ -11,54 +11,6 @@ install_dir=${HOME}/parsl_flux
 #install_dir=/var/lib/pworks
 
 #==============================
-#echo Install newer version of gcc...
-#==============================
-
-#sudo yum install -y centos-release-scl
-#sudo yum install -y devtoolset-7
-
-#==============================
-echo Explicit install of OpenMPI outside of Spack
-#==============================
-
-gcc_version=$(gcc --version | awk 'NR==1{print $3}')
-echo "===> Will build OpenMPI with gcc v$gcc_version"
-
-echo "===> Set up OpenMPI build environment variables"
-
-# OpenMPI needs to be installed in a shared directory
-export OMPI_DIR=${HOME}/ompi
-mkdir -p $OMPI_DIR/bin
-mkdir -p $OMPI_DIR/lib
-
-# Update OpenMPI version as needed
-export OMPI_MAJOR_VERSION=4.1
-export OMPI_MINOR_VERSION=.5
-export OMPI_VERSION=${OMPI_MAJOR_VERSION}${OMPI_MINOR_VERSION}
-export OMPI_URL_PREFIX="https://download.open-mpi.org/release/open-mpi"
-export OMPI_URL="$OMPI_URL_PREFIX/v$OMPI_MAJOR_VERSION/openmpi-$OMPI_VERSION.tar.gz"
-export PATH=$OMPI_DIR/bin:$PATH
-export LD_LIBRARY_PATH=$OMPI_DIR/lib:$LD_LIBRARY_PATH
-export MANPATH=$OMPI_DIR/share/man:$MANPATH
-# For SLURM-OpenMPI integration (i.e. launch via srun)
-export OMPI_SLURM_PMI_INCLUDE=/usr/include/slurm
-export OMPI_SLURM_PMI_LIBDIR=/usr/lib64
-export C_INCLUDE_PATH=/usr/include/slurm
-
-echo "===> Making /tmp/ompi work dir"
-# Do not delete existing temporary OMPI dir to speed
-# up development testing of downstream Spack actions
-#rm -rf /tmp/ompi
-mkdir -p /tmp/ompi
-
-echo "===> Downloading OpenMPI v$OMPI_VERSION"
-cd /tmp/ompi && wget -O openmpi-$OMPI_VERSION.tar.gz $OMPI_URL && tar -xzf openmpi-$OMPI_VERSION.tar.gz
-
-echo "===> Compile and install OMPI"
-# Allow for up to 30 concurrent compile jobs with -j
-cd /tmp/ompi/openmpi-$OMPI_VERSION && ./configure --prefix=$OMPI_DIR --with-flux-pmi --with-pmi=$OMPI_SLURM_PMI_INCLUDE --with-pmi-libdir=$OMPI_SLURM_PMI_LIBDIR && make install -j 30
-
-#==============================
 echo Setting up SPACK_ROOT...
 #==============================
 
@@ -70,8 +22,6 @@ cd $SPACK_ROOT
 #==============================
 echo Downloading spack...
 #==============================
-
-#git clone -b v0.19.2 -c feature.manyFiles=true https://github.com/spack/spack $SPACK_ROOT
 
 # --depth shortens the history contained in the clone
 # --branch selects a specific release, UPDATE THIS
@@ -201,13 +151,14 @@ spack_gcc_version=12.2.0
 echo 'source ~/.bashrc; \
 spack compiler find; \
 spack unload; \
-spack install -j 30 flux-sched cflags=="-std=c99" ^openmpi+pmix ^slurm+pmix; \
-spack install -j 30 intel-oneapi-compilers; \
-spack load intel-oneapi-compilers; \
-spack compiler find; \
-spack unload; \
-spack install -j 30 intel-oneapi-mpi%intel; \
-spack install -j 30 flux-sched%intel ^intel-oneapi-mpi' | /bin/bash #scl enable devtoolset-7 bash
+spack install -j 30 flux-sched cflags=="-std=c99" ^openmpi+pmi ^slurm+pmix;' | /bin/bash
+
+#spack install -j 30 intel-oneapi-compilers; \
+#spack load intel-oneapi-compilers; \
+#spack compiler find; \
+#spack unload; \
+#spack install -j 30 intel-oneapi-mpi%intel; \
+#spack install -j 30 flux-sched%intel ^intel-oneapi-mpi' | /bin/bash #scl enable devtoolset-7 bash
 
 # Setup Spack env
 #source ~/.bashrc
@@ -220,13 +171,13 @@ spack install -j 30 flux-sched%intel ^intel-oneapi-mpi' | /bin/bash #scl enable 
 #==============================
 #echo Install Parsl in Spack Miniconda...
 #==============================
-#source $HOME/.bashrc
-#spack install miniconda3
-#spack load miniconda3
-#conda install -y -c conda-forge parsl
-#conda install -y sqlalchemy
-#conda install -y sqlalchemy-utils
-#pip install "parsl[monitoring]"
+source $HOME/.bashrc
+spack install miniconda3
+spack load miniconda3
+conda install -y -c conda-forge parsl
+conda install -y sqlalchemy
+conda install -y sqlalchemy-utils
+pip install "parsl[monitoring]"
 
 #==============================
 #echo Install local Miniconda...
