@@ -149,9 +149,13 @@ spack_gcc_version=12.2.0
 # Try build with all code?
 # causes follow on failures of libarchive, flux-core, flux-shed
 echo 'source ~/.bashrc; \
+spack install -j 30 gcc@12.2.0; \
+spack load gcc@12.2.0; \
 spack compiler find; \
 spack unload; \
-spack install -j 30 flux-sched cflags=="-std=c99" ^openmpi+pmi ^slurm+pmix;' | /bin/bash
+spack install -j 30 openmpi%gcc@12.2.0+pmi ^slurm+pmix; \
+spack install -j 30 flux-sched%gcc@12.2.0 ^openmpi+pmi ^slurm+pmix;' | /bin/bash
+#spack install -j 30 flux-sched cflags=="-std=c99" ^openmpi+pmi ^slurm+pmix;' | /bin/bash
 
 #spack install -j 30 intel-oneapi-compilers; \
 #spack load intel-oneapi-compilers; \

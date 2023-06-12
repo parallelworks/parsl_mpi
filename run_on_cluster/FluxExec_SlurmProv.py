@@ -90,14 +90,16 @@ config = Config(
             label = exec_label,
             flux_executor_kwargs = {},
             flux_path = None,
-            launch_cmd = "{flux} start -v {python} {manager} {protocol} {hostname} {port}",
+            launch_cmd='srun --mpi=pmi2 --tasks-per-node=1 -c4 ' + FluxExecutor.DEFAULT_LAUNCH_CMD,
+            #launch_cmd = "{flux} start -v {python} {manager} {protocol} {hostname} {port}",
             provider = SlurmProvider(
                 partition = partition,
                 nodes_per_block = nodes_per_block,
                 min_blocks = 0,
                 max_blocks = 10,
                 walltime ="01:00:00",
-                launcher = SrunLauncher(),
+                #launcher = SrunLauncher(),
+                launcher = SimpleLauncher(),
                 parallelism = float(nodes_per_block),
                 exclusive= False
                 #worker_init = 'source ~/pw/miniconda3/etc/profile.d/conda.sh; conda activate parsl-mpi'
@@ -145,7 +147,9 @@ def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
     # Without the sleep command below this app runs very fast. Therefore, when launched multiple times
     # in parallel (nrepeats > 1) it ends up on the same group of nodes. Note that the goal of this 
     # experiment is to return the host names of the different nodes running the app. 
-    sleep 120
+    #source /home/sfgary/parsl_flux/spack/share/spack/setup-env.sh
+    #spack load flux-sched
+    sleep 10
     #mpirun -np {np} mpitest > {output}
     ./mpitest
 '''.format(
