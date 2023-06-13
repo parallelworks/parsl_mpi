@@ -1,0 +1,187 @@
+1686680414.554236 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:90 __init__ INFO: Starting DataFlowKernel with config
+Config(
+    app_cache=True, 
+    checkpoint_files=None, 
+    checkpoint_mode=None, 
+    checkpoint_period=None, 
+    executors=[FluxExecutor(
+        flux_executor_kwargs={}, 
+        flux_path='/home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/flux-core-0.44.0-t35ftynvx7xz5d77noegapdg2snfyfph/bin/flux', 
+        label='myFluxExecSlurmProv', 
+        launch_cmd='srun --tasks-per-node=1 -c1 {flux} start {python} {manager} {protocol} {hostname} {port}', 
+        provider=SlurmProvider(
+            account=None, 
+            channel=LocalChannel(
+                envs={}, 
+                script_dir=None, 
+                userhome='/home/sfgary/parsl_mpi/run_on_cluster'
+            ), 
+            cmd_timeout=10, 
+            cores_per_node=None, 
+            exclusive=False, 
+            init_blocks=1, 
+            launcher=SimpleLauncher(debug=True), 
+            max_blocks=10, 
+            mem_per_node=None, 
+            min_blocks=0, 
+            move_files=True, 
+            nodes_per_block=2, 
+            parallelism=2.0, 
+            partition='small', 
+            regex_job_id='Submitted batch job (?P<id>\\S*)', 
+            scheduler_options='\n#SBATCH --partition=small\n', 
+            walltime='01:00:00', 
+            worker_init='\n'
+        ), 
+        working_dir='/home/sfgary/parsl_mpi/run_on_cluster/FluxExecWorkDir'
+    )], 
+    garbage_collect=True, 
+    initialize_logging=True, 
+    internal_tasks_max_threads=10, 
+    max_idletime=120.0, 
+    monitoring=None, 
+    retries=0, 
+    retry_handler=None, 
+    run_dir='runinfo', 
+    strategy='simple', 
+    usage_tracking=False
+)
+1686680414.554407 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:92 __init__ INFO: Parsl version: 2023.06.05
+1686680414.554486 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.usage_tracking.usage:127 __init__ DEBUG: Tracking status: False
+1686680414.554578 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:120 __init__ INFO: Run id is: 46f32fe6-3c53-42b4-a991-9acc0d058caf
+1686680414.602430 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:127 __init__ DEBUG: Considering candidate for workflow name: /home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/parsl/dataflow/dflow.py
+1686680414.602523 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:127 __init__ DEBUG: Considering candidate for workflow name: /home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/typeguard/__init__.py
+1686680414.602566 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:127 __init__ DEBUG: Considering candidate for workflow name: /home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/parsl/dataflow/dflow.py
+1686680414.602612 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:127 __init__ DEBUG: Considering candidate for workflow name: /home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/typeguard/__init__.py
+1686680414.602635 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:127 __init__ DEBUG: Considering candidate for workflow name: /home/sfgary/parsl_mpi/run_on_cluster/FluxExec_SlurmProv.py
+1686680414.602658 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:133 __init__ DEBUG: Using FluxExec_SlurmProv.py as workflow name
+1686680414.602847 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.memoization:163 __init__ INFO: App caching initialized
+1686680414.602909 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.strategy:131 __init__ DEBUG: Scaling strategy: simple
+1686680414.603686 2023-06-13 18:20:14 MainProcess-8288 Thread-1-46986429859584 parsl.providers.slurm.slurm:216 submit DEBUG: Requesting one block with 2 nodes
+1686680414.603842 2023-06-13 18:20:14 MainProcess-8288 Thread-1-46986429859584 parsl.providers.slurm.slurm:232 submit DEBUG: Writing submit script
+1686680414.604566 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:940 submit DEBUG: Task 0 will be sent to executor myFluxExecSlurmProv
+1686680414.604644 2023-06-13 18:20:14 MainProcess-8288 Thread-1-46986429859584 parsl.providers.slurm.slurm:236 submit DEBUG: moving files
+1686680414.604735 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.files:54 cleancopy DEBUG: Making clean copy of File object <File at 0x2abbe1330940 url=./mpitest.c scheme=file netloc= path=./mpitest.c filename=mpitest.c>
+1686680414.607405 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.data_manager:128 stage_in DEBUG: stage_in checking Staging provider NoOpFileStaging()
+1686680414.607505 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.file_noop:13 can_stage_in DEBUG: NoOpFileStaging checking file <File at 0x2abbe1330af0 url=./mpitest.c scheme=file netloc= path=./mpitest.c filename=mpitest.c>
+1686680414.607789 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.data_manager:87 replace_task DEBUG: stage_in checking Staging provider NoOpFileStaging()
+1686680414.607876 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.file_noop:13 can_stage_in DEBUG: NoOpFileStaging checking file <File at 0x2abbe1330af0 url=./mpitest.c scheme=file netloc= path=./mpitest.c filename=mpitest.c>
+1686680414.607932 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:758 _add_output_deps DEBUG: Adding output dependencies
+1686680414.607971 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1020 submit INFO: Task 0 submitted for App compile_mpi_hello_world_ompi, not waiting on any dependency
+1686680414.608014 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1028 submit DEBUG: Task 0 set to pending state with AppFuture: <AppFuture at 0x2abbe1330a30 state=pending>
+1686680414.608057 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.memoization:225 check_memo DEBUG: Task 0 will not be memoized
+1686680414.614338 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:721 launch_task INFO: Parsl task 0 try 0 launched on executor myFluxExecSlurmProv
+1686680414.614431 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1380 _log_std_streams INFO: Standard output for task 0 available at compile.out
+1686680414.614460 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1382 _log_std_streams INFO: Standard error for task 0 available at compile.err
+1686680414.614723 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:940 submit DEBUG: Task 1 will be sent to executor myFluxExecSlurmProv
+1686680414.614798 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:758 _add_output_deps DEBUG: Adding output dependencies
+1686680414.614836 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.files:54 cleancopy DEBUG: Making clean copy of File object <File at 0x2abbe13309a0 url=./hello-0.out scheme=file netloc= path=./hello-0.out filename=hello-0.out>
+1686680414.614918 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:772 _add_output_deps DEBUG: Submitting stage out for output file <File at 0x2abbe13309a0 url=./hello-0.out scheme=file netloc= path=./hello-0.out filename=hello-0.out>
+1686680414.615559 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.data_manager:160 stage_out DEBUG: stage_out checking Staging provider NoOpFileStaging()
+1686680414.615628 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.file_noop:17 can_stage_out DEBUG: NoOpFileStaging checking file <File at 0x2abbe133d3d0 url=./hello-0.out scheme=file netloc= path=./hello-0.out filename=hello-0.out>
+1686680414.615664 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:778 _add_output_deps DEBUG: No stageout dependency for <File at 0x2abbe13309a0 url=./hello-0.out scheme=file netloc= path=./hello-0.out filename=hello-0.out>
+1686680414.615848 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.app.futures:64 __init__ DEBUG: Creating DataFuture with parent: <AppFuture at 0x2abbe133d2e0 state=pending> and file: <File at 0x2abbe13309a0 url=./hello-0.out scheme=file netloc= path=./hello-0.out filename=hello-0.out>
+1686680414.616103 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.data_manager:46 replace_task_stage_out DEBUG: stage_out checking Staging provider NoOpFileStaging()
+1686680414.616154 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.file_noop:17 can_stage_out DEBUG: NoOpFileStaging checking file <File at 0x2abbe133d3d0 url=./hello-0.out scheme=file netloc= path=./hello-0.out filename=hello-0.out>
+1686680414.616196 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1020 submit INFO: Task 1 submitted for App run_mpi_hello_world_ompi, waiting on task 0
+1686680414.616232 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1028 submit DEBUG: Task 1 set to pending state with AppFuture: <AppFuture at 0x2abbe133d2e0 state=pending>
+1686680414.616271 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:608 launch_if_ready DEBUG: Task 1 has outstanding dependencies, so launch_if_ready skipping
+1686680414.616398 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:940 submit DEBUG: Task 2 will be sent to executor myFluxExecSlurmProv
+1686680414.616451 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:758 _add_output_deps DEBUG: Adding output dependencies
+1686680414.616482 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.files:54 cleancopy DEBUG: Making clean copy of File object <File at 0x2abbe133d4c0 url=./hello-1.out scheme=file netloc= path=./hello-1.out filename=hello-1.out>
+1686680414.616553 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:772 _add_output_deps DEBUG: Submitting stage out for output file <File at 0x2abbe133d4c0 url=./hello-1.out scheme=file netloc= path=./hello-1.out filename=hello-1.out>
+1686680414.616797 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.data_manager:160 stage_out DEBUG: stage_out checking Staging provider NoOpFileStaging()
+1686680414.616853 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.file_noop:17 can_stage_out DEBUG: NoOpFileStaging checking file <File at 0x2abbe176b1f0 url=./hello-1.out scheme=file netloc= path=./hello-1.out filename=hello-1.out>
+1686680414.616882 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:778 _add_output_deps DEBUG: No stageout dependency for <File at 0x2abbe133d4c0 url=./hello-1.out scheme=file netloc= path=./hello-1.out filename=hello-1.out>
+1686680414.616986 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.app.futures:64 __init__ DEBUG: Creating DataFuture with parent: <AppFuture at 0x2abbe176b700 state=pending> and file: <File at 0x2abbe133d4c0 url=./hello-1.out scheme=file netloc= path=./hello-1.out filename=hello-1.out>
+1686680414.617218 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.data_manager:46 replace_task_stage_out DEBUG: stage_out checking Staging provider NoOpFileStaging()
+1686680414.617277 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.data_provider.file_noop:17 can_stage_out DEBUG: NoOpFileStaging checking file <File at 0x2abbe176b1f0 url=./hello-1.out scheme=file netloc= path=./hello-1.out filename=hello-1.out>
+1686680414.617316 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1020 submit INFO: Task 2 submitted for App run_mpi_hello_world_ompi, waiting on task 0
+1686680414.617351 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1028 submit DEBUG: Task 2 set to pending state with AppFuture: <AppFuture at 0x2abbe176b700 state=pending>
+1686680414.617381 2023-06-13 18:20:14 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:608 launch_if_ready DEBUG: Task 2 has outstanding dependencies, so launch_if_ready skipping
+1686680415.603189 2023-06-13 18:20:15 MainProcess-8288 JobStatusPoller-Timer-Thread-46986420725648-46986427758336 parsl.dataflow.strategy:164 _general_strategy DEBUG: general strategy starting with strategy_type simple for 0 executors
+1686680415.603332 2023-06-13 18:20:15 MainProcess-8288 JobStatusPoller-Timer-Thread-46986420725648-46986427758336 parsl.process_loggers:28 wrapped DEBUG: Normal ending for _general_strategy on thread JobStatusPoller-Timer-Thread-46986420725648
+1686680415.624544 2023-06-13 18:20:15 MainProcess-8288 Thread-1-46986429859584 parsl.providers.slurm.slurm:156 _status DEBUG: Executing squeue --noheader --format='%i %t' --job '81'
+1686680415.637742 2023-06-13 18:20:15 MainProcess-8288 Thread-1-46986429859584 parsl.providers.slurm.slurm:158 _status DEBUG: squeue returned 81 R
+ 
+1686680415.637968 2023-06-13 18:20:15 MainProcess-8288 Thread-1-46986429859584 parsl.providers.slurm.slurm:174 _status DEBUG: Updating job 81 with slurm status R to parsl state JobState.RUNNING
+1686680418.270294 2023-06-13 18:20:18 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:545 _complete_task INFO: Task 0 completed (launched -> exec_done)
+1686680418.270530 2023-06-13 18:20:18 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.memoization:225 check_memo DEBUG: Task 1 will not be memoized
+1686680418.274071 2023-06-13 18:20:18 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:721 launch_task INFO: Parsl task 1 try 0 launched on executor myFluxExecSlurmProv
+1686680418.274269 2023-06-13 18:20:18 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:1380 _log_std_streams INFO: Standard output for task 1 available at run-0.out
+1686680418.274308 2023-06-13 18:20:18 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:1382 _log_std_streams INFO: Standard error for task 1 available at run-0.err
+1686680418.274369 2023-06-13 18:20:18 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.memoization:225 check_memo DEBUG: Task 2 will not be memoized
+1686680418.274776 2023-06-13 18:20:18 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:721 launch_task INFO: Parsl task 2 try 0 launched on executor myFluxExecSlurmProv
+1686680418.275088 2023-06-13 18:20:18 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:1380 _log_std_streams INFO: Standard output for task 2 available at run-1.out
+1686680418.275119 2023-06-13 18:20:18 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:1382 _log_std_streams INFO: Standard error for task 2 available at run-1.err
+1686680418.275151 2023-06-13 18:20:18 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:1380 _log_std_streams INFO: Standard output for task 0 available at compile.out
+1686680418.275172 2023-06-13 18:20:18 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:1382 _log_std_streams INFO: Standard error for task 0 available at compile.err
+1686680420.603289 2023-06-13 18:20:20 MainProcess-8288 JobStatusPoller-Timer-Thread-46986420725648-46986427758336 parsl.dataflow.strategy:164 _general_strategy DEBUG: general strategy starting with strategy_type simple for 0 executors
+1686680420.603435 2023-06-13 18:20:20 MainProcess-8288 JobStatusPoller-Timer-Thread-46986420725648-46986427758336 parsl.process_loggers:28 wrapped DEBUG: Normal ending for _general_strategy on thread JobStatusPoller-Timer-Thread-46986420725648
+1686680425.603381 2023-06-13 18:20:25 MainProcess-8288 JobStatusPoller-Timer-Thread-46986420725648-46986427758336 parsl.dataflow.strategy:164 _general_strategy DEBUG: general strategy starting with strategy_type simple for 0 executors
+1686680425.603509 2023-06-13 18:20:25 MainProcess-8288 JobStatusPoller-Timer-Thread-46986420725648-46986427758336 parsl.process_loggers:28 wrapped DEBUG: Normal ending for _general_strategy on thread JobStatusPoller-Timer-Thread-46986420725648
+1686680428.954325 2023-06-13 18:20:28 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.app.errors:119 reraise DEBUG: Reraising exception of type <class 'parsl.app.errors.BashExitFailure'>
+1686680428.954580 2023-06-13 18:20:28 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:303 handle_exec_update DEBUG: Task 2 try 0 failed
+1686680428.954664 2023-06-13 18:20:28 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:349 handle_exec_update ERROR: Task 2 failed after 0 retry attempts
+Traceback (most recent call last):
+  File "/home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/parsl/dataflow/dflow.py", line 300, in handle_exec_update
+    res = self._unwrap_remote_exception_wrapper(future)
+  File "/home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/parsl/dataflow/dflow.py", line 566, in _unwrap_remote_exception_wrapper
+    result.reraise()
+  File "/home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/parsl/app/errors.py", line 123, in reraise
+    reraise(t, v, v.__traceback__)
+  File "/home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/six.py", line 719, in reraise
+    raise value
+  File "/home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/parsl/app/errors.py", line 146, in wrapper
+    return func(*args, **kwargs)
+  File "/home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/parsl/app/bash.py", line 86, in remote_side_bash_executor
+    raise pe.BashExitFailure(func_name, proc.returncode)
+parsl.app.errors.BashExitFailure: bash_app run_mpi_hello_world_ompi failed with unix exit code 1
+1686680428.955251 2023-06-13 18:20:28 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:1380 _log_std_streams INFO: Standard output for task 2 available at run-1.out
+1686680428.955306 2023-06-13 18:20:28 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:1382 _log_std_streams INFO: Standard error for task 2 available at run-1.err
+1686680429.189410 2023-06-13 18:20:29 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.app.errors:119 reraise DEBUG: Reraising exception of type <class 'parsl.app.errors.BashExitFailure'>
+1686680429.189640 2023-06-13 18:20:29 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:303 handle_exec_update DEBUG: Task 1 try 0 failed
+1686680429.189699 2023-06-13 18:20:29 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:349 handle_exec_update ERROR: Task 1 failed after 0 retry attempts
+Traceback (most recent call last):
+  File "/home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/parsl/dataflow/dflow.py", line 300, in handle_exec_update
+    res = self._unwrap_remote_exception_wrapper(future)
+  File "/home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/parsl/dataflow/dflow.py", line 566, in _unwrap_remote_exception_wrapper
+    result.reraise()
+  File "/home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/parsl/app/errors.py", line 123, in reraise
+    reraise(t, v, v.__traceback__)
+  File "/home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/six.py", line 719, in reraise
+    raise value
+  File "/home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/parsl/app/errors.py", line 146, in wrapper
+    return func(*args, **kwargs)
+  File "/home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/miniconda3-4.10.3-26akfiu24ipsbi3prtfp2thhcctolefs/lib/python3.9/site-packages/parsl/app/bash.py", line 86, in remote_side_bash_executor
+    raise pe.BashExitFailure(func_name, proc.returncode)
+parsl.app.errors.BashExitFailure: bash_app run_mpi_hello_world_ompi failed with unix exit code 1
+1686680429.189948 2023-06-13 18:20:29 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:1380 _log_std_streams INFO: Standard output for task 1 available at run-0.out
+1686680429.189993 2023-06-13 18:20:29 MainProcess-8288 FluxExecutor-0-0-46986472437504 parsl.dataflow.dflow:1382 _log_std_streams INFO: Standard error for task 1 available at run-0.err
+1686680429.191514 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1128 atexit_cleanup INFO: DFK cleanup because python process is exiting
+1686680429.191611 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1162 cleanup INFO: DFK cleanup initiated
+1686680429.191647 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1066 log_task_states INFO: Summary of tasks in DFK:
+1686680429.191692 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1070 log_task_states INFO: Tasks in state States.unsched: 0
+1686680429.191718 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1070 log_task_states INFO: Tasks in state States.pending: 0
+1686680429.191741 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1070 log_task_states INFO: Tasks in state States.running: 0
+1686680429.191767 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1070 log_task_states INFO: Tasks in state States.exec_done: 1
+1686680429.191790 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1070 log_task_states INFO: Tasks in state States.failed: 2
+1686680429.191812 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1070 log_task_states INFO: Tasks in state States.dep_fail: 0
+1686680429.191834 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1070 log_task_states INFO: Tasks in state States.launched: 0
+1686680429.191858 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1070 log_task_states INFO: Tasks in state States.fail_retryable: 0
+1686680429.191880 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1070 log_task_states INFO: Tasks in state States.memo_done: 0
+1686680429.191901 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1070 log_task_states INFO: Tasks in state States.joining: 0
+1686680429.191925 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1070 log_task_states INFO: Tasks in state States.running_ended: 0
+1686680429.191944 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1072 log_task_states INFO: End of summary
+1686680429.192012 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1186 cleanup INFO: Closing job status poller
+1686680429.192105 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1188 cleanup INFO: Terminated job status poller
+1686680429.192135 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1190 cleanup INFO: Scaling in and shutting down executors
+1686680429.192185 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1205 cleanup INFO: Shutting down executor myFluxExecSlurmProv
+1686680429.335315 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1207 cleanup INFO: Shut down executor myFluxExecSlurmProv
+1686680429.335472 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1205 cleanup INFO: Shutting down executor _parsl_internal
+1686680429.335523 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.executors.threads:97 shutdown DEBUG: Shutting down executor, which involves waiting for running tasks to complete
+1686680429.335570 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.executors.threads:99 shutdown DEBUG: Done with executor shutdown
+1686680429.335604 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1207 cleanup INFO: Shut down executor _parsl_internal
+1686680429.335627 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1211 cleanup INFO: Terminated executors
+1686680429.335657 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.dataflow.dflow:1228 cleanup INFO: DFK cleanup complete
+1686680429.335683 2023-06-13 18:20:29 MainProcess-8288 MainThread-46986249361536 parsl.process_loggers:28 wrapped DEBUG: Normal ending for cleanup on thread MainThread

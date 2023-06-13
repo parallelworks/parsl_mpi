@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#SBATCH --job-name=parsl.slurm.1686679918.2832134
+#SBATCH --output=/home/sfgary/parsl_mpi/run_on_cluster/runinfo/000/submit_scripts/parsl.slurm.1686679918.2832134.submit.stdout
+#SBATCH --error=/home/sfgary/parsl_mpi/run_on_cluster/runinfo/000/submit_scripts/parsl.slurm.1686679918.2832134.submit.stderr
+#SBATCH --nodes=2
+#SBATCH --time=60
+#SBATCH --ntasks-per-node=1
+
+#SBATCH --partition=small
+
+
+
+
+
+export JOBNAME="parsl.slurm.1686679918.2832134"
+
+srun --tasks-per-node=1 -c1 /home/sfgary/local/bin/flux start /home/sfgary/pw/miniconda3/envs/parsl/bin/python /home/sfgary/pw/miniconda3/envs/parsl/lib/python3.11/site-packages/parsl/executors/flux/flux_instance_manager.py tcp mgmt-sfgary-cloud2-00042 46617

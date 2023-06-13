@@ -82,6 +82,7 @@ conda install -y -c conda-forge flux-sched
 # Pip packages last
 # I don't know how to enable the monitoring option with Conda.
 pip install parsl[monitoring]
+pip install pyyaml
 
 echo Finished $0
 

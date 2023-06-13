@@ -30,22 +30,25 @@ cd
 # no error ensues because zeromq-devel
 # is installed at it is at v4.1+
 git clone https://github.com/flux-framework/flux-core.git
-#cd flux-core/scripts/
-#sudo ./install-deps-rpm.sh
+cd flux-core/scripts/
+sudo ./install-deps-rpm.sh
 
 # Missing dependencies?
 # flux-core
-#sudo yum install -y ncurses-devel
-#sudo yum install -y libsodium-devel
+sudo yum install -y ncurses-devel
+sudo yum install -y libsodium-devel
 # flux-sched (after flux-core is compiled)
-#sudo yum install -y yaml-cpp
-#sudo yum install -y yaml-cpp-devel
-#sudo yum install -y libedit-devel
+sudo yum install -y yaml-cpp
+sudo yum install -y yaml-cpp-devel
+sudo yum install -y libedit-devel
+# Just plain missing until run time:
+# https://github.com/flux-framework/flux-core/issues/2140
+sudo yum install -y rsh
 
 # Optional dependencies that are used 
 # in make check or building docs?
-#sudo yum install -y libfaketime
-#sudo yum install -y python-sphinx
+sudo yum install -y libfaketime
+sudo yum install -y python-sphinx
 
 # Flux is installed to flux_prefix
 flux_prefix=$HOME/local
@@ -97,3 +100,4 @@ cd flux-sched
 make -j 8
 #make check 
 make install
+

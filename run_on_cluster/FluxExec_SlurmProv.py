@@ -8,6 +8,7 @@ from parsl.providers import SlurmProvider
 from parsl.executors import FluxExecutor
 from parsl.launchers import SimpleLauncher
 from parsl.launchers import SrunLauncher
+from parsl.channels import LocalChannel
 
 # Need os here to create config
 import os
@@ -90,9 +91,10 @@ config = Config(
             label = exec_label,
             flux_executor_kwargs = {},
             flux_path = None,
-            launch_cmd='srun --mpi=pmi2 --tasks-per-node=1 -c4 ' + FluxExecutor.DEFAULT_LAUNCH_CMD,
+            launch_cmd='srun --tasks-per-node=1 -c1 ' + FluxExecutor.DEFAULT_LAUNCH_CMD,
             #launch_cmd = "{flux} start -v {python} {manager} {protocol} {hostname} {port}",
             provider = SlurmProvider(
+                channel = LocalChannel(),
                 partition = partition,
                 nodes_per_block = nodes_per_block,
                 min_blocks = 0,
@@ -125,8 +127,13 @@ def compile_mpi_hello_world_ompi(ompi_dir: str, inputs: list = None,
     #export LD_LIBRARY_PATH=$OMPI_DIR/lib:$LD_LIBRARY_PATH
     #export MANPATH=$OMPI_DIR/share/man:$MANPATH
     # Parsl worker_init is ignored, so do it here
-    source /home/sfgary/parsl_flux/spack/share/spack/setup-env.sh
-    spack load openmpi
+    #==============When using Spack===================
+    #source /home/sfgary/parsl_flux/spack/share/spack/setup-env.sh
+    #spack load openmpi
+    #==============When using Conda==================
+    source /home/sfgary/pw/miniconda3/etc/profile.d/conda.sh
+    conda activate parsl-mpi
+    env
     mpicc -o mpitest {mpi_c}
     '''.format(
         ompi_dir = ompi_dir,
@@ -147,9 +154,15 @@ def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
     # Without the sleep command below this app runs very fast. Therefore, when launched multiple times
     # in parallel (nrepeats > 1) it ends up on the same group of nodes. Note that the goal of this 
     # experiment is to return the host names of the different nodes running the app. 
+    #==============When using Spack==================
     #source /home/sfgary/parsl_flux/spack/share/spack/setup-env.sh
     #spack load flux-sched
+    #==============When using Conda==================
+    source /home/sfgary/pw/miniconda3/etc/profile.d/conda.sh
+    conda activate parsl-mpi
     sleep 10
+    env
+    unset I_MPI_FABRICS
     #mpirun -np {np} mpitest > {output}
     ./mpitest
 '''.format(

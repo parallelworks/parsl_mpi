@@ -1,0 +1,165 @@
+PMI_SIZE=1
+XDG_SESSION_ID=216
+HOSTNAME=mgmt-sfgary-cloud2-00042
+SPACK_ROOT=/home/sfgary/parsl_flux/spack
+SELINUX_ROLE_REQUESTED=
+INTEL_LICENSE_FILE=27009@noaa-license.parallel.works
+SHELL=/bin/bash
+TERM=xterm-color
+HISTSIZE=1000
+I_MPI_FABRICS=shm:tcp
+FLUX_TASK_RANK=0
+SSH_CLIENT=104.197.94.60 48894 22
+TMPDIR=/tmp
+CONDA_SHLVL=1
+SELINUX_USE_CURRENT_RANGE=
+CONDA_PROMPT_MODIFIER=(parsl) 
+FLUX_JOB_TMPDIR=/tmp/flux-HWusFi/jobtmp-0-ƒ2CewFvf
+SSH_TTY=/dev/pts/0
+PW_PLATFORM_HOST=cloud.parallel.works
+USER=sfgary
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:
+BOTO_CONFIG=/tmp/project-boto
+CONDA_EXE=/home/sfgary/pw/miniconda3/bin/conda
+INTEL_HPC_PLATFORM_VERSION=core-2018.0:core-intel-runtime-2018.0:hpc-cluster-2018.0:compat-hpc-2018.0
+_CE_CONDA=
+PW_POOL_ID=6449023eac4ad8b965bda8ed
+PATH=/home/sfgary/pw/miniconda3/envs/parsl/bin:/home/sfgary/pw/miniconda3/condabin:/home/sfgary/parsl_flux/spack/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/sfgary/.local/bin:/home/sfgary/bin:/home/sfgary/local/bin
+MAIL=/var/spool/mail/sfgary
+FLUX_KVS_NAMESPACE=job-45717913600
+PW_POOL_NAME=cloud2
+CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=/tmp/project-key.json
+PMI_RANK=0
+CLOUDSDK_CORE_PROJECT=noaa-users
+CONDA_PREFIX=/home/sfgary/pw/miniconda3/envs/parsl
+FLUX_TASK_LOCAL_ID=0
+OMPI_MCA_btl_vader_backing_directory=/tmp/flux-HWusFi/jobtmp-0-ƒ2CewFvf
+PWD=/home/sfgary/parsl_mpi/run_on_cluster
+CUDA_VISIBLE_DEVICES=-1
+LANG=en_US.UTF-8
+MODULEPATH=/home/sfgary/parsl_flux/spack/share/spack/modules/linux-centos7-haswell:/home/sfgary/parsl_flux/spack/share/spack/modules/linux-centos7-cascadelake:/etc/modulefiles:/usr/share/modulefiles
+SELINUX_LEVEL_REQUESTED=
+HISTCONTROL=ignoredups
+_CE_M=
+HOME=/home/sfgary
+SHLVL=2
+FLUX_URI=local:///tmp/flux-HWusFi/local-0
+PW_SESSION_ID=d78763bc-a7ac-4cca-a6d4-59582a751757
+PMI_FD=19
+FLUX_JOB_SIZE=1
+FLUX_JOB_ID=ƒ2CewFvf
+LOGNAME=sfgary
+CLUSTERNAME=cloud2
+CONDA_PYTHON_EXE=/home/sfgary/pw/miniconda3/bin/python
+SSH_CONNECTION=104.197.94.60 48894 10.128.0.148 22
+XDG_DATA_DIRS=/home/sfgary/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
+PW_SESSION=42
+LESSOPEN=||/usr/bin/lesspipe.sh %s
+CONDA_DEFAULT_ENV=parsl
+FLUX_JOB_NNODES=1
+SPACK_PYTHON=/usr/bin/python3
+FLUX_TERMINUS_SESSION=0
+XDG_RUNTIME_DIR=/run/user/40663
+PW_SESSION_LONG=00042
+PW_GROUP=pw-google-contrib
+PW_USER=sfgary
+PW_CSP=google
+BASH_FUNC__spack_shell_wrapper()=() {  for var in LD_LIBRARY_PATH DYLD_LIBRARY_PATH DYLD_FALLBACK_LIBRARY_PATH;
+ do
+ eval "if [ -n \"\${${var}-}\" ]; then export SPACK_$var=\${${var}}; fi";
+ done;
+ if [ -n "${ZSH_VERSION:-}" ]; then
+ emulate -L sh;
+ fi;
+ _sp_flags="";
+ while [ ! -z ${1+x} ] && [ "${1#-}" != "${1}" ]; do
+ _sp_flags="$_sp_flags $1";
+ shift;
+ done;
+ if [ -n "$_sp_flags" ] && [ "${_sp_flags#*h}" != "${_sp_flags}" ] || [ "${_sp_flags#*V}" != "${_sp_flags}" ]; then
+ command spack $_sp_flags "$@";
+ return;
+ fi;
+ _sp_subcommand="";
+ if [ ! -z ${1+x} ]; then
+ _sp_subcommand="$1";
+ shift;
+ fi;
+ case $_sp_subcommand in 
+ "cd")
+ _sp_arg="";
+ if [ -n "$1" ]; then
+ _sp_arg="$1";
+ shift;
+ fi;
+ if [ "$_sp_arg" = "-h" ] || [ "$_sp_arg" = "--help" ]; then
+ command spack cd -h;
+ else
+ LOC="$(spack location $_sp_arg "$@")";
+ if [ -d "$LOC" ]; then
+ cd "$LOC";
+ else
+ return 1;
+ fi;
+ fi;
+ return
+ ;;
+ "env")
+ _sp_arg="";
+ if [ -n "$1" ]; then
+ _sp_arg="$1";
+ shift;
+ fi;
+ if [ "$_sp_arg" = "-h" ] || [ "$_sp_arg" = "--help" ]; then
+ command spack env -h;
+ else
+ case $_sp_arg in 
+ activate)
+ _a=" $@";
+ if [ -z ${1+x} ] || [ "${_a#* --sh}" != "$_a" ] || [ "${_a#* --csh}" != "$_a" ] || [ "${_a#* -h}" != "$_a" ] || [ "${_a#* --help}" != "$_a" ]; then
+ command spack env activate "$@";
+ else
+ stdout="$(command spack $_sp_flags env activate --sh "$@")" || return;
+ eval "$stdout";
+ fi
+ ;;
+ deactivate)
+ _a=" $@";
+ if [ "${_a#* --sh}" != "$_a" ] || [ "${_a#* --csh}" != "$_a" ]; then
+ command spack env deactivate "$@";
+ else
+ if [ -n "$*" ]; then
+ command spack env deactivate -h;
+ else
+ stdout="$(command spack $_sp_flags env deactivate --sh)" || return;
+ eval "$stdout";
+ fi;
+ fi
+ ;;
+ *)
+ command spack env $_sp_arg "$@"
+ ;;
+ esac;
+ fi;
+ return
+ ;;
+ "load" | "unload")
+ _a=" $@";
+ if [ "${_a#* --sh}" != "$_a" ] || [ "${_a#* --csh}" != "$_a" ] || [ "${_a#* -h}" != "$_a" ] || [ "${_a#* --list}" != "$_a" ] || [ "${_a#* --help}" != "$_a" ]; then
+ command spack $_sp_flags $_sp_subcommand "$@";
+ else
+ stdout="$(command spack $_sp_flags $_sp_subcommand --sh "$@")" || return;
+ eval "$stdout";
+ fi
+ ;;
+ *)
+ command spack $_sp_flags $_sp_subcommand "$@"
+ ;;
+ esac
+}
+BASH_FUNC_spack()=() {  : this is a shell function from: /home/sfgary/parsl_flux/spack/share/spack/setup-env.sh;
+ : the real spack script is here: /home/sfgary/parsl_flux/spack/bin/spack;
+ _spack_shell_wrapper "$@";
+ return $?
+}
+_=/usr/bin/env

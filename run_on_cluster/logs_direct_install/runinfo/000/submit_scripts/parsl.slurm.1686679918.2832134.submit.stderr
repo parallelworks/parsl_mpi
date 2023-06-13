@@ -1,0 +1,6 @@
+2023-06-13 18:11:59,449 [DEBUG] Flux package path sent.
+2023-06-13 18:11:59,450 [DEBUG] Flux URI is ssh://sfgary-cloud2-00042-2-0001/tmp/flux-HWusFi/local-0
+2023-06-13 18:11:59,482 [DEBUG] Received acknowledgment b'ack'
+2023-06-13 18:11:59,482 [DEBUG] URI sent. Blocking for response...
+2023-06-13 18:12:12,631 [DEBUG] Response b'shutdown' received, draining flux jobs...
+2023-06-13 18:12:12,643 [DEBUG] Flux jobs drained, exiting.
