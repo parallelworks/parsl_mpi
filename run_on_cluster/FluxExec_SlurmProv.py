@@ -93,7 +93,7 @@ config = Config(
             flux_executor_kwargs = {},
             flux_path = None,
             #launch_cmd='srun --tasks-per-node=1 -c1 ' + FluxExecutor.DEFAULT_LAUNCH_CMD,
-            launch_cmd = 'srun -N2 --tasks-per-node=2 ' + '{flux} start --verbose=3 {python} {manager} {protocol} {hostname} {port}',
+            launch_cmd = 'srun -N2 --ntasks-per-node=2 ' + '{flux} start --verbose=3 -o,-v {python} {manager} {protocol} {hostname} {port}',
             #launch_cmd = "{flux} start -v {python} {manager} {protocol} {hostname} {port}",
             provider = SlurmProvider(
                 channel = LocalChannel(),
