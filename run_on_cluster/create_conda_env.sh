@@ -76,13 +76,13 @@ conda activate $my_env
 conda install -y -c conda-forge parsl
 conda install -y sqlalchemy
 conda install -y sqlalchemy-utils
-conda install -y -c conda-forge flux-core
-conda install -y -c conda-forge flux-sched
+#conda install -y -c conda-forge flux-core
+#conda install -y -c conda-forge flux-sched
 
 # Pip packages last
 # I don't know how to enable the monitoring option with Conda.
 pip install parsl[monitoring]
-pip install pyyaml
+#pip install pyyaml
 
 echo Finished $0
 

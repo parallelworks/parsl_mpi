@@ -18,37 +18,8 @@
 # easier.
 #==========================
 
-# Change to $HOME
+# Change to home
 cd
-
-# Download current version of
-# recommended dependency installer
-# and run it.
-#
-# This script calls for zermq4-devel,
-# which does not appear to exist, but
-# no error ensues because zeromq-devel
-# is installed at it is at v4.1+
-git clone https://github.com/flux-framework/flux-core.git
-cd flux-core/scripts/
-sudo ./install-deps-rpm.sh
-
-# Missing dependencies?
-# flux-core
-sudo yum install -y ncurses-devel
-sudo yum install -y libsodium-devel
-# flux-sched (after flux-core is compiled)
-sudo yum install -y yaml-cpp
-sudo yum install -y yaml-cpp-devel
-sudo yum install -y libedit-devel
-# Just plain missing until run time:
-# https://github.com/flux-framework/flux-core/issues/2140
-sudo yum install -y rsh
-
-# Optional dependencies that are used 
-# in make check or building docs?
-sudo yum install -y libfaketime
-sudo yum install -y python-sphinx
 
 # Flux is installed to flux_prefix
 flux_prefix=$HOME/local
@@ -84,6 +55,7 @@ echo Build flux-core
 echo "======================================"
 # NOTE: make check step can take a while (30 mins), 
 # commented out for regular node deployment
+git clone https://github.com/flux-framework/flux-core.git
 cd ~/flux-core
 ./autogen.sh && ./configure --prefix=$flux_prefix
 make -j 8
@@ -100,4 +72,3 @@ cd flux-sched
 make -j 8
 #make check 
 make install
-
