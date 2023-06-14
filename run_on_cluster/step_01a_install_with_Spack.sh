@@ -7,7 +7,8 @@
 # to use install_dir, below.
 #==============================
 
-install_dir=${HOME}/parsl_flux
+install_dir=/scratch/sfg3866/flux
+#install_dir=${HOME}/parsl_flux
 #install_dir=/var/lib/pworks
 
 #==============================
@@ -15,8 +16,8 @@ echo Setting up SPACK_ROOT...
 #==============================
 
 export SPACK_ROOT=${install_dir}/spack
-sudo mkdir -p $SPACK_ROOT
-sudo chmod --recursive a+rwx ${install_dir}
+mkdir -p $SPACK_ROOT
+chmod --recursive a+rwx ${install_dir}
 cd $SPACK_ROOT
 
 #==============================
@@ -34,8 +35,8 @@ echo Set up Spack environment...
 # An alternative for local testing is $HOME/.bashrc
 # Here, this is added to /etc/bashrc so it is persistent
 # in the image and $HOME/.bashrc sources /etc/bashrc.
-sudo -s eval echo export SPACK_ROOT=${SPACK_ROOT}" >> "/etc/bashrc
-sudo -s eval echo source ${SPACK_ROOT}/share/spack/setup-env.sh" >> "/etc/bashrc
+echo export SPACK_ROOT=${SPACK_ROOT} >> $HOME/.bashrc
+echo echo source ${SPACK_ROOT}/share/spack/setup-env.sh >> $HOME/.bashrc
 source $HOME/.bashrc
 
 #==============================
@@ -43,8 +44,8 @@ echo Install some dependencies to check download certificates...
 #==============================
 
 #pip3 install botocore==1.23.46 boto3==1.20.46
-pip3 install botocore
-pip3 install boto3
+#pip3 install botocore
+#pip3 install boto3
 
 #==============================
 echo Configuring external packages for Spack...
@@ -210,7 +211,7 @@ pip install "parsl[monitoring]"
 #==============================
 echo Set permissions...
 #==============================
-sudo chmod --recursive a+rwx $install_dir
+#sudo chmod --recursive a+rwx $install_dir
 
 echo Completed building image
 # It is essential to have a newline at the end of this file!

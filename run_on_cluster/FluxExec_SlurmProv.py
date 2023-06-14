@@ -76,7 +76,8 @@ repeats = 2
 cores_per_node = 2
 nodes_per_block = 2
 np = cores_per_node * nodes_per_block
-partition = "small"
+#partition = "small"
+partition = "cs"
 
 ##########
 # CONFIG #
@@ -91,7 +92,8 @@ config = Config(
             label = exec_label,
             flux_executor_kwargs = {},
             flux_path = None,
-            launch_cmd='srun --tasks-per-node=1 -c1 ' + FluxExecutor.DEFAULT_LAUNCH_CMD,
+            #launch_cmd='srun --tasks-per-node=1 -c1 ' + FluxExecutor.DEFAULT_LAUNCH_CMD,
+            launch_cmd = 'srun -N2 --tasks-per-node=2 ' + '{flux} start --verbose=3 {python} {manager} {protocol} {hostname} {port}',
             #launch_cmd = "{flux} start -v {python} {manager} {protocol} {hostname} {port}",
             provider = SlurmProvider(
                 channel = LocalChannel(),
@@ -103,7 +105,7 @@ config = Config(
                 #launcher = SrunLauncher(),
                 launcher = SimpleLauncher(),
                 parallelism = float(nodes_per_block),
-                exclusive= False
+                exclusive = False
                 #worker_init = 'source ~/pw/miniconda3/etc/profile.d/conda.sh; conda activate parsl-mpi'
                 #worker_init = 'spack load flux-sched; spack load miniconda3'
             )
@@ -129,10 +131,13 @@ def compile_mpi_hello_world_ompi(ompi_dir: str, inputs: list = None,
     # Parsl worker_init is ignored, so do it here
     #==============When using Spack===================
     #source /home/sfgary/parsl_flux/spack/share/spack/setup-env.sh
-    #spack load openmpi
+    source /scratch/sfg3866/flux/spack/share/spack/setup-env.sh
+    spack load openmpi
+    spack load flux-sched
+    spack load miniconda3
     #==============When using Conda==================
-    source /home/sfgary/pw/miniconda3/etc/profile.d/conda.sh
-    conda activate parsl-mpi
+    #source /home/sfgary/pw/miniconda3/etc/profile.d/conda.sh
+    #conda activate parsl-mpi
     env
     mpicc -o mpitest {mpi_c}
     '''.format(
@@ -156,10 +161,12 @@ def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
     # experiment is to return the host names of the different nodes running the app. 
     #==============When using Spack==================
     #source /home/sfgary/parsl_flux/spack/share/spack/setup-env.sh
-    #spack load flux-sched
+    source /scratch/sfg3866/flux/spack/share/spack/setup-env.sh
+    spack load flux-sched
+    spack load miniconda3
     #==============When using Conda==================
-    source /home/sfgary/pw/miniconda3/etc/profile.d/conda.sh
-    conda activate parsl-mpi
+    #source /home/sfgary/pw/miniconda3/etc/profile.d/conda.sh
+    #conda activate parsl-mpi
     sleep 10
     env
     unset I_MPI_FABRICS

@@ -1,0 +1,14 @@
+packages:
+  slurm:
+    externals:
+    - spec: slurm@22.05.8 +pmix sysconfdir=/opt/slurm
+      prefix: /usr
+    buildable: False
+  openmpi:
+    require: +pmi
+    externals:
+    - spec: openmpi@4.0.5
+      modules:
+      - openmpi/gcc/4.0.5
+    buildable: false
+
