@@ -76,8 +76,8 @@ repeats = 2
 cores_per_node = 2
 nodes_per_block = 2
 np = cores_per_node * nodes_per_block
-#partition = "small"
-partition = "cs"
+partition = "small"
+#partition = "cs"
 
 ##########
 # CONFIG #

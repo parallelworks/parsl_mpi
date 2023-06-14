@@ -1,0 +1,13 @@
+packages:
+  slurm:
+    externals:
+    - spec: slurm@20.02.7 +pmix sysconfdir=/mnt/shared/etc/slurm
+      prefix: /usr
+    buildable: False
+  openmpi:
+    require: +pmi
+    externals:
+    - spec: openmpi@4.1.5%gcc@4.8.5 +pmi
+      prefix: /home/sfgary/ompi
+    buildable: false
+
