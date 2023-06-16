@@ -70,13 +70,13 @@ echo Configuring external packages for Spack...
 
 echo For now, skipping any Spack external package config!
 # I get the same errors whether or not I include OpenMPI.
-#spack_packages=${SPACK_ROOT}/etc/spack/packages.yaml
-#echo "packages:" > $spack_packages
-#echo "  slurm:" >> $spack_packages
-#echo "    externals:" >> $spack_packages
-#echo "    - spec: slurm@20.02.7 +pmix sysconfdir=/mnt/shared/etc/slurm" >> $spack_packages
-#echo "      prefix: /usr" >> $spack_packages
-#echo "    buildable: False" >> $spack_packages
+spack_packages=${SPACK_ROOT}/etc/spack/packages.yaml
+echo "packages:" > $spack_packages
+echo "  slurm:" >> $spack_packages
+echo "    externals:" >> $spack_packages
+echo "    - spec: slurm@20.02.7 +pmix sysconfdir=/mnt/shared/etc/slurm" >> $spack_packages
+echo "      prefix: /usr" >> $spack_packages
+echo "    buildable: False" >> $spack_packages
 #echo "  openmpi:" >> $spack_packages
 #echo "    require: +pmi" >> $spack_packages
 
@@ -125,7 +125,10 @@ spack install -j 30 gcc@12.2.0; \
 spack load gcc@12.2.0; \
 spack compiler find; \
 spack unload; \
-spack install -j 30 flux-sched%gcc@12.2.0' | /bin/bash
+spack install -j 30 flux-core@0.51.0%gcc@12.2.0; \
+spack install -j 30 flux-sched%gcc@12.2.0; \
+spack install -j 30 openmpi@4.1.4%gcc@12.2.0 +pmi; \
+spack install -j 30 openmpi@4.1.4%gcc@12.2.0 -pmi;' | /bin/bash
 
 # Alternatives - removed while I check whether forcing
 # pmi on openmpi is a good idea. I get the same PMIX/orte/MPI
