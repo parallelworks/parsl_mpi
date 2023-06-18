@@ -30,9 +30,10 @@ export SPACK_ROOT=${install_dir}/spack
 echo Copying and decompressing Spack archive...
 #==============================
 
-cp /contrib/sfgary/parsl_flux.tar.gz /home/sfgary/
+spack_archive=/contrib/sfgary/parsl_flux_2.tar.gz
+cp $spack_archive /home/sfgary/
 cd /home/sfgary
-tar -xzf parsl_flux.tar.gz
+tar -xzf $(basename $spack_archive)
 
 #==============================
 echo Set up Spack environment...
