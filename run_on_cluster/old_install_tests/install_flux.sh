@@ -5,7 +5,7 @@ DEFAULT_GCC_VERSION=$(/usr/bin/gcc --version | head -1 | sed -e 's/([^()]*)//g' 
 DEFAULT_COMPILER="gcc@${DEFAULT_GCC_VERSION}"  # Default system compiler used to build newer gcc
 
 SPACK_ENV_NAME="flux"            # Name of spack environment to create
-SPACK_ENV_COMPILER="gcc@11.2.0"  # Compiler to use to build the spack environment
+SPACK_ENV_COMPILER="gcc@12.2.0"  # Compiler to use to build the spack environment
 TARGET_ARCH_OPT="target=x86_64"  # Compiler architecture build target
 
 ################################################################################
@@ -62,14 +62,8 @@ spack add miniconda3%${SPACK_ENV_COMPILER} ${TARGET_ARCH_OPT}
 spack install
 
 # Install flux components
-spack add flux-core@0.49.0%${SPACK_ENV_COMPILER} ^python@3.9 ${TARGET_ARCH_OPT}
+spack add flux-core@0.51.0%${SPACK_ENV_COMPILER} ^python@3.9 ${TARGET_ARCH_OPT}
 spack add flux-sched@0.27.0%${SPACK_ENV_COMPILER} ^python@3.9 ${TARGET_ARCH_OPT}
 spack install --no-checksum
-
-# Install parsl components
-#conda install -y -c conda-forge parsl
-
-# Patch Dill Python package
-#pip install 'dill @ git+https://github.com/uqfoundation/dill'
 
 exit 0

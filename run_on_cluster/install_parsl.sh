@@ -1,10 +1,10 @@
 #!/bin/env bash
 
 # These can be customized to suit individual needs
-DEFAULT_GCC_VERSION=$(/usr/bin/gcc --version | head -1 | sed -e 's/([^()]*)//g' | awk '{print $2}')  # Version of system default gcc
+DEFAULT_GCC_VERSION=$(gcc --version | head -1 | sed -e 's/([^()]*)//g' | awk '{print $2}')  # Version of system default gcc
 DEFAULT_COMPILER="gcc@${DEFAULT_GCC_VERSION}"  # Default system compiler used to build newer gcc
 
-SPACK_ENV_NAME="flux"            # Name of spack environment to create
+SPACK_ENV_NAME="parsl"           # Name of spack environment to create
 SPACK_ENV_COMPILER="gcc@11.2.0"  # Compiler to use to build the spack environment
 TARGET_ARCH_OPT="target=x86_64"  # Compiler architecture build target
 
@@ -14,9 +14,9 @@ TARGET_ARCH_OPT="target=x86_64"  # Compiler architecture build target
 help()
 {
    # Display help
-   echo "Installs flux into flux Spack environment"
+   echo "Installs parsl into parsl Spack environment"
    echo
-   echo "Usage: install_flux.sh"
+   echo "Usage: install_parsl.sh"
    echo
 }
 
@@ -61,15 +61,10 @@ spack add py-ply%${SPACK_ENV_COMPILER} ${TARGET_ARCH_OPT}
 spack add miniconda3%${SPACK_ENV_COMPILER} ${TARGET_ARCH_OPT}
 spack install
 
-# Install flux components
-spack add flux-core@0.49.0%${SPACK_ENV_COMPILER} ^python@3.9 ${TARGET_ARCH_OPT}
-spack add flux-sched@0.27.0%${SPACK_ENV_COMPILER} ^python@3.9 ${TARGET_ARCH_OPT}
-spack install --no-checksum
-
 # Install parsl components
-#conda install -y -c conda-forge parsl
+pip install parsl
 
-# Patch Dill Python package
-#pip install 'dill @ git+https://github.com/uqfoundation/dill'
+# Patch the Dill Python package to work around a bug
+pip install 'dill @ git+https://github.com/uqfoundation/dill'
 
 exit 0
