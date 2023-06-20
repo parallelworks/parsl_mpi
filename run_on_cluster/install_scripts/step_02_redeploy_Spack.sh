@@ -67,12 +67,12 @@ echo Install SLURM-devel 1 min...
 #==============================
 # Temporary fix for current Latest version
 # of PW cloud cluster images
-./step_00a__install_slurm-devel.sh
+./step_00a_install_slurm-devel.sh
 
 #==============================
 echo Install OpenMPI outside Spack 10 mins...
 #==============================
-./step_00b__install_openmpi_no_Spack.sh
+./step_00b_install_openmpi_no_Spack.sh
 
 echo Completed redeploying Spack
 

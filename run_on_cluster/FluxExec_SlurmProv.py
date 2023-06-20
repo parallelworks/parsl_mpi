@@ -1,3 +1,8 @@
+# Before running this script,
+# spack load intel-oneapi-mpi
+# spack load flux-sched
+# export I_MPI_FABRICS=shm:ofi
+
 import parsl
 from parsl.app.app import bash_app
 print(parsl.__version__, flush = True)
@@ -72,9 +77,9 @@ hang in "pending" state (0 connected workers) and never reach the "running" stat
 # INPUTS #
 ##########
 mpi_dir = '/contrib/alvaro/ompi/'
-repeats = 2
+repeats = 3
 cores_per_node = 2
-nodes_per_block = 2
+nodes_per_block = 3
 np = cores_per_node * nodes_per_block
 partition = "compute"
 #partition = "cs"
@@ -93,7 +98,7 @@ config = Config(
             flux_executor_kwargs = {},
             flux_path = None,
             #launch_cmd='srun --tasks-per-node=1 -c1 ' + FluxExecutor.DEFAULT_LAUNCH_CMD,
-            launch_cmd = 'srun -N2 --ntasks-per-node=2 ' + '{flux} start --verbose=3 -o,-v {python} {manager} {protocol} {hostname} {port}',
+            launch_cmd = 'srun -N 3 --ntasks-per-node=1 --cpus-per-task=1 ' + '{flux} start --verbose=3 -o,-v {python} {manager} {protocol} {hostname} {port}',
             #launch_cmd = "{flux} start -v {python} {manager} {protocol} {hostname} {port}",
             provider = SlurmProvider(
                 channel = LocalChannel(),
@@ -104,7 +109,7 @@ config = Config(
                 walltime ="01:00:00",
                 #launcher = SrunLauncher(),
                 launcher = SimpleLauncher(),
-                parallelism = float(nodes_per_block),
+                parallelism = 1, #float(nodes_per_block)
                 exclusive = False
                 #worker_init = 'source ~/pw/miniconda3/etc/profile.d/conda.sh; conda activate parsl-mpi'
                 #worker_init = 'spack load flux-sched; spack load miniconda3'
@@ -138,8 +143,8 @@ def compile_mpi_hello_world_ompi(ompi_dir: str, inputs: list = None,
     #==============When using Conda==================
     #source /home/sfgary/pw/miniconda3/etc/profile.d/conda.sh
     #conda activate parsl-mpi
-    env
-    ~/ompi/bin/mpicc -o mpitest {mpi_c}
+    mpicc -o mpitest {mpi_c}
+    flux resource list
     '''.format(
         ompi_dir = ompi_dir,
         mpi_c = inputs[0].path
@@ -168,10 +173,9 @@ def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
     #source /home/sfgary/pw/miniconda3/etc/profile.d/conda.sh
     #conda activate parsl-mpi
     #sleep 10
-    env
     #unset I_MPI_FABRICS
     #mpirun -np {np} mpitest > {output}
-    ./mpitest
+    ./mpitest > {output}
 '''.format(
         np = np,
         ompi_dir = ompi_dir,
