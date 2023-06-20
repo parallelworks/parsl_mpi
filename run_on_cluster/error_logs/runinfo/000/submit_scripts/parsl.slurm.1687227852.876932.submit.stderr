@@ -1,0 +1,15 @@
+flux-start: /home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/flux-core-0.49.0-fua4fzgwlifddub46tsg3yajya5khdim/libexec/flux/cmd/flux-broker -v /home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/python-3.10.10-6ewujst6j77q3nwz3nv277gha5fe6rdn/bin/python /home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/python-3.10.10-6ewujst6j77q3nwz3nv277gha5fe6rdn/lib/python3.10/site-packages/parsl/executors/flux/flux_instance_manager.py tcp mgmt-sfgary-cloud-00165 46206
+flux-start: /home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/flux-core-0.49.0-fua4fzgwlifddub46tsg3yajya5khdim/libexec/flux/cmd/flux-broker -v /home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/python-3.10.10-6ewujst6j77q3nwz3nv277gha5fe6rdn/bin/python /home/sfgary/parsl_flux/spack/opt/spack/linux-centos7-cascadelake/gcc-12.2.0/python-3.10.10-6ewujst6j77q3nwz3nv277gha5fe6rdn/lib/python3.10/site-packages/parsl/executors/flux/flux_instance_manager.py tcp mgmt-sfgary-cloud-00165 46206
+flux-broker: boot: rank=0 size=2 time 0.023s
+flux-broker: boot: rank=1 size=2 time 0.026s
+flux-broker: parent: tcp://[::ffff:10.128.0.143]:49152
+flux-broker: child: none
+flux-broker: initializing overlay connect
+flux-broker: parent: none
+flux-broker: child: tcp://[::ffff:10.128.0.143]:49152
+2023-06-20 02:24:14,967 [DEBUG] Flux package path sent.
+2023-06-20 02:24:14,968 [DEBUG] Flux URI is ssh://sfgary-cloud-00165-1-0001/tmp/flux-hRVsic/local-0
+2023-06-20 02:24:15,008 [DEBUG] Received acknowledgment b'ack'
+2023-06-20 02:24:15,008 [DEBUG] URI sent. Blocking for response...
+2023-06-20 02:24:19,910 [DEBUG] Response b'shutdown' received, draining flux jobs...
+2023-06-20 02:24:19,921 [DEBUG] Flux jobs drained, exiting.

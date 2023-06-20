@@ -1,4 +1,0 @@
-2023-06-13 18:31:06,391 [DEBUG] Flux package path sent.
-2023-06-13 18:31:06,393 [DEBUG] Flux URI is ssh://sfgary-cloud2-00042-2-0001/tmp/flux-S87gUR/local-0
-2023-06-13 18:31:06,426 [DEBUG] Received acknowledgment b'ack'
-2023-06-13 18:31:06,426 [DEBUG] URI sent. Blocking for response...

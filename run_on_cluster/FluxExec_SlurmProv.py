@@ -76,7 +76,7 @@ repeats = 2
 cores_per_node = 2
 nodes_per_block = 2
 np = cores_per_node * nodes_per_block
-partition = "small"
+partition = "compute"
 #partition = "cs"
 
 ##########
@@ -131,15 +131,15 @@ def compile_mpi_hello_world_ompi(ompi_dir: str, inputs: list = None,
     # Parsl worker_init is ignored, so do it here
     #==============When using Spack===================
     #source /home/sfgary/parsl_flux/spack/share/spack/setup-env.sh
-    source /scratch/sfg3866/flux/spack/share/spack/setup-env.sh
-    spack load openmpi
-    spack load flux-sched
-    spack load miniconda3
+    #source /scratch/sfg3866/flux/spack/share/spack/setup-env.sh
+    #spack load openmpi
+    #spack load flux-sched
+    #spack load miniconda3
     #==============When using Conda==================
     #source /home/sfgary/pw/miniconda3/etc/profile.d/conda.sh
     #conda activate parsl-mpi
     env
-    mpicc -o mpitest {mpi_c}
+    ~/ompi/bin/mpicc -o mpitest {mpi_c}
     '''.format(
         ompi_dir = ompi_dir,
         mpi_c = inputs[0].path
@@ -161,15 +161,15 @@ def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
     # experiment is to return the host names of the different nodes running the app. 
     #==============When using Spack==================
     #source /home/sfgary/parsl_flux/spack/share/spack/setup-env.sh
-    source /scratch/sfg3866/flux/spack/share/spack/setup-env.sh
-    spack load flux-sched
-    spack load miniconda3
+    #source /scratch/sfg3866/flux/spack/share/spack/setup-env.sh
+    #spack load flux-sched
+    #spack load miniconda3
     #==============When using Conda==================
     #source /home/sfgary/pw/miniconda3/etc/profile.d/conda.sh
     #conda activate parsl-mpi
-    sleep 10
+    #sleep 10
     env
-    unset I_MPI_FABRICS
+    #unset I_MPI_FABRICS
     #mpirun -np {np} mpitest > {output}
     ./mpitest
 '''.format(

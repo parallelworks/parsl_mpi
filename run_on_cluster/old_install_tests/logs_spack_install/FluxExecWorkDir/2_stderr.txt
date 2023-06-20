@@ -1,4 +1,0 @@
-2023-06-13 18:20:18,839 [INFO] Input : /home/sfgary/parsl_mpi/run_on_cluster/FluxExecWorkDir/2_in.pkl
-2023-06-13 18:20:18,839 [INFO] Output : /home/sfgary/parsl_mpi/run_on_cluster/FluxExecWorkDir/2_out.pkl
-2023-06-13 18:20:18,840 [INFO] Read input pickle file
-2023-06-13 18:20:28,863 [INFO] Finished execution

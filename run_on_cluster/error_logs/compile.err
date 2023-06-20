@@ -1,0 +1,20 @@
+--> executable follows <--
+
+    #export OMPI_DIR=/contrib/alvaro/ompi/
+    #export PATH=$OMPI_DIR/bin:$PATH
+    #export LD_LIBRARY_PATH=$OMPI_DIR/lib:$LD_LIBRARY_PATH
+    #export MANPATH=$OMPI_DIR/share/man:$MANPATH
+    # Parsl worker_init is ignored, so do it here
+    #==============When using Spack===================
+    #source /home/sfgary/parsl_flux/spack/share/spack/setup-env.sh
+    #source /scratch/sfg3866/flux/spack/share/spack/setup-env.sh
+    #spack load openmpi
+    #spack load flux-sched
+    #spack load miniconda3
+    #==============When using Conda==================
+    #source /home/sfgary/pw/miniconda3/etc/profile.d/conda.sh
+    #conda activate parsl-mpi
+    env
+    ~/ompi/bin/mpicc -o mpitest ./mpitest.c
+    
+--> end executable <--
