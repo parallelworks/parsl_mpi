@@ -1,5 +1,8 @@
-This directory contains scripts that can run directly on a cluster. The goal
-is to isolate the MPI part from the other features that are handled by 
+The scripts here are for running a simple Parsl workflow that uses Flux
+to launch an MPI hello world.  In particular, the scripts here can run 
+directly on a cluster instead of being orchestrated by a workflow launched
+from the Parallel Works platform. The goal is to isolate the MPI part from 
+the other features that are handled by 
 [parsl_utils](https://github.com/parallelworks/parsl_utils). In particular,
 `parsl_utils` provides support for:
 1. Data transfer to remote resources
@@ -9,10 +12,16 @@ is to isolate the MPI part from the other features that are handled by
 5. SSH tunnels
 
 Here, we bypass the `parsl_utils` infrastructure to simply run Parsl on 
-a cluster to test Parsl configurations and examine Parsl's management capabilities.
+a cluster to test Parsl configurations and examine Parsl's MPI management capabilities.
+
+## Running with only Parsl (and without Flux)
+
+Flux adds a lot of support for MPI jobs.  To view a Parsl-launching-MPI workflow
+as a baseline for comparison with Parsl+Flux, run the scripts without Flux.
+
 To run this test, there is a setup step that is run once followed by the
 test itself that can be rerun many times.
-1. Run `create_conda_env.sh` to create a Conda environment if you don't already have one with Parsl. The location of this Conda env is preset to `$HOME/pw/miniconda3` and its name is `parsl-mpi`. This can be changed in the script.
+1. Run `install_scripts/create_conda_env.sh` to create a Conda environment if you don't already have one with Parsl. The location of this Conda env is preset to `$HOME/pw/miniconda3` and its name is `parsl-mpi`. This can be changed in the script.
 2. The Parsl configuration, MPI code, and test workflow are all encapsulated in `slurmprovider.py` and can be run as:
 ```bash
 source $HOME/pw/miniconda3/etc/profile.d/conda.sh
@@ -39,7 +48,7 @@ them to spin up.
 
 Flux cannot be installed with Conda, so here we install it with Spack
 since there are many dependencies. Spack can have Conda inside it, so in 
-`create_spack_env.sh`, the `miniconda3` module is installed and Parsl + Parsl
+`install_scripts/create_spack_env.sh`, the `miniconda3` module is installed and Parsl + Parsl
 dependencies can be installed there.
 
 The Conda environment in Spack may be fragile; I broke it and had to reinstall
@@ -60,3 +69,4 @@ I've also noticed that Conda doesn't work if you `spack load flux-sched` **after
 `spack load miniconda3`. Instead, always `spack load miniconda3` after all the other
 load operations. Also, it looks like once Flux is built, we may not need to activate
 the newer version of gcc with `scl enable devtoolset-7 bash`.
+
