@@ -127,12 +127,18 @@ spack compiler find; \
 spack unload; \
 spack install -j 30 flux-core@0.51.0%gcc@12.2.0; \
 spack install -j 30 flux-sched%gcc@12.2.0; \
-spack install -j 30 openmpi@4.1.4%gcc@12.2.0 +pmi; \
-spack install -j 30 openmpi@4.1.4%gcc@12.2.0 -pmi;' | /bin/bash
+spack install intel-oneapi-compilers@2021.1.2; \
+spack load intel-oneapi-compilers; \
+spack compiler find; \
+spack install -j 30 intel-oneapi-mpi%oneapi;' | /bin/bash
 
 # Alternatives - removed while I check whether forcing
 # pmi on openmpi is a good idea. I get the same PMIX/orte/MPI
-# init errors either way.
+# init errors either way. None of these OpenMPI versions seem
+# to work out-of-the-box with Flux. Only Intel-MPI appears to
+# work out of the box.
+#spack install -j 30 openmpi@4.1.4%gcc@12.2.0 +pmi; \
+#spack install -j 30 openmpi@4.1.4%gcc@12.2.0 -pmi;' | /bin/bash
 #spack install -j 30 openmpi%gcc@12.2.0+pmi ^slurm+pmix; \
 #spack install -j 30 flux-sched%gcc@12.2.0 ^openmpi+pmi ^slurm+pmix;' | /bin/bash
 #spack install -j 30 flux-sched cflags=="-std=c99" ^openmpi+pmi ^slurm+pmix;' | /bin/bash

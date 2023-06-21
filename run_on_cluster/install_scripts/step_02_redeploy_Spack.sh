@@ -70,9 +70,12 @@ echo Install SLURM-devel 1 min...
 ./step_00a_install_slurm-devel.sh
 
 #==============================
-echo Install OpenMPI outside Spack 10 mins...
+#echo Install OpenMPI outside Spack 10 mins...
 #==============================
-./step_00b_install_openmpi_no_Spack.sh
+# Skip this step since there are OpenMPI
+# issues with Flux. Revisit OpenMPI once
+# PoC is running better.
+#./step_00b_install_openmpi_no_Spack.sh
 
 echo Completed redeploying Spack
 
