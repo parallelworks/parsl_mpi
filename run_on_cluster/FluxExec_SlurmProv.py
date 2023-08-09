@@ -156,7 +156,8 @@ def compile_mpi_hello_world_ompi(ompi_dir: str, inputs: list = None,
 @bash_app(executors=[exec_label])
 def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
                              inputs: list = None, outputs: list = None, 
-                             stdout: str ='std.out', stderr: str = 'std.err'):
+                             stdout: str ='std.out', stderr: str = 'std.err',
+                             parsl_resource_specification={"num_tasks": 6, "num_nodes": 3}):
     import os
     """
     Runs the binary directly
@@ -177,8 +178,7 @@ def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
     #sleep 10
     #unset I_MPI_FABRICS
     #mpirun -np {np} mpitest > {output}
-    flux resource list
-    env 
+    flux resource list 
    ./mpitest > {output}
 '''.format(
         np = np,
