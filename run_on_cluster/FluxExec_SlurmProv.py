@@ -77,7 +77,7 @@ hang in "pending" state (0 connected workers) and never reach the "running" stat
 # INPUTS #
 ##########
 mpi_dir = '/contrib/alvaro/ompi/'
-repeats = 3
+repeats = 12
 cores_per_node = 2
 nodes_per_block = 3
 np = cores_per_node * nodes_per_block
