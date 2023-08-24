@@ -69,7 +69,7 @@ hang in "pending" state (0 connected workers) and never reach the "running" stat
 ##########
 # INPUTS #
 ##########
-mpi_dir = '/contrib/alvaro/ompi/'
+load_openmpi = 'source /contrib/alvaro/ompi/env.sh'
 repeats = 2
 cores_per_node = 2
 nodes_per_block = 2
@@ -108,25 +108,22 @@ config = Config(
 # APPS #
 ########
 @bash_app(executors=[exec_label])
-def compile_mpi_hello_world_ompi(ompi_dir: str, inputs: list = None, 
+def compile_mpi_hello_world_ompi(load_openmpi: str, inputs: list = None, 
                                  stdout: str ='compile.out', stderr: str = 'compile.err'):
     """
     Creates the mpitest binary in the working directory
     """
     return '''
-    export OMPI_DIR={ompi_dir}
-    export PATH=$OMPI_DIR/bin:$PATH
-    export LD_LIBRARY_PATH=$OMPI_DIR/lib:$LD_LIBRARY_PATH
-    export MANPATH=$OMPI_DIR/share/man:$MANPATH
+    {load_openmpi}
     mpicc -o mpitest {mpi_c}
     '''.format(
-        ompi_dir = ompi_dir,
+        load_openmpi = load_openmpi,
         mpi_c = inputs[0].path
     )
 
 
 @bash_app(executors=[exec_label])
-def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
+def run_mpi_hello_world_ompi(np: int, load_openmpi: str,
                              inputs: list = None, outputs: list = None, 
                              stdout: str ='std.out', stderr: str = 'std.err'):
     import os
@@ -137,18 +134,16 @@ def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
     # Override Parsl SLURM parameter
     # In Parsl the ntasks-per-node parameter is hardcoded to 1
     export SLURM_TASKS_PER_NODE="{SLURM_TASKS_PER_NODE}(x{SLURM_NNODES})"
-    export OMPI_DIR={ompi_dir}
-    export PATH={ompi_dir}/bin:$PATH
+    {load_openmpi}
     # Without the sleep command below this app runs very fast. Therefore, when launched multiple times
     # in parallel (nrepeats > 1) it ends up on the same group of nodes. Note that the goal of this 
     # experiment is to return the host names of the different nodes running the app. 
-    sleep 120
     mpirun -np {np} mpitest > {output}
 '''.format(
         SLURM_NNODES = os.environ['SLURM_NNODES'],
         SLURM_TASKS_PER_NODE = int(int(np) / int(os.environ['SLURM_NNODES'])),
         np = np,
-        ompi_dir = ompi_dir,
+        load_openmpi = load_openmpi,
         output = outputs[0].path
     )
 
@@ -184,7 +179,7 @@ if __name__ == '__main__':
 
     print('\n\nCompiling test', flush = True)
     compile_fut = compile_mpi_hello_world_ompi(
-        mpi_dir,
+        load_openmpi,
         inputs = [File(mpi_c_source_code)]
     )
 
@@ -194,7 +189,7 @@ if __name__ == '__main__':
         
         # Launch MPI function
         run_fut = run_mpi_hello_world_ompi(
-            np, mpi_dir,
+            np, load_openmpi,
             inputs = [compile_fut],
             outputs = [File('./hello-' + str(i) + '.out')],
             stdout = 'run-' + str(i) + '.out',
@@ -206,4 +201,3 @@ if __name__ == '__main__':
         print('\n\nResults for case: ' + str(i), flush = True)
         with open(fut.outputs[0].result(), 'r') as f:
             print(f.read())
-
