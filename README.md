@@ -36,6 +36,10 @@ platform as workflows. The `run_on_cluster` subdirectory is a starting point for
 experimentation/debugging/development because it provides scripts that are designed to
 run directly on a cluster (i.e. manually) rather than being launched via a workflow.
 
+In particular, the `run_on_cluster` directory archives experimentation using Parsl
+and Flux together (via Parsl's `FluxExecutor`). As we gain additional experience with
+this framework, Flux will be integrated into PW-launched workflows at the top level.
+
 ## Apps
 
 Parsl apps are defined as `bash_app` decorated functions in the `workflow_apps.py` script. The OpenMPI code is compiled by `compile_mpi_hello_world_ompi` and executed by `compile_mpi_hello_world_ompi_localprovider` or `compile_mpi_hello_world_ompi_slurmprovider`, depending on the selected provider (see execution), multiple times in parallel as defined by the `repeats` workflow input parameter. 
