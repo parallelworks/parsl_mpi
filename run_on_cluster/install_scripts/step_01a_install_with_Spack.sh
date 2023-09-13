@@ -143,16 +143,29 @@ spack install -j 30 intel-oneapi-mpi%oneapi;' | /bin/bash
 #spack install -j 30 flux-sched%gcc@12.2.0 ^openmpi+pmi ^slurm+pmix;' | /bin/bash
 #spack install -j 30 flux-sched cflags=="-std=c99" ^openmpi+pmi ^slurm+pmix;' | /bin/bash
 
+# DO NOT INSTALL PARSL IN SPACK MINICONDA!
+# Flux-in-Spack installs its own Python.
+# Install Parsl in the Python installed
+# with Flux so that Parsl is (implicitly) 
+# present with all the Flux dependencies
+# in Python.
 #==============================
 #echo Install Parsl in Spack Miniconda...
 #==============================
+#source $HOME/.bashrc
+#spack install miniconda3
+#spack load miniconda3
+#conda install -y -c conda-forge parsl
+#conda install -y sqlalchemy
+#conda install -y sqlalchemy-utils
+#pip install "parsl[monitoring]"
+
+#============================
+echo Install Parsl...
+#============================
 source $HOME/.bashrc
-spack install miniconda3
-spack load miniconda3
-conda install -y -c conda-forge parsl
-conda install -y sqlalchemy
-conda install -y sqlalchemy-utils
-pip install "parsl[monitoring]"
+spack load flux-sched
+pip install "parsl[monitoring]==2023.9.11"
 
 #==============================
 echo Set permissions if in a shared directory...
