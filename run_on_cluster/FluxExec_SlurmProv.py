@@ -1,4 +1,4 @@
-# Before running this script,
+# Before running this script (on a small node! Not yet using advanced networking/fabrics!)
 # spack load intel-oneapi-mpi
 # spack load flux-sched
 # export I_MPI_FABRICS=shm:ofi
@@ -131,20 +131,22 @@ def compile_mpi_hello_world_ompi(ompi_dir: str, inputs: list = None,
     Creates the mpitest binary in the working directory
     """
     return '''
+    # Parsl worker_init is ignored by FluxExecutor, so do it here
+    #==============Flux takes care of this so unnecessary?===========
     #export OMPI_DIR={ompi_dir}
     #export PATH=$OMPI_DIR/bin:$PATH
     #export LD_LIBRARY_PATH=$OMPI_DIR/lib:$LD_LIBRARY_PATH
     #export MANPATH=$OMPI_DIR/share/man:$MANPATH
-    # Parsl worker_init is ignored, so do it here
-    #==============When using Spack===================
+    #==============When using Spack - also unnecessary as env info is propagated?===================
     #source /home/sfgary/parsl_flux/spack/share/spack/setup-env.sh
     #source /scratch/sfg3866/flux/spack/share/spack/setup-env.sh
     #spack load openmpi
     #spack load flux-sched
     #spack load miniconda3
-    #==============When using Conda==================
+    #==============When using Conda - not using Conda, so definitely not needed==================
     #source /home/sfgary/pw/miniconda3/etc/profile.d/conda.sh
     #conda activate parsl-mpi
+    #======================Only two active lines here!================================
     mpicc -o mpitest {mpi_c}
     flux resource list
     '''.format(
@@ -167,17 +169,18 @@ def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
     # Without the sleep command below this app runs very fast. Therefore, when launched multiple times
     # in parallel (nrepeats > 1) it ends up on the same group of nodes. Note that the goal of this 
     # experiment is to return the host names of the different nodes running the app. 
-    #==============When using Spack==================
+    #==============When using Spack - also unnecessary as env info is propagated?==================
     #source /home/sfgary/parsl_flux/spack/share/spack/setup-env.sh
     #source /scratch/sfg3866/flux/spack/share/spack/setup-env.sh
     #spack load flux-sched
     #spack load miniconda3
-    #==============When using Conda==================
-    #source /home/sfgary/pw/miniconda3/etc/profile.d/conda.sh
-    #conda activate parsl-mpi
+    #===============================================================================================
     #sleep 10
+    # Not needed?
     #unset I_MPI_FABRICS
+    # FluxExecutor does not use mpirun
     #mpirun -np {np} mpitest > {output}
+    #==============================Only two active lines here!================================
     flux resource list 
    ./mpitest > {output}
 '''.format(
@@ -185,17 +188,6 @@ def run_mpi_hello_world_ompi(np: int, ompi_dir: str,
         ompi_dir = ompi_dir,
         output = outputs[0].path
     )
-
-# Was inside the app:
-    # Override Parsl SLURM parameter                                                   
-    # In Parsl the ntasks-per-node parameter is hardcoded to 1
-    #export SLURM_TASKS_PER_NODE="{SLURM_TASKS_PER_NODE}(x{SLURM_NNODES})"            
-    #export OMPI_DIR={ompi_dir}
-    #export PATH={ompi_dir}/bin:$PATH    
-
-# Was iniside the .format()
-    #SLURM_NNODES = os.environ['SLURM_NNODES'],
-    #SLURM_TASKS_PER_NODE = int(int(np) / int(os.environ['SLURM_NNODES'])),
 
 ############
 # WORKFLOW #
