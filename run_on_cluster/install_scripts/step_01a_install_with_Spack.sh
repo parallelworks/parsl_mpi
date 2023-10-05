@@ -26,7 +26,7 @@ echo Downloading spack...
 
 # --depth shortens the history contained in the clone
 # --branch selects a specific release, UPDATE THIS
-git clone --depth=100 --branch=releases/v0.19 https://github.com/spack/spack.git $SPACK_ROOT
+git clone --depth=100 --branch=releases/v0.20 https://github.com/spack/spack.git $SPACK_ROOT
 
 #==============================
 echo Set up Spack environment...
@@ -67,9 +67,12 @@ echo Configuring external packages for Spack...
 #    the install process will install its own openmpi
 #    that does NOT have have PMI support unless the
 #    Spack packages.yaml has require: +pmi.
+# 3) Experiment with adding multiple MPI by removing
+#    the mpi: buildable: False requirement and then
+#    building applications with e.g. ^openmpi@4.1.5%gcc7.3.1+pmi
+#    or with other OpenMPI, MPICH, and IntelMPI,
+#    some of which are inside and others are outside Spack.
 
-echo For now, skipping any Spack external package config!
-# I get the same errors whether or not I include OpenMPI.
 spack_packages=${SPACK_ROOT}/etc/spack/packages.yaml
 echo "packages:" > $spack_packages
 echo "  slurm:" >> $spack_packages
@@ -77,8 +80,14 @@ echo "    externals:" >> $spack_packages
 echo "    - spec: slurm@20.02.7 +pmix sysconfdir=/mnt/shared/etc/slurm" >> $spack_packages
 echo "      prefix: /usr" >> $spack_packages
 echo "    buildable: False" >> $spack_packages
-#echo "  openmpi:" >> $spack_packages
-#echo "    require: +pmi" >> $spack_packages
+echo "  openmpi:" >> $spack_packages
+echo "    externals:" >> $spack_packages
+echo "    - spec: openmpi@4.1.5%gcc@7.3.1" >> $spack_packages
+echo "      prefix: /home/sfgary/ompi" >> $spack_packages
+echo "    buildable: False" >> $spack_packages
+echo "    require: +pmi" >> $spack_packages
+echo "  mpi:" >> $spack_packages
+echo "    buildable: False" >> $spack_packages
 
 #==============================
 echo Installing spack packages...
@@ -96,6 +105,9 @@ echo Installing spack packages...
 # (e.g. spack install flux-sched cflags=="-std=c99" , need 
 # space at the end) or specify the hash of the successfully
 # built mbedtls, installing flux-core/sched still fails.
+#
+# gcc@7.3.1 (devtoolset-7)
+# This compiles all code end to end. Using Spack v0.20.0
 #
 # gcc@12.2.0:
 # spack install flux-core%gcc@12.2.0
@@ -120,13 +132,15 @@ echo Installing spack packages...
 # end-to-end. It fails on mbedtls as well as other
 # packages.
 
+# Experimental removal of gcc12...
+#spack install -j 30 gcc@12.2.0; \
+#spack load gcc@12.2.0; \
+
 echo 'source ~/.bashrc; \
-spack install -j 30 gcc@12.2.0; \
-spack load gcc@12.2.0; \
 spack compiler find; \
-spack unload; \
-spack install -j 30 flux-core@0.51.0%gcc@12.2.0; \
-spack install -j 30 flux-sched%gcc@12.2.0; \
+spack install -j 30 tau; \
+spack install -j 30 flux-core@0.51.0%gcc@7.3.1; \
+spack install -j 30 flux-sched%gcc@7.3.1; \
 spack install intel-oneapi-compilers@2021.1.2; \
 spack load intel-oneapi-compilers; \
 spack compiler find; \
