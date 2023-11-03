@@ -1,0 +1,6 @@
+BootStrap: docker
+From: openfoam/openfoam11-paraview510
+
+%help
+  This Singularity container of the openfoam/openfoam11-paraview510 Docker repository
+
