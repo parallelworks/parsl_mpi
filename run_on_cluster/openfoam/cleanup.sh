@@ -10,4 +10,7 @@
 # Container
 rm -f openfoam.sif
 
+# Log files
+rm test-singularity-mpi.out
+rm singularity-openfoam.out
 
