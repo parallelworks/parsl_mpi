@@ -2,6 +2,17 @@
 #=======================
 # Run OpenFOAM on a single
 # node.
+#
+# This can run on a head
+# node (if there are sufficient CPU)
+# or on a worker node.
+#
+# If running on a worker node
+# use --ntasks-per-node because
+# a standard srun allocation may
+# only allow for one CPU or task.
+# For example:
+# srun -N 1 --ntasks-per-node 12 -p big --pty /bin/bash
 #=======================
 
 # LOAD OpenMPI ENVIRONMENT HERE!
