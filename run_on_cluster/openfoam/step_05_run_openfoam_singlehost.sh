@@ -39,7 +39,7 @@ singularity exec ${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; sn
 singularity exec ${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; decomposePar"
 
 # RUN SIMULATION w/ external MPI
-mpirun -np ${num_mpi_proc} singularity exec ${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"
+mpiexec -np ${num_mpi_proc} singularity exec ${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"
 
 # RUN SIMULATION w/ MPI from container
 #singularity exec ${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; mpirun -np ${num_mpi_proc} foamRun -parallel"

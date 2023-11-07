@@ -30,7 +30,7 @@ singularity exec ${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; de
 
 
 # RUN SIMULATION
-mpirun -np ${num_mpi_proc} singularity exec ${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"
+mpiexec --mca orte_base_help_aggregate 0 -np ${num_mpi_proc} singularity exec ${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"
 
 # ADD FOAM FILE for Paraview
 touch out.foam
