@@ -6,7 +6,11 @@
 #SBATCH --partition=small
 
 # LOAD OpenMPI ENVIRONMENT HERE!
+# This is the OpenMPI env if installed
+# with step_02_install_openmpi.sh
 #source $HOME/parsl_mpi/run_on_cluster/openfoam/openmpi_env.sh
+# This is OpenMPI env if using Alvaro's
+# preinstalled build.
 source /contrib/alvaro/ompi/env.sh
 
 # SET RUN DIR (same as #SBATCH --chdir=/path/to/OpenFOAM/case(

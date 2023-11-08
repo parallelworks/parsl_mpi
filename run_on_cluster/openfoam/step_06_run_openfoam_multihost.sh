@@ -6,7 +6,11 @@
 #SBATCH --partition=small
 
 # LOAD OpenMPI ENVIRONMENT HERE!
+# This is the OpenMPI env if installed
+# with step_02_install_openmpi.sh
 #source $HOME/parsl_mpi/run_on_cluster/openfoam/openmpi_env.sh
+# This is OpenMPI env if using Alvaro's
+# preinstalled build.
 source /contrib/alvaro/ompi/env.sh
 
 # SET RUN DIR (same as #SBATCH --chdir=/path/to/OpenFOAM/case(
@@ -30,7 +34,7 @@ singularity exec ${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; de
 
 
 # RUN SIMULATION
-mpiexec --mca btl_base_verbose 100 --mca orte_base_help_aggregate 0 -np ${num_mpi_proc} singularity exec ${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"
+mpiexec --mca btl_tcp_if_include eth0 --mca btl_base_verbose 100 --mca orte_base_help_aggregate 0 -np ${num_mpi_proc} singularity exec ${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"
 
 # ADD FOAM FILE for Paraview
 touch out.foam
