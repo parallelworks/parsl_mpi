@@ -3,7 +3,6 @@
 #SBATCH --job-name=test-singularity-mpi
 #SBATCH --output=test-singularity-mpi.out
 #SBATCH --ntasks-per-node=2
-#SBATCH --partition=small
 
 # LOAD OpenMPI ENVIRONMENT HERE!
 # This is the OpenMPI env if installed

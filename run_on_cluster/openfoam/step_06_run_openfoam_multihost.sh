@@ -3,7 +3,6 @@
 #SBATCH --job-name=singularity-openfoam
 #SBATCH --output=singularity-openfoam.out
 #SBATCH --ntasks-per-node=2
-#SBATCH --partition=small
 
 # LOAD OpenMPI ENVIRONMENT HERE!
 # This is the OpenMPI env if installed
