@@ -14,8 +14,9 @@ mkdir -p $OMPI_DIR/bin
 mkdir -p $OMPI_DIR/lib
 
 # Update OpenMPI version as needed
+# v5.0+ requires PMIx.
 export OMPI_MAJOR_VERSION=4.1
-export OMPI_MINOR_VERSION=.5
+export OMPI_MINOR_VERSION=.6
 export OMPI_VERSION=${OMPI_MAJOR_VERSION}${OMPI_MINOR_VERSION}
 export OMPI_URL_PREFIX="https://download.open-mpi.org/release/open-mpi"
 export OMPI_URL="$OMPI_URL_PREFIX/v$OMPI_MAJOR_VERSION/openmpi-$OMPI_VERSION.tar.gz"
