@@ -29,7 +29,7 @@ export MANPATH=$OMPI_DIR/share/man:$MANPATH
 # mpiexec with sbatch, but you won't be able to launch
 # MPI jobs directly with srun (see examples below).
 # To disable these config options, set with_pmi=false
-with_pmi=false
+with_pmi=true
 if [ "$with_pmi" == "true" ]; then
     echo "======> Setting OMPI_SLURM_PMI env vars..."
     export OMPI_SLURM_PMI_INCLUDE=/usr/include/slurm
