@@ -1,0 +1,46 @@
+name: Run Job
+run-name: Run job for workflow ${{ github.event.inputs.workflow-name }} as user ${{ github.event.inputs.pw-user }}
+on:
+  workflow_dispatch:
+    inputs:
+      pw-platform-host:
+        description: 'Name of the platform host'
+        type: string
+        required: true
+        default: cloud.parallel.works
+      secret-with-key:
+        description: 'Name of the secret holding the PW_API_KEY. DO NOT PASTE THE KEY!'
+        type: string
+        required: true
+      pw-user:
+        description: 'Name of the PW user'
+        type: string
+        required: true
+      workflow-name:
+        description: 'Name of the PW workflow'
+        type: string
+        required: true
+        default: parsl_mpi
+      workflow-parameters:
+        description: 'Workflow input parameters in JSON format'
+        type: string
+        required: true
+      resource-names:
+        description: '(OPTIONAL) Name of the resources required to run the workflow. Use --- to define multiple resources, e.g. r1---r2.'
+        type: string
+        required: false
+jobs:
+  run-job:
+    runs-on: ubuntu-latest
+    env:
+      PW_PLATFORM_HOST: ${{ inputs.pw-platform-host }}
+      PW_API_KEY: ${{ secrets[inputs.secret-with-key] }}
+    
+    steps:
+      - name: Run PW Workflow
+        uses: parallelworks/test-workflow-action@v7
+        with:
+          pw-user: ${{ inputs.pw-user }}
+          workflow-name: ${{ inputs.workflow-name }}
+          workflow-parameters: ${{ inputs.workflow-parameters }}
+          resource-names: ${{ inputs.resource-names }}
