@@ -34,7 +34,7 @@ jobs:
           pw-user: ${{ inputs.pw-user }}
           workflow-name: parsl_mpi
           workflow-parameters: >
-              '{ "mpi_inputs": { 
+              { "mpi_inputs": { 
                   "repeats": "1", 
                   "np": "2",
                   "mpi_dir": "/contrib/__PW_USER__/ompi/"
@@ -44,5 +44,5 @@ jobs:
                   "globus_key": "placeholder"
               },
               "startCmd": "simple_wrapper.sh"
-              }'
+              }
           resource-names: ${{ inputs.resource-names }}
