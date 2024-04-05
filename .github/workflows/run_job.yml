@@ -16,15 +16,6 @@ on:
         description: 'Name of the PW user'
         type: string
         required: true
-      workflow-name:
-        description: 'Name of the PW workflow'
-        type: string
-        required: true
-        default: parsl_mpi
-      workflow-parameters:
-        description: 'Workflow input parameters in JSON format'
-        type: string
-        required: true
       resource-names:
         description: '(OPTIONAL) Name of the resources required to run the workflow. Use --- to define multiple resources, e.g. r1---r2.'
         type: string
@@ -41,7 +32,7 @@ jobs:
         uses: parallelworks/test-workflow-action@v7
         with:
           pw-user: ${{ inputs.pw-user }}
-          workflow-name: ${{ inputs.workflow-name }}
+          workflow-name: parsl_mpi
           workflow-parameters: >
               '{ "mpi_inputs": { 
                   "repeats": "1", 
@@ -50,7 +41,7 @@ jobs:
                   },
               "cluster_options": {
                   "parsl_provider": "SlurmProvider",
-                  "globus_secret": ${{ secrets[GLOBUS_KEY] }},
+                  "globus_secret": ${{ secrets.GLOBUS_KEY. }},
               },
               "startCmd": "simple_wrapper.sh"
               }'
