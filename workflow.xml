@@ -31,7 +31,7 @@
         width='50%'>
       </param>
     </section>
-    <section name='slurm_options' type='section' title='SLURM Options' expanded='true'>
+    <section name='cluster_options' type='section' title='Cluster Options' expanded='true'>
       <conditional name="parsl_provider_cond">
         <param name='parsl_provider' type='select' label='Select LocalProvider or SlurmProvider' help='' width='50%_none' multiple='false'>
           <option value="LocalProvider">LocalProvider</option>
@@ -76,6 +76,14 @@
          </param>
         </when>
       </conditional>
+      <param 
+        name='globus_key' 
+        label='Key for starting a Globus Compute endpoint' 
+        help='This key is generally obtained from the Globus Web app' 
+        type='text' 
+        value='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890=' 
+        width='50%'>
+      </param>
     </section>
   </inputs>
   <outputs>

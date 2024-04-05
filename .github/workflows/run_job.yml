@@ -42,5 +42,16 @@ jobs:
         with:
           pw-user: ${{ inputs.pw-user }}
           workflow-name: ${{ inputs.workflow-name }}
-          workflow-parameters: ${{ inputs.workflow-parameters }}
+          workflow-parameters: >
+              '{ "mpi_inputs": { 
+                  "repeats": "1", 
+                  "np": "2",
+                  "mpi_dir": "/contrib/__PW_USER__/ompi/"
+                  },
+              "cluster_options": {
+                  "parsl_provider": "SlurmProvider",
+                  "globus_secret": ${{ secrets[GLOBUS_KEY] }},
+              },
+              "startCmd": "simple_wrapper.sh"
+              }'
           resource-names: ${{ inputs.resource-names }}
