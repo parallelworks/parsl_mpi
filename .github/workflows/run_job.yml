@@ -41,7 +41,7 @@ jobs:
                   },
               "cluster_options": {
                   "parsl_provider": "SlurmProvider",
-                  "globus_secret": "${{ secrets.GLOBUS_KEY }}"
+                  "globus_key": "placeholder"
               },
               "startCmd": "simple_wrapper.sh"
               }'
