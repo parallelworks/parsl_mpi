@@ -1,5 +1,5 @@
-<tool id='alvaro_singlecluster_parsl_demo' name='alvaro_singlecluster_parsl_demo'>
-  <command interpreter='bash'>parsl_wrapper.sh</command>
+<tool id='parsl_mpi' name='parsl_mpi'>
+  <command interpreter='bash'>simple_wrapper.sh</command>
   <inputs>
     <section name='mpi_inputs' type='section' title='MPI Inputs' expanded='true'>
       <param 
