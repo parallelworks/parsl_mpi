@@ -7,7 +7,9 @@
 #=====================================
 
 # Is this required? May not work with cloud clusters since image is set.
-sudo yum -y update
+# Comment out for now since it takes a long time (250+ packages get pulled
+# and installed).
+#sudo yum -y update
 
 # Core compiler tools that are required
 sudo yum -y install gcc-toolset-11-gcc-c++
