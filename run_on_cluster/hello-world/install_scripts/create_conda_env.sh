@@ -112,6 +112,7 @@ echo Finished $0
 echo New Conda env can be accessed with:
 echo ENV: source ${miniconda_loc}/etc/profile.d/conda.sh
 echo ACT: conda activate ${my_env}
-echo Next step: Authenticate to Globus or setenv
+echo Next step: Authenticate to Globus or export
 echo FUNCX_SDK_CLIENT_ID and FUNCX_SDK_CLIENT_SECRET
-echo "(These env vars will change to GLOBUS_COMPUTE_)"
+echo These env vars are in the process of changing to
+echo "GLOBUS_COMPUTE_CLIENT_<ID|SECRET>".
