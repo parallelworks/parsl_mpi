@@ -1,0 +1,18 @@
+amqp_port: 443
+display_name: MPI Enabled local endpoint
+engine:
+  type: GlobusComputeEngine
+  max_retries_on_system_failure: 0
+  worker_debug: True
+  max_workers_per_node: 2
+  enable_mpi_mode: True
+  mpi_launcher: srun
+  provider:
+    init_blocks: 0
+    max_blocks: 1
+    # Set min_blocks=1 for a persistent worker
+    min_blocks: 0
+    type: SlurmProvider
+    worker_init: |
+      source /home/sfgary/pw/miniconda3/etc/profile.d/conda.sh;
+      conda activate globus-parsl-mpi;
