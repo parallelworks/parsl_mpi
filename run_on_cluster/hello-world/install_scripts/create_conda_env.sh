@@ -44,7 +44,7 @@ echo Starting $0
 # to put an absolute path here
 # or at least use $HOME instead 
 # of "~".
-miniconda_loc=$HOME/pw/miniconda3
+miniconda_loc=$HOME/pw/mc
 
 # Location of any custom code direct from
 # GitHub
@@ -112,4 +112,6 @@ echo Finished $0
 echo New Conda env can be accessed with:
 echo ENV: source ${miniconda_loc}/etc/profile.d/conda.sh
 echo ACT: conda activate ${my_env}
-
+echo Next step: Authenticate to Globus or setenv
+echo FUNCX_SDK_CLIENT_ID and FUNCX_SDK_CLIENT_SECRET
+echo "(These env vars will change to GLOBUS_COMPUTE_)"
