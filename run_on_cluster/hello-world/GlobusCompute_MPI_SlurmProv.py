@@ -24,7 +24,8 @@ gcc = Client()
 endpts = gcc.get_endpoints()
 
 # Get the UUID of the first endpoint (ASSUME USING THIS ONE).
-endpoint_id = endpts[0]['uuid']
+endpoint_id = endpts[1]['uuid']
+print('Using endpoint: '+endpoint_id)
 
 # Start a Globus Compute Executor here (i.e. on the client)
 ex = Executor(endpoint_id=endpoint_id)
