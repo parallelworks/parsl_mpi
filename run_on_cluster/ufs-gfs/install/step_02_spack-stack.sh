@@ -52,3 +52,77 @@ spack mirror add aws-mirror s3://$BUCKET_NAME
 spack compiler find
 spack buildcache list
 
+#=========================================
+# Step 4: Create a Spack environment based
+# on the existing template provided by
+# spack-stack.
+template_name="gfs-v16.2"
+spack stack create env --site linux.default --template ${template_name} --name ${template_name}.mylinux
+cd envs/${template_name}.mylinux/
+spack env activate -p .
+
+#=========================================
+# Step 5: Find external packages
+# Use SPACK_SYSTEM_CONFIG_PATH to modify site config
+# files in envs/${template_name}.mylinux/site
+export SPACK_SYSTEM_CONFIG_PATH="$PWD/site"
+
+spack external find --scope system \
+    --exclude bison --exclude cmake \
+    --exclude curl --exclude openssl \
+    --exclude openssh --exclude python
+
+spack external find --scope system wget
+
+# Note - only needed for running JCSDA's
+# JEDI-Skylab system (using R2D2 localhost)
+spack external find --scope system mysql
+
+# Note - only needed for generating documentation
+spack external find --scope system texlive
+
+spack compiler find --scope system
+
+# Done finding external packages, so unset
+unset SPACK_SYSTEM_CONFIG_PATH
+
+# Set default compiler and MPI library
+spack config add "packages:all:compiler:[gcc@11.2.1]"
+spack config add "packages:all:providers:mpi:[openmpi@5.0.1]"
+
+# Set a few more package variants and versions 
+# to avoid linker errors and duplicate packages 
+# being built
+spack config add "packages:fontconfig:variants:+pic"
+spack config add "packages:pixman:variants:+pic"
+spack config add "packages:cairo:variants:+pic"
+
+# For JCSDA's JEDI-Skylab experiments using 
+# R2D2 with a local MySQL server:
+#spack config add "packages:ewok-env:variants:+mysql"
+
+#=====================================
+# Step 6: Process the specs and install
+# Save the output of concretize in a log file
+# so you can inspect that log with show_duplicate_packages.py.
+# Duplicate package specifications can cause 
+# issues in the module creation step below. 
+spack concretize 2>&1 | tee log.concretize
+${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d -c log.concretize
+spack install --verbose --fail-fast 2>&1 | tee log.install
+
+# Create tcl module files (replace tcl with lmod?)
+spack module tcl refresh
+
+# Create meta-modules for compiler, MPI, Python
+spack stack setup-meta-modules
+
+echo "You now have a spack-stack environment" 
+echo "that can be accessed by running:"
+echo "module use ${SPACK_STACK_DIR}/envs/${template_name}.mylinux/install/modulefiles/Core"
+echo "The modules defined here can be loaded" 
+echo "to build and run code as described at: "
+echo "https://spack-stack.readthedocs.io/en/latest/UsingSpackEnvironments.html#usingspackenvironments"
+echo "This script was based on the Linux instructions at: "
+echo "https://spack-stack.readthedocs.io/en/latest/NewSiteConfigs.html#newsiteconfigs-linux"
+
