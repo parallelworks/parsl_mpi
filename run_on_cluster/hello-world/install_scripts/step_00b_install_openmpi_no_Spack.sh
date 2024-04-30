@@ -18,8 +18,12 @@ mkdir -p $OMPI_DIR/lib
 
 # Update OpenMPI version as needed
 # v5.0+ requires PMIx.
-export OMPI_MAJOR_VERSION=4.1
-export OMPI_MINOR_VERSION=.6
+# OpenMPI 4.1.6
+#export OMPI_MAJOR_VERSION=4.1
+#export OMPI_MINOR_VERSION=.6
+# OpenMPI 5.0.1 (Recommended by spack-stack)
+export OMPI_MAJOR_VERSION=5.0
+export OMPI_MINOR_VERSION=.1
 export OMPI_VERSION=${OMPI_MAJOR_VERSION}${OMPI_MINOR_VERSION}
 export OMPI_URL_PREFIX="https://download.open-mpi.org/release/open-mpi"
 export OMPI_URL="$OMPI_URL_PREFIX/v$OMPI_MAJOR_VERSION/openmpi-$OMPI_VERSION.tar.gz"
@@ -31,8 +35,9 @@ export MANPATH=$OMPI_DIR/share/man:$MANPATH
 # If you do not have access to these, you can still use
 # mpiexec with sbatch, but you won't be able to launch
 # MPI jobs directly with srun (see examples below).
-# To disable these config options, set with_pmi=false
-with_pmi=true
+# To disable these config options, set with_pmi=false.
+# Also set to false if using OpenMPI v5+!
+with_pmi=false
 if [ "$with_pmi" == "true" ]; then
     echo "======> Setting OMPI_SLURM_PMI env vars..."
     # Use this if you get pmi.h from slurm-devel
@@ -62,8 +67,8 @@ if [ "$with_pmi" == "true" ]; then
 fi
 
 if [ "$with_pmi" == "false" ]; then
-    echo "======> without PMI"
-    ./configure --prefix=$OMPI_DIR
+    echo "======> without PMI but with PMIX"
+    ./configure --with-pmix --prefix=$OMPI_DIR
 fi
 
 echo "===> Compile and install OMPI"
