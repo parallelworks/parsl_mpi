@@ -38,7 +38,7 @@ sudo yum -y install texlive
 
 # Note - only needed for running JCSDA's
 # JEDI-Skylab system (using R2D2 localhost)
-yum -y install mysql-server
+sudo yum -y install mysql-server
 
 # Set a specific version of Python
 sudo yum -y install python39-devel
