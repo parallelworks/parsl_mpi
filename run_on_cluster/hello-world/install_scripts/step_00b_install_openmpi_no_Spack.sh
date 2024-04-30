@@ -3,6 +3,9 @@
 echo Explicit install of OpenMPI outside of Spack
 #==============================
 
+# Need to install pmi.h headers
+sudo yum install -y pmix-devel
+
 gcc_version=$(gcc --version | awk 'NR==1{print $3}')
 echo "===> Will build OpenMPI with gcc v$gcc_version"
 
@@ -32,7 +35,10 @@ export MANPATH=$OMPI_DIR/share/man:$MANPATH
 with_pmi=true
 if [ "$with_pmi" == "true" ]; then
     echo "======> Setting OMPI_SLURM_PMI env vars..."
-    export OMPI_SLURM_PMI_INCLUDE=/usr/include/slurm
+    # Use this if you get pmi.h from slurm-devel
+    #export OMPI_SLURM_PMI_INCLUDE=/usr/include/slurm
+    # Use this if you get pmi.h from pmix-devel
+    export OMPI_SLURM_PMI_INCLUDE=/usr/include
     export OMPI_SLURM_PMI_LIBDIR=/usr/lib64
 fi
 export C_INCLUDE_PATH=/usr/include/slurm
