@@ -6,21 +6,44 @@
 #https://spack-stack.readthedocs.io/en/latest/NewSiteConfigs.html#prerequisites-red-hat-centos-8-one-off
 #=====================================
 
-# Is this required? May not work with cloud clusters since image is set.
+#===========================================
+# General update
+# Is this required? May not work with cloud clusters since image is tuned.
 # Comment out for now since it takes a long time (250+ packages get pulled
 # and installed).
+#===========================================
 #sudo yum -y update
 
+#===========================================
+# Update certificates if the image is really old
+#===========================================
+sudo yum update -y ca-certificates
+
+#===========================================
 # Core compiler tools that are required
-sudo yum -y install gcc-toolset-11-gcc-c++
-sudo yum -y install gcc-toolset-11-gcc-gfortran
-sudo yum -y install gcc-toolset-11-gdb
+# You can choose other versions of gcc
+# by changing out gcc_ver. I've tested
+# 9, 10, and 11. Once installed, must:
+#
+# source /opt/rh/gcc-toolset-${gcc_ver}/enable
+#
+# for automated access OR for an interactive session:
+#
+# scl enable gcc-toolset-${gcc_ver} bash
+#
+#==========================================
+gcc_ver=11
+sudo yum -y install gcc-toolset-${gcc_ver}-gcc-c++
+sudo yum -y install gcc-toolset-${gcc_ver}-gcc-gfortran
+sudo yum -y install gcc-toolset-${gcc_ver}-gdb
 
 # Do NOT blanket install the whole toolset since
 # there may be issues with cmake (see below).
 #sudo yum install gcc-toolset-11
 
+#===========================================
 # Other dependencies (may already be present on the image)
+#===========================================
 sudo yum -y install m4
 sudo yum -y install wget
 # Do not install cmake (it's 3.20.2, which doesn't work with eckit)
@@ -47,10 +70,8 @@ sudo alternatives --set python3 /usr/bin/python3.9
 # Install boto3 into the running version of Python
 python3 -m pip install boto3
 
-# To activate these tools (i.e. gcc v11.2.1) run
-# the following as a regular user:
-# scl enable gcc-toolset-11 bash
 #=====================WARNING=======================
-# The following steps ASSUME that you are running
-# in the gcc-toolset-11 enabled bash shell.
+# The following install steps ASSUME that you are running
+# in the gcc-toolset-11 enabled bash shell. See the 
+# scl or source commands above.
 #====================================================
