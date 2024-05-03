@@ -13,6 +13,10 @@
 # https://spack-stack.readthedocs.io/en/latest/NewSiteConfigs.html#newsiteconfigs-linux
 #=====================================
 
+# Select gcc compiler to use
+gcc_ver=11
+source /opt/rh/gcc-toolset-${gcc_ver}/enable
+
 # Download Spack, start it, and add the buildcache
 # mirror to Spack.
 
@@ -35,8 +39,8 @@ cd $spack_dir
 #git clone -c feature.manyFiles=true https://github.com/spack/spack.git
 # source ${PWD}/spack/share/spack/setup-env.sh
 
-# JCSDA spack-stack
-git clone --recurse-submodules https://github.com/jcsda/spack-stack.git
+# JCSDA spack-stack, UFS is probably at 1.5.1
+git clone --recurse-submodules -b spack-stack-1.5.1 https://github.com/jcsda/spack-stack.git
 cd spack-stack
 # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
 source setup.sh
@@ -56,7 +60,11 @@ spack buildcache list
 # Step 4: Create a Spack environment based
 # on the existing template provided by
 # spack-stack.
-template_name="gfs-v16.2"
+
+# Very out of date?
+#template_name="gfs-v16.2"
+
+template_name="ufs-weather-model"
 spack stack create env --site linux.default --template ${template_name} --name ${template_name}.mylinux
 cd envs/${template_name}.mylinux/
 spack env activate -p .
@@ -88,7 +96,7 @@ unset SPACK_SYSTEM_CONFIG_PATH
 
 # Set default compiler and MPI library
 spack config add "packages:all:compiler:[gcc@11.2.1]"
-spack config add "packages:all:providers:mpi:[openmpi@5.0.1]"
+spack config add "packages:all:providers:mpi:[openmpi@4.1.6]"
 
 # Set a few more package variants and versions 
 # to avoid linker errors and duplicate packages 
