@@ -56,7 +56,9 @@ spack mirror add ufs-cache s3://$BUCKET_NAME
 spack buildcache list
 
 # Select an Intel compiler
-intel_ver="2021.1.2"
+# Although listed in older versions of Spack,
+# 2021.1.x, 2021.2.x are not downloadable
+intel_ver="2021.3.0"
 spack install intel-oneapi-compilers@${intel_ver}
 spack load intel-oneapi-compilers
 spack compiler find
