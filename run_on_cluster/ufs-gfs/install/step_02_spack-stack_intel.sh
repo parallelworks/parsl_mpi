@@ -48,7 +48,11 @@ source setup.sh
 # variables to use a bucket-based buildcache.
 # You can replace the s3:// URL here with a path
 # if using an attached storage based buildcache.
-spack mirror add --autopush ufs-cache s3://$BUCKET_NAME
+#
+# --autopush option may not work with old versions
+# of spack-stack/Spack, but could be convenient to
+# add here if you can.
+spack mirror add ufs-cache s3://$BUCKET_NAME
 spack buildcache list
 
 # Select an Intel compiler
