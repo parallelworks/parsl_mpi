@@ -52,7 +52,7 @@ source setup.sh
 # --autopush option may not work with old versions
 # of spack-stack/Spack, but could be convenient to
 # add here if you can.
-spack mirror add ufs-cache s3://$BUCKET_NAME
+spack mirror add --unsigned ufs-cache s3://$BUCKET_NAME
 spack buildcache list
 
 # Select an Intel compiler

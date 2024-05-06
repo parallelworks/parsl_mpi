@@ -52,7 +52,7 @@ source setup.sh
 # variables to use a bucket-based buildcache.
 # You can replace the s3:// URL here with a path
 # if using an attached storage based buildcache.
-spack mirror add aws-mirror s3://$BUCKET_NAME
+spack mirror add --unsigned ufs-cache s3://$BUCKET_NAME
 spack compiler find
 spack buildcache list
 
