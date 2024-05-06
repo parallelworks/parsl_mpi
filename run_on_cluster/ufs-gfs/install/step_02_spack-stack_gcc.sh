@@ -52,7 +52,7 @@ source setup.sh
 # variables to use a bucket-based buildcache.
 # You can replace the s3:// URL here with a path
 # if using an attached storage based buildcache.
-spack mirror add --unsigned ufs-cache s3://$BUCKET_NAME
+spack mirror add ufs-cache s3://$BUCKET_NAME
 spack compiler find
 spack buildcache list
 
@@ -117,7 +117,7 @@ spack config add "packages:cairo:variants:+pic"
 # issues in the module creation step below. 
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d -c log.concretize
-spack install --verbose --fail-fast 2>&1 | tee log.install
+spack install --no-check-signature --verbose --fail-fast 2>&1 | tee log.install
 
 # Create tcl module files (replace tcl with lmod?)
 spack module tcl refresh

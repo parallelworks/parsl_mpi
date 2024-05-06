@@ -49,21 +49,21 @@ source setup.sh
 # You can replace the s3:// URL here with a path
 # if using an attached storage based buildcache.
 #
-# --autopush option may not work with old versions
+# --autopush, --unsigned options may not work with old versions
 # of spack-stack/Spack, but could be convenient to
 # add here if you can.
-spack mirror add --unsigned ufs-cache s3://$BUCKET_NAME
+spack mirror add ufs-cache s3://$BUCKET_NAME
 spack buildcache list
 
 # Select an Intel compiler
 # Although listed in older versions of Spack,
 # 2021.1.x, 2021.2.x are not downloadable
 intel_ver="2021.3.0"
-spack install intel-oneapi-compilers@${intel_ver}
+spack install --no-check-signature intel-oneapi-compilers@${intel_ver}
 spack load intel-oneapi-compilers
 spack compiler find
 spack unload
-spack install intel-oneapi-mpi@${intel_ver}%intel@${intel_ver}
+spack install --no-check-signature intel-oneapi-mpi@${intel_ver}%intel@${intel_ver}
 
 
 #=========================================
@@ -127,7 +127,7 @@ spack config add "packages:cairo:variants:+pic"
 # issues in the module creation step below. 
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d -c log.concretize
-spack install --verbose --fail-fast 2>&1 | tee log.install
+spack install --no-check-signature --verbose --fail-fast 2>&1 | tee log.install
 
 # Create tcl module files (replace tcl with lmod?)
 spack module tcl refresh
