@@ -61,12 +61,13 @@ spack buildcache list
 # 2021.3.0 is downloadable, but IntelMPI@2021.3.0
 # does not appear easily usable since not preferred.
 # Stick with IntelMPI@2021.9.0 since that is preferred.
-intel_ver="2021.9.0"
-spack install --no-check-signature intel-oneapi-compilers@${intel_ver}
+intel_compiler_ver="2021.3.0"
+intel_mpi_ver="2021.9.0"
+spack install --no-check-signature intel-oneapi-compilers@${intel_compiler_ver}
 spack load intel-oneapi-compilers
 spack compiler find
 spack unload
-spack install --no-check-signature intel-oneapi-mpi@${intel_ver}%intel@${intel_ver}
+spack install --no-check-signature intel-oneapi-mpi@${intel_mpi_ver}
 
 
 #=========================================
@@ -111,8 +112,8 @@ unset SPACK_SYSTEM_CONFIG_PATH
 # Need to remove the version specifier on intel-oneapi-mpi?
 # Or, looks like Spack is gravitating torwards only IntelMPI@2021.9.0
 # but if that's not installed above, fails.
-spack config add "packages:all:compiler:[intel@${intel_ver}]"
-spack config add "packages:all:providers:mpi:[intel-oneapi-mpi]"
+spack config add "packages:all:compiler:[intel@${intel_compiler_ver}]"
+spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@${intel_mpi_ver}]"
 
 # Set a few more package variants and versions 
 # to avoid linker errors and duplicate packages 
