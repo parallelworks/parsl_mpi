@@ -130,7 +130,7 @@ ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d -c log.concretize
 spack install --no-check-signature --verbose --fail-fast 2>&1 | tee log.install
 
 # Create tcl module files (replace tcl with lmod?)
-spack module tcl refresh
+spack module tcl refresh -y
 
 # Create meta-modules for compiler, MPI, Python
 spack stack setup-meta-modules
