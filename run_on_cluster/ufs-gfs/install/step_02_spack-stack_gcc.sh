@@ -64,7 +64,11 @@ spack buildcache list
 # Very out of date?
 #template_name="gfs-v16.2"
 
-template_name="ufs-weather-model"
+# Runs, but incomplete
+#template_name="ufs-weather-model"
+
+# Try everything
+template_name="unified-dev"
 spack stack create env --site linux.default --template ${template_name} --name ${template_name}.mylinux
 cd envs/${template_name}.mylinux/
 spack env activate -p .
@@ -96,7 +100,7 @@ unset SPACK_SYSTEM_CONFIG_PATH
 
 # Set default compiler and MPI library
 spack config add "packages:all:compiler:[gcc@11.2.1]"
-spack config add "packages:all:providers:mpi:[openmpi@4.1.6]"
+spack config add "packages:all:providers:mpi:[openmpi]"
 
 # Set a few more package variants and versions 
 # to avoid linker errors and duplicate packages 
@@ -120,7 +124,7 @@ ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d -c log.concretize
 spack install --no-check-signature --verbose --fail-fast 2>&1 | tee log.install
 
 # Create tcl module files (replace tcl with lmod?)
-spack module tcl refresh
+spack module tcl refresh -y
 
 # Create meta-modules for compiler, MPI, Python
 spack stack setup-meta-modules

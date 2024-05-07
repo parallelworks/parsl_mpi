@@ -78,7 +78,12 @@ spack install --no-check-signature intel-oneapi-mpi@${intel_mpi_ver}
 # Very out of date?
 #template_name="gfs-v16.2"
 
+# Runs but incomplete?
 template_name="ufs-weather-model"
+
+# Try everything - long concretize, unavoidable?
+#template_name="unified-dev"
+
 spack stack create env --site linux.default --template ${template_name} --name ${template_name}.mylinux
 cd envs/${template_name}.mylinux/
 spack env activate -p .
