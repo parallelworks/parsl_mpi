@@ -36,7 +36,11 @@ cd $spack_dir
 # source ${PWD}/spack/share/spack/setup-env.sh
 
 # JCSDA spack-stack, UFS is probably at 1.5.1
-git clone --recurse-submodules -b spack-stack-1.5.1 https://github.com/jcsda/spack-stack.git
+# Works well
+#spack_stack_tag=spack-stack-1.5.1
+# Move to more recent version for cloud deployment
+spack_stack_tag=spack-stack-1.6.0
+git clone --recurse-submodules -b ${spack_stack_tag} https://github.com/jcsda/spack-stack.git
 cd spack-stack
 # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
 source setup.sh
