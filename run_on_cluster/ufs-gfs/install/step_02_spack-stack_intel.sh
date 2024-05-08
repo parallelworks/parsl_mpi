@@ -56,7 +56,16 @@ source setup.sh
 # --autopush, --unsigned options may not work with old versions
 # of spack-stack/Spack, but could be convenient to
 # add here if you can.
+#---------------------------------------------
+# Standard AWS S3 connection
 spack mirror add ufs-cache s3://$BUCKET_NAME
+#---------------------------------------------
+# Try with cunoFS (need to be in cuno shell!)
+# Appears to be able to do basic reads like
+# spack buildcache list, but package transfers 
+# result in seg faults.
+#spack mirror add ufs-cache /cuno/s3/$BUCKET_NAME
+#--------------------------------------------
 spack buildcache list
 
 # Select an Intel compiler
@@ -66,12 +75,12 @@ spack buildcache list
 # does not appear easily usable since not preferred.
 # Stick with IntelMPI@2021.9.0 since that is preferred.
 intel_compiler_ver="2021.3.0"
-intel_mpi_ver="2021.9.0"
+intel_mpi_ver="2021.10.0"
 spack install --no-check-signature intel-oneapi-compilers@${intel_compiler_ver}
 spack load intel-oneapi-compilers
 spack compiler find
 spack unload
-spack install --no-check-signature intel-oneapi-mpi@${intel_mpi_ver}
+#spack install --no-check-signature intel-oneapi-mpi@${intel_mpi_ver}
 
 
 #=========================================
@@ -91,6 +100,9 @@ template_name="ufs-weather-model"
 spack stack create env --site linux.default --template ${template_name} --name ${template_name}.mylinux
 cd envs/${template_name}.mylinux/
 spack env activate -p .
+
+# Add intel-oneapi-mpi
+spack add intel-oneapi-mpi@${intel_mpi_ver}
 
 #=========================================
 # Step 5: Find external packages
@@ -123,6 +135,15 @@ unset SPACK_SYSTEM_CONFIG_PATH
 # but if that's not installed above, fails.
 spack config add "packages:all:compiler:[intel@${intel_compiler_ver}]"
 spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@${intel_mpi_ver}]"
+
+# Add the intel-oneapi-mpi as a package, too
+# This doesn't work since this goes to spack.yaml
+# and you need the package in sites/packages.yaml,
+# which is done above in the spack add command.
+# Note that here you can specify a variant, for
+# example +generic-names if you want mpicc instead
+# of mpiicc.
+#spack config add "packages:intel-oneapi-mpi@{intel_mpi_ver}"
 
 # Set a few more package variants and versions 
 # to avoid linker errors and duplicate packages 

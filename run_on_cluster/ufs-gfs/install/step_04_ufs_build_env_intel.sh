@@ -1,6 +1,6 @@
 echo Get access to Intel compiler...
 module use /home/sfgary/spack/spack-stack/envs/ufs-weather-model.mylinux/install/modulefiles/Core
-module use spack-intel
+module load stack-intel
 echo "=============================="
 echo Test Intel compiler:
 echo $CC --version
