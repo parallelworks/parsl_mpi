@@ -80,8 +80,7 @@ spack install --no-check-signature intel-oneapi-compilers@${intel_compiler_ver}
 spack load intel-oneapi-compilers
 spack compiler find
 spack unload
-#spack install --no-check-signature intel-oneapi-mpi@${intel_mpi_ver}
-
+spack install --no-check-signature intel-oneapi-mpi@${intel_mpi_ver}
 
 #=========================================
 # Step 4: Create a Spack environment based
