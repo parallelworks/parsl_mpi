@@ -96,17 +96,21 @@ template_name="ufs-weather-model"
 # Try everything - long concretize, unavoidable?
 #template_name="unified-dev"
 
+# The template's specs are written to 
+# spack-stack/envs/envs/${template_name}.mylinux/spack.yaml
 spack stack create env --site linux.default --template ${template_name} --name ${template_name}.mylinux
 cd envs/${template_name}.mylinux/
 spack env activate -p .
 
-# Add intel-oneapi-mpi
+# Add intel-oneapi-mpi, this spec is written to
+# spack-stack/envs/envs/${template_name}.mylinux/spack.yaml
 spack add intel-oneapi-mpi@${intel_mpi_ver}
 
 #=========================================
 # Step 5: Find external packages
 # Use SPACK_SYSTEM_CONFIG_PATH to modify site config
-# files in envs/${template_name}.mylinux/site
+# files in envs/${template_name}.mylinux/site/packages.yaml
+# (which is originally blank for linux.default site).
 export SPACK_SYSTEM_CONFIG_PATH="$PWD/site"
 
 spack external find --scope system \
@@ -129,6 +133,9 @@ spack compiler find --scope system
 unset SPACK_SYSTEM_CONFIG_PATH
 
 # Set default compiler and MPI library
+# This information is going into envs/<env_name>/spack.yaml
+# and NOT into envs/<env_name>/sites/packages.yaml.
+#
 # Need to remove the version specifier on intel-oneapi-mpi?
 # Or, looks like Spack is gravitating torwards only IntelMPI@2021.9.0
 # but if that's not installed above, fails.
@@ -164,6 +171,23 @@ spack config add "packages:cairo:variants:+pic"
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d -c log.concretize
 spack install --no-check-signature --verbose --fail-fast 2>&1 | tee log.install
+
+# Need to add intel-oneapi-mpi to env/<env_name>/sites/packages.yaml
+# Normally, you should be able to do this with a spack config command,
+# but I'm doing it manually here.
+mpi_spec=`spack find -p mpi | tail -1 | awk '{print $1}'`
+mpi_path=`spack find -p mpi | tail -1 | awk '{print $2}'`
+spack_packages="site/packages.yaml"
+echo "Detected ${mpi_spec} at ${mpi_path}"
+echo "Adding it to ${spack_packages} for spack stack setup-meta-modules."
+#===============================================
+echo "  mpi:" >> $spack_packages
+echo "    buildable: False" >> $spack_packages
+echo "  intel-oneapi-mpi:" >> $spack_packages
+echo "    externals:" >> $spack_packages
+echo "    - spec: intel-oneapi-mpi@${intel_mpi_ver}" >> $spack_packages
+echo "      prefix: $mpi_path" >> $spack_packages
+#==============================================
 
 # Create tcl module files (replace tcl with lmod?)
 spack module tcl refresh -y
