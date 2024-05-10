@@ -9,7 +9,7 @@
 #========================
 
 # This is a manual approach - you can
-# also use the rt.conf file as described here
+# also use the rt.conf file
 # to orchestrate a series of configuration
 # builds and tests as described here:
 #https://ufs-weather-model.readthedocs.io/en/develop/BuildingAndRunning.html#using-the-regression-test-script
