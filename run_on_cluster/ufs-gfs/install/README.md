@@ -20,7 +20,46 @@ Deviations from these instructions include:
 
 ### Centos7
 
-## Step 2: Package manager dependencies
+## Step 2: Package manager dependencies (spack-stack)
+
+### Building spack-stack
+
+### Testing MPI
+
+#### Intel OneAPI compilers with Intel MPI
+
+Once spack-stack is installed and started (i.e. the environment is setup),
+you can use `mpicc` to compile MPI enabled code. You can check that it is
+indeed using Intel MPI with `which mpicc` whose result, when using spack-stack,
+will list a long path whose name will include `intel-oneapi-mpi`.
+
+For a simple `hello-world` type MPI program (i.e. ./mpitest.c at the
+top level of this repo), you can simply invoke:
+```
+# Build:
+mpicc ~/parsl_utils/mpitest.c
+
+# Set fabric env variable (may be different for each CSP)
+# or whether using high-speed networking or not.
+export I_MPI_FABRICS=shm:ofi
+
+# Run with 4 CPU/processes on 2 nodes on the partition named "small":
+sbatch --output=tmp.std.out --nodes=2 -p small --wrap "mpiexec.hydra -np 4 ~/a.out"
+```
+The log file `tmp.std.out` should have similar output as:
+```
+Hello world from processor sfgary-cloud2-00180-2-0002, rank 1 out of 4 processors
+Hello world from processor sfgary-cloud2-00180-2-0002, rank 3 out of 4 processors
+Hello world from processor sfgary-cloud2-00180-2-0001, rank 2 out of 4 processors
+Hello world from processor sfgary-cloud2-00180-2-0001, rank 0 out of 4 processors
+```
+Note in particular the total number of processors, that there are exactly two
+processors on each node, two different nodes (0002 and 0001) are used, and each
+processor has a unique rank (1, 2, 3, and 4).
+
+Some potential indicators of incorrect configuration are:
++ same rank of zero for all processors
++ same node used, in particular the mgmt- (head) node instead of worker nodes
 
 ## Step 3: Final build
 
