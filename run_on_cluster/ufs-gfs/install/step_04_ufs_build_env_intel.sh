@@ -36,10 +36,10 @@ echo Get access to Intel MPI...
 #spack load intel-oneapi-compilers
 #spack load intel-oneapi-mpi
 echo "=============================="
-echo Test Intel icc access:
-icc --version
-echo Test Intel mpiic access:
-mpiicc --version
+#echo Test Intel icc access:
+#icc --version
+#echo Test Intel mpiic access:
+#mpiicc --version
 echo Test Intel mpiexec access:
 mpiexec --version
 echo "=============================="
