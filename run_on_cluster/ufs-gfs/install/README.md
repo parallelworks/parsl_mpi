@@ -107,6 +107,27 @@ and executables in `spack-stack`) and 2) actually compiling the core components 
 
 ## F) Launch the model and monitor
 
+To launch a regression test, we use the `ufs-weather-model/tests/rt.sh` framework. To launch
+a single test, try the following:
+1. Set the date of the baseline to compare to in `ufs-weather-model/tests/bl_date.conf`. 
+   I set `export BL_DATE=20240426` since it is present in the cloud data bucket.
+2. Due to the `$PW_CSP` environment variable, `ufs-weather-model/tests/detect_machine.sh`
+   detects whether the cluster is on GCP, AWS, or Azure and assigns it a `noaacloud` `MACHINE_ID`.
+3. Adjust four key paths in `rt.sh` under the `noaacloud` `MACHINE_ID` `case` switch. In particular,
+   + comment out `export PATH="/contrib/EPIC/bin:${PATH}"` and 
+   + comment out `module use /apps/modules/modulefiles` 
+   because the binaries/libraries are already loaded in `source step_04_...`. Then, adjust:
+   + `dprefix="${HOME}"  # Was /lustre/`
+   + `DISKNM="${HOME}/RT" # Was "/contrib/ufs-weather-model/RT"`
+   If you don't have `/lustre` or `/contrib` configured. The `DISKNM` parameter is the root
+   path for accessing the downloaded regression test input files from `step_06_...`.
+4. `./rt.sh -n "control_c48 intel" -a myaccount`
+   + Logs are sent to `ufs-weather-model/tests/logs/log_<MACHINE_ID>`
+   + Needed to adjust the number of CPU I can use for compile or running jobs. This value is
+     set in `ufs-weather-model/tests/default_vars.sh` and changes based on `PW_CSP` where it
+     is assumed that cluster worker nodes have a specific size for each CSP.
+   + `tests/compile.sh` is trying to load modules and failing - don't need this since I've preloaded my spack-stack. WORKING HERE
+
 ## G) View the results
 
 

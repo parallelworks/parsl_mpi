@@ -27,7 +27,11 @@ test_case=control_c48_
 compiler=intel
 
 # Where should I put this data?!
-ufs_input_data=${HOME}/ufs-data
+# This path is set based on the error output of
+# ./rt.sh which is looking for data in
+# DISKNM/NEMSfv3gfs/<banch>/
+# (although this may change from test-to-test?)
+ufs_input_data=${HOME}/RT/NEMSfv3gfs/${baseline_branch}
 mkdir -p ${ufs_input_data}
 cd ${ufs_input_data}
 
