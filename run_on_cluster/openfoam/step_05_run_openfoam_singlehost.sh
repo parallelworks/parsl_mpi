@@ -13,25 +13,30 @@
 # only allow for one CPU or task.
 # For example:
 # srun -N 1 --ntasks-per-node 12 -p big --pty /bin/bash
+#
+# This script can be launched with
+# the sbatch launcher to run on a
+# single node and pick up the configuration
+# information in openmpi_env.sh.
 #=======================
 
 # LOAD OpenMPI ENVIRONMENT HERE!
-#source $HOME/parsl_mpi/run_on_cluster/openfoam/openmpi_env.sh
-source /contrib/alvaro/ompi/env.sh
+source $HOME/parsl_mpi/run_on_cluster/openfoam/openmpi_env.sh
+#source /contrib/alvaro/ompi/env.sh
 
 # SET RUN DIR (same as #SBATCH --chdir=/path/to/OpenFOAM/case(
-RUN_DIR="$HOME/cyclone"
+RUN_DIR="${OPENFOAM_SHARED_DIR}/cyclone"
 cd $RUN_DIR
 
 # REPLACE THE PATH TO THE SIF FILE
-SIF_PATH="$HOME/openfoam.sif"
+SIF_PATH="${OPENFOAM_SHARED_DIR}/openfoam.sif"
 
 # SET NUMBER OF MPI PROCESSES = OPENFOAM SUBDOMAINS
 # 12 is the default value in cyclone/system/decomposeParDict
 # Note that the number of nodes and ntasks-per-node
 # set above need to multiply to 12 (e.g. 6 nodes
 # with 2 CPU each => 2 x 6 = 12).
-num_mpi_proc=12
+num_mpi_proc=$NPROCS_MPI
 
 # MESH CASE
 singularity exec ${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; blockMesh"
