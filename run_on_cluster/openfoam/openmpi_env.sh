@@ -31,9 +31,6 @@ export OPENFOAM_SHARED_DIR=/openfoam
 #===============================
 # Configuration for using a 
 # single Azure HC44rs through sbatch
-# NOT ALL CPU ARE USED DUE TO
-# ISSUE WITH USING SINGULARITY CONTAINER
-# THROUGH MPI
 #export NTASKS_PER_NODE=28
 #export NNODES=1
 #export NPROCS_MPI=28
@@ -43,23 +40,21 @@ export OPENFOAM_SHARED_DIR=/openfoam
 #===============================
 # Configuration for using a
 # single Azure HC44rs locally (no sbatch)
-export NTASKS_PER_NODE=40
-export NNODES=1
-export NPROCS_MPI=40
-export RUN_TIME=5.0
-export DOMAIN_DECOMP="(2 4 5)"
+#export NTASKS_PER_NODE=40
+#export NNODES=1
+#export NPROCS_MPI=40
+#export RUN_TIME=0.2
+#export DOMAIN_DECOMP="(2 4 5)"
 
 #==============================
 # Configuration for using
 # 6 Azure HC44rs nodes
 # Runs in 72s for 0.2s simulation time
-# ISSUE: This configuration is not stable with
-# long run times.
-#export NTASKS_PER_NODE=24
-#export NNODES=6
-#export NPROCS_MPI=144
-#export RUN_TIME=0.2
-#export DOMAIN_DECOMP="(4 6 6)"
+export NTASKS_PER_NODE=24
+export NNODES=6
+export NPROCS_MPI=144
+export RUN_TIME=0.2
+export DOMAIN_DECOMP="(4 6 6)"
 
 # Some OpenMPI paths
 export OMPI_DIR=${OPENFOAM_SHARED_DIR}/ompi
