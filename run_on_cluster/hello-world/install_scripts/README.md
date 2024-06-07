@@ -1,11 +1,35 @@
-# Notes on setting up a Spack build cache
+# Notes on `hello-world` case setup and testing
 
-## Resources
+The general approach here has been tested on both Centos7 
+and Rocky8 images.
+
+## Testing MPI on clusters
+
+### Cluster state
+
+`sinfo` is a great command to use to query the cluster state.
+Output might look like this:
+```
+PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST 
+compute*     up   infinite      2  idle% sfgary-gg-00002-1-[0003-0004] 
+compute*     up   infinite      8  idle~ sfgary-gg-00002-1-[0001-0002,0005-0010] 
+```
+Note that here, two nodes are powering down and 8 are powered down.
+(The powered down nodes are actually non-existant to reduce costs.)
+When nodes are allocated jobs, `idle` changes to `alloc`.
+Node statuses (i.e. `~` means powered down, `%` means powering down)
+are defined more fully in the [SLURM documentation](https://slurm.schedmd.com/sinfo.html#SECTION_NODE-STATE-CODES).
+
+### OpenMPI 
+
+## Setting up a Spack build cache
+
+### Resources
 
 [Mirror tutorial](https://spack-tutorial.readthedocs.io/en/ecp21/tutorial_binary_cache.html)
 [Build cache docs](https://spack.readthedocs.io/en/latest/binary_caches.html)
 
-## Nomenclature
+### Nomenclature
 
 A build cache is a store of binaries compiled as part of the `spack install` process. 
 Spack mirrors are **augmented** with build caches.  That is, first a Spack mirror is 

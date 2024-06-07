@@ -12,7 +12,7 @@ echo "===> Will build OpenMPI with gcc v$gcc_version"
 echo "===> Set up OpenMPI build environment variables"
 
 # OpenMPI needs to be installed in a shared directory
-export OMPI_DIR=${HOME}/ompi
+export OMPI_DIR=/contrib/sfgary/ompi
 mkdir -p $OMPI_DIR/bin
 mkdir -p $OMPI_DIR/lib
 
@@ -91,10 +91,19 @@ fi
 echo "===> Compile and install OMPI"
 make install -j 30
 
+echo "===> Create env loading script..."
+echo "export OMPI_DIR=${OMPI_DIR}" > ${OMPI_DIR}/env.sh
+echo "export PATH=${OMPI_DIR}/bin:\$PATH" >> ${OMPI_DIR}/env.sh
+echo "export LD_LIBRARY_PATH=\$OMPI_DIR/lib:\$LD_LIBRARY_PATH" >> ${OMPI_DIR}/env.sh
+echo "export MANPATH=\$OMPI_DIR/share/man:\$MANPATH" >> ${OMPI_DIR}/env.sh
+
 echo "Now that OpenMPI is installed, test it with the following steps:"
 echo " "
+echo "# Source the environment"
+echo "source ${OMPI_DIR}/env.sh "
+echo " "
 echo "# Compile test code"
-echo "${OMPI_DIR}/bin/mpicc -o mpitest.out mpitest.c"
+echo "mpicc -o mpitest.out mpitest.c"
 echo " "
 echo "# Run test with PMI. You may not need the --mpi=pmi2 flag."
 echo "srun -N 2 -n 4 --mpi=pmi2 mpitest.out"
