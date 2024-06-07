@@ -12,7 +12,7 @@ echo "===> Will build OpenMPI with gcc v$gcc_version"
 echo "===> Set up OpenMPI build environment variables"
 
 # OpenMPI needs to be installed in a shared directory
-export OMPI_DIR=/contrib/sfgary/ompi
+export OMPI_DIR=${HOME}/ompi
 mkdir -p $OMPI_DIR/bin
 mkdir -p $OMPI_DIR/lib
 
