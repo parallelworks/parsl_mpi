@@ -13,7 +13,7 @@
 # Needs CDO:
 # sudo apt-get install cdo
 
-foreach file ( ./gefs_data/pres_sfc_* )
+foreach file ( ./gefs_data/pres_* )
     echo Working on $file
     set bn = `basename $file .grib2`
     cdo -f nc copy $file ./gefs_data/${bn}.nc
