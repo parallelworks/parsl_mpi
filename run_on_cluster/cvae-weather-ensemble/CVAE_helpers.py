@@ -12,8 +12,6 @@ import cartopy
 from tensorflow import keras
 from keras import layers
 from sklearn.model_selection import train_test_split
-
-import subprocess
     
 class Sampling(layers.Layer):
     """Uses (z_mean, z_log_var) to sample z, the vector encoding a digit."""
@@ -132,6 +130,10 @@ class VAE(keras.Model):
             "kl_loss": self.kl_loss_tracker.result(),
         }
 
+latent_dim = 2
+train = True
+model_dir = './model_dir'
+    
 def train_model(X_train, X_test, X_valid, date):
     early_stopping_cb = keras.callbacks.EarlyStopping(patience = 5, restore_best_weights = True) # stops training early if the validation loss does not improve
 
@@ -158,6 +160,9 @@ def train_model(X_train, X_test, X_valid, date):
 
     with open(os.path.join(model_dir, f'test_loss_{date}.json'), 'w') as json_file:
         json.dump(test_loss, json_file, indent = 4)
+
+data_prefix = "./gefs_data"
+data_dir = data_prefix + '/' + 'converted/'
         
 # used MNIST data preproc as template for this definition
 def load_data(): 
@@ -171,7 +176,7 @@ def load_data():
         -1
     ).astype("float32") / 110000
     return all_data
-
+        
 def run_train(num_files, date):
     slp = load_data() # load data
     print("shape:", np.shape(slp)) # verify data shape
