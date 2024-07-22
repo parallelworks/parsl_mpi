@@ -20,6 +20,6 @@ git add .gitignore ${history_file_name}.dvc
 dvc add $model_file_name
 git add .gitignore ${model_file_name}.dvc
 
-git commit -m $commit_message
 dvc push
+git commit -m $commit_message
 git push origin $branch_name
