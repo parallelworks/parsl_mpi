@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/tcsh -f
 
 # Start Conda and select env (you will need to cross-check the paths and env name)
 
