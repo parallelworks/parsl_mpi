@@ -13,7 +13,8 @@ file_name=$1
 commit_message="$2"
 
 dvc add "$file_name"
-git add .gitignore "${file_name}.dvc"
+git add .gitignore 
+git add "${file_name}.dvc"
 
 dvc push
 git commit -m "$commit_message"
