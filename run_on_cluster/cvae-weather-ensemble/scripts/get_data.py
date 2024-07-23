@@ -7,8 +7,8 @@ def download_file(year, month, day, ensemble, data_predir):
 
 # convert
 def convert_file(year, month, day, ensemble, data_dir):
-    if f'pres_msl_{year}{month}{day}00_{ensemble}.nc' not in os.listdir(data_dir):
-        os.system(f'cdo -f nc copy ./gefs_data/pres_msl_{year}{month}{day}00_{ensemble}.grib2 ./gefs_data/converted/pres_msl_{year}{month}{day}00_{ensemble}.nc')
+    if f'pres_msl_{year}{month}{day}00_{ensemble}.grib2' in os.listdir('./gefs_data') and f'pres_msl_{year}{month}{day}00_{ensemble}.nc' not in os.listdir(data_dir):
+        os.system(f'cdo -f nc copy ./gefs_data/pres_msl_{year}{month}{day}00_{ensemble}.grib2 {data_dir}pres_msl_{year}{month}{day}00_{ensemble}.nc')
 
 # subset
 def subset_file(data_file, data_dir):
