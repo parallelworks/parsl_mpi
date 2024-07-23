@@ -1,4 +1,4 @@
-#!/bin/tcsh -f
+#!/bin/bash
 
 # Start Conda and select env (you will need to cross-check the paths and env name)
 
@@ -9,17 +9,13 @@ conda activate cvae_env
 # $1 stores the first entry on the command line that launches
 # the shell script and so on. Add as many as you need.
 
-history_file_name = $1
-model_file_name = $2
-branch_name = $3
-commit_message = $4
+file_name=$1
+branch_name=$2
+commit_message="$3"
 
-dvc add $history_file_name
-git add .gitignore ${history_file_name}.dvc
-
-dvc add $model_file_name
-git add .gitignore ${model_file_name}.dvc
+dvc add "$file_name"
+git add .gitignore "${file_name}.dvc"
 
 dvc push
-git commit -m $commit_message
-git push origin $branch_name
+git commit -m "$commit_message"
+git push origin "$branch_name"
