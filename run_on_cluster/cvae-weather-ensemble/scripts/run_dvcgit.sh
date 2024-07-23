@@ -10,12 +10,11 @@ conda activate cvae_env
 # the shell script and so on. Add as many as you need.
 
 file_name=$1
-branch_name=$2
-commit_message="$3"
+commit_message="$2"
 
 dvc add "$file_name"
 git add .gitignore "${file_name}.dvc"
 
 dvc push
 git commit -m "$commit_message"
-git push origin "$branch_name"
+git push
