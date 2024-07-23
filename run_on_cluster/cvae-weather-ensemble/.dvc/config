@@ -1,0 +1,4 @@
+[core]
+    remote = dvcstorage
+['remote "dvcstorage"']
+    url = /aws-dvc-bucket
