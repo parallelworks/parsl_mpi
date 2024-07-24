@@ -53,7 +53,7 @@ When opening the notbooks make sure to set each of their kernel to the one just 
 
 ### 3. Continue to `cvae_runner_and_example.ipynb` and follow the instructions in the notebook
 
-## Needed Specifications:
+## Needed Specifications
 **GPU & Memory:** The program requires at least 32 G of RAM.\
 **Storage:** Mounted stoarge is required for dvc to run properly.\
 **GitHub:** A git repo that can be SSH into is also needed for dvc to run properly. SSH connection must be established on the terminal.
