@@ -44,9 +44,14 @@ conda install -y requests
 conda install -y -c anaconda jinja2
 python -m ipykernel install --user --name=<NAME> --display-name "Python (<NAME>)"
 ```
-*`conda env update --file cvae_env.yaml --name <NAME>` can also be used to recreate the working conda environment used to build this model.* 
 
-### 2. Open the `cvae_runner_and_example.ipynb` notebook
+*`conda env update --file cvae_env.yaml --name <NAME>` can also be used to recreate the working conda environment used to build this model. Make sure to still run the first and last commands listed above when activating the environment* 
+
+### 2. Open the `cvae_runner_and_example.ipynb`, `cvae_training.ipynb`, and `cvae_log.ipynb` notebooks
+
+When opening the notbooks make sure to set each of their kernel to the one just created. Save the notebook after this is done. You can also close out of the `log` and `training` notebooks if wanted. Note: in order to see an updated log when running the online trainging, the `log` notebook must be closed and opened again throughout the session.
+
+### 3. Continue to `cvae_runner_and_example.ipynb` and follow the instructions in the notebook
 
 
 
