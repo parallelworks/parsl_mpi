@@ -59,4 +59,4 @@ Needed Storage:
 
 ##
 
-*This is based on an example from Keras.io by fchollet*
+*This model based on an [example](https://keras.io/examples/generative/vae/) from Keras.io by fchollet ([GitHub](https://github.com/keras-team/keras-io/blob/master/examples/generative/vae.py))*
