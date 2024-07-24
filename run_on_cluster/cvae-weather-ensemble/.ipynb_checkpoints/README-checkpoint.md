@@ -10,9 +10,45 @@ This is the CVAE Weather Ensemble Model repository. The model leverages the powe
 
 ## Getting Started
 
-To get started with the CVAE Weather Ensemble Model, follow the instructions below to set up your environment and start making predictions.
+To get started with the CVAE Weather Ensemble Model, follow the instructions below to set up your environment.
 
-1. Open the `cvae_runner_and_example` notebook
+### 1. Conda env Setup
+*The following is the list steps needed to be taken in order to set up a correct conda environment for running this notebook.*
+
+**Create Environment:**
+```bash
+source ~/pw/.miniconda3c/etc/profile.d/conda.sh
+conda create --name <NAME> python=3.9
+conda activate <NAME>
+```
+
+**Install Pacakages:** 
+
+The following packages need to be installed on top of a typical base Conda env. Install the packages in the following order so the environment solves correctly:
+```bash
+conda install -y -c conda-forge tensorflow
+conda install -y -c conda-forge netCDF4          # For reading nc files
+conda install -y -c conda-forge cartopy          # For making maps
+conda install -y -c conda-forge matplotlib
+conda install -y -c conda-forge pandas
+conda install -y -c conda-forge scikit-learn
+conda install -y -c conda-forge papermill        # For running online training
+conda install -y -c conda-forge dvc              # For dvc
+conda install -y -c conda-forge nco
+conda install -y -c conda-forge cdo              # For converting grib to nc
+```
+**Connect Notebook to Environment:**
+```bash
+conda install -y ipykernel
+conda install -y requests
+conda install -y -c anaconda jinja2
+python -m ipykernel install --user --name=<NAME> --display-name "Python (<NAME>)"
+```
+### 2. Open the `cvae_runner_and_example.ipynb` notebook
+
+
+
+
 
 
 *This is based on an example from Keras.io by fchollet*
