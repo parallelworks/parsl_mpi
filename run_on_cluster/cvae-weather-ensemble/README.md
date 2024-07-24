@@ -55,8 +55,11 @@ When opening the notbooks make sure to set each of their kernel to the one just 
 
 ## Important Notes
 
-Needed Storage:
+### Needed Specifications:
+* **GPU & Memory:** The program requires at least 32 G of RAM.
+* **Storage:** Mounted stoarge is required for dvc to run properly.
+* **GitHub:** A git repo that can be SSH into is also needed for dvc to run properly. SSH connection must be established on the terminal.
 
 ##
 
-*This model based on an [example](https://keras.io/examples/generative/vae/) from Keras.io by fchollet ([GitHub](https://github.com/keras-team/keras-io/blob/master/examples/generative/vae.py))*
+*This model is based on an [example](https://keras.io/examples/generative/vae/) from Keras.io by fchollet ([GitHub](https://github.com/keras-team/keras-io/blob/master/examples/generative/vae.py))*
