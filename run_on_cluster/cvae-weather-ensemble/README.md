@@ -12,7 +12,7 @@ This is the CVAE Weather Ensemble Model repository. The model leverages the powe
 
 To get started with the CVAE Weather Ensemble Model, follow the instructions below to set up your environment.
 
-### 1. Conda env Setup
+### 1. Conda env setup
 *The following is the list steps needed to be taken in order to set up a correct conda environment for running this notebook.*
 
 **Create Environment:**
@@ -44,6 +44,8 @@ conda install -y requests
 conda install -y -c anaconda jinja2
 python -m ipykernel install --user --name=<NAME> --display-name "Python (<NAME>)"
 ```
+*`conda env update --file cvae_env.yaml --name <NAME>` can also be used to recreate the working conda environment used to build this model.* 
+
 ### 2. Open the `cvae_runner_and_example.ipynb` notebook
 
 
