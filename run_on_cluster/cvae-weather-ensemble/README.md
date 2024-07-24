@@ -4,9 +4,9 @@ This is the CVAE Weather Ensemble Model repository. The model leverages the powe
 
 ## Key Features
 
-* **Conditional Variational Autoencoder (CVAE):** Utilizes CVAE with Conv2d networks to model complex dependencies in weather data, enabling accurate probabilistic forecasts.
-* **Online Training:** Implements a dynamic training approach that can adapt to real-time incoming data, ensuring up-to-date forecasts.
-* **Data Version Control (DVC):** Manages datasets and model versions effectively with DVC, facilitating reproducibility and collaboration.
+**Conditional Variational Autoencoder (CVAE):** Utilizes CVAE with Conv2d networks to model complex dependencies in weather data, enabling accurate probabilistic forecasts.
+**Online Training:** Implements a dynamic training approach that can adapt to real-time incoming data, ensuring up-to-date forecasts.
+**Data Version Control (DVC):** Manages datasets and model versions effectively with DVC, facilitating reproducibility and collaboration.
 
 ## Getting Started
 
@@ -56,9 +56,9 @@ When opening the notbooks make sure to set each of their kernel to the one just 
 ## Important Notes
 
 ### Needed Specifications:
-* **GPU & Memory:** The program requires at least 32 G of RAM.
-* **Storage:** Mounted stoarge is required for dvc to run properly.
-* **GitHub:** A git repo that can be SSH into is also needed for dvc to run properly. SSH connection must be established on the terminal.
+**GPU & Memory:** The program requires at least 32 G of RAM.
+**Storage:** Mounted stoarge is required for dvc to run properly.
+**GitHub:** A git repo that can be SSH into is also needed for dvc to run properly. SSH connection must be established on the terminal.
 
 ##
 
