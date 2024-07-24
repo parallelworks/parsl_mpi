@@ -53,9 +53,10 @@ When opening the notbooks make sure to set each of their kernel to the one just 
 
 ### 3. Continue to `cvae_runner_and_example.ipynb` and follow the instructions in the notebook
 
+## Important Notes
 
+Needed Storage:
 
-
-
+##
 
 *This is based on an example from Keras.io by fchollet*
