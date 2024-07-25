@@ -1,0 +1,5 @@
+outs:
+- md5: 29cd6e3525ec2f32b6250c62c89d43ce
+  size: 6468072
+  hash: md5
+  path: vae.weights_200101.h5
