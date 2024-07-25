@@ -45,7 +45,7 @@ conda install -y -c anaconda jinja2
 python -m ipykernel install --user --name=<NAME> --display-name "Python (<NAME>)"
 ```
 
-*`conda env update --file cvae_env.yaml --name <NAME>` can also be used to recreate the working conda environment used to build this model. After this executes run 'source ~/pw/.miniconda3c/etc/profile.d/conda.sh', 'conda activate <NAME>`, and then `python -m ipykernel install --user --name=<NAME> --display-name "Python (<NAME>)"'* 
+*`conda env update --file cvae_env.yaml --name <NAME>` can also be used to recreate the working conda environment used to build this model. After this executes run 'source ~/pw/.miniconda3c/etc/profile.d/conda.sh`, `conda activate <NAME>`, and then `python -m ipykernel install --user --name=<NAME> --display-name "Python (<NAME>)"'* 
 
 ### 2. Open the `cvae_runner_and_example.ipynb`, `cvae_training.ipynb`, and `cvae_log.ipynb` notebooks
 
