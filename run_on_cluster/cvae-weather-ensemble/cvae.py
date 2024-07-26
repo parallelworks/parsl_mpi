@@ -67,17 +67,20 @@ class Sampling(layers.Layer):
 
 
 def build_encoder(latent_dim, height, width, channels, n_conv_layers = 2, kernel_size = 3, strides = 2, base_filters = 32):
-    encoder_inputs = keras.Input(shape=(height, width, channels))
     # Number of filters: 32
     # kernel_size: 3 (integer or list of two integers) -> Width and height of the 2D convolution window or receptive field
     # strides: Shift from one window to the next. The output size is the input size size divided by the stride (rounded up)
     # pading:
     #     - same: Uses zero padding when stride and filter width don't match input width
     #     - valid: Ignores inputs to fit the input width to the stride and filter width
-    #x = layers.Conv2D(32, 20, activation="relu", strides=(7,10), padding="same")(encoder_inputs)
+    
+    # x = layers.Conv2D(32, 20, activation="relu", strides=(7,10), padding="same")(encoder_inputs)
 
+    encoder_inputs = keras.Input(shape=(height, width, channels))
+    
     for l in range(n_conv_layers):
-        n_filters = int(base_filters*np.power(2, l))
+        n_filters = int(base_filters * np.power(2, l))
+        
         if l == 0:
             x = layers.Conv2D(n_filters, kernel_size, activation="relu", strides=strides, padding="same")(encoder_inputs)
         else:
@@ -86,10 +89,13 @@ def build_encoder(latent_dim, height, width, channels, n_conv_layers = 2, kernel
 
     x = layers.Flatten()(x)
     x = layers.Dense(8, activation="relu")(x)
+    
     z_mean = layers.Dense(latent_dim, name="z_mean")(x)
     z_log_var = layers.Dense(latent_dim, name="z_log_var")(x)
     z = Sampling()([z_mean, z_log_var])
+    
     encoder = keras.Model(encoder_inputs, [z_mean, z_log_var, z], name="encoder")
+    
     print(encoder.summary())
     return encoder
 
@@ -142,25 +148,27 @@ def build_decoder(latent_dim, height, width, channels, n_conv_layers = 2, kernel
     latent_inputs = keras.Input(shape=(latent_dim,))
 
     # Adjusting for the first and last layers!
-    #height = int(height/7)
-    #width = int(width/10)
+    # height = int(height/7)
+    # width = int(width/10)
 
     final_height = calculate_final_shape(height, n_conv_layers, strides)
     final_width = calculate_final_shape(width, n_conv_layers, strides)
     height_paddings = calculate_output_paddings(height, n_conv_layers, strides)
     width_paddings = calculate_output_paddings(width, n_conv_layers, strides)
-    final_filters = base_filters*np.power(2, n_conv_layers-1)
+    final_filters = base_filters * np.power(2, n_conv_layers - 1)
 
     x = layers.Dense(final_height * final_width * final_filters, activation="relu")(latent_inputs)
     x = layers.Reshape((final_height, final_width, final_filters))(x)
 
     for l in range(n_conv_layers):
-        filters = base_filters*np.power(2, n_conv_layers-l-1)
-        x = layers.Conv2DTranspose(filters, kernel_size, activation="relu", strides = strides, padding="same", output_padding = [height_paddings[l], width_paddings[l]])(x)
+        filters = base_filters * np.power(2, n_conv_layers - l - 1)
+        
+        x = layers.Conv2DTranspose(filters, kernel_size, activation="relu", strides=strides, padding="same", output_padding=[height_paddings[l], width_paddings[l]])(x)
 
-    #x = layers.Conv2DTranspose(32, 10, activation="relu", strides=(7,10), padding="same")(x)
+    # x = layers.Conv2DTranspose(32, 10, activation="relu", strides=(7,10), padding="same")(x)
     decoder_outputs = layers.Conv2DTranspose(channels, 3, activation="sigmoid", padding="same")(x)
     decoder = keras.Model(latent_inputs, decoder_outputs, name="decoder")
+    
     print(decoder.summary())
     return decoder
 
