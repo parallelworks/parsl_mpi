@@ -1,17 +1,19 @@
 # https://keras.io/examples/generative/vae/
 import os, json
-import pickle
+# import pickle
 import glob
+
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
+from tf import keras
+from keras import layers
 
 from sklearn.model_selection import train_test_split
 
-import matplotlib.pyplot as plt
+
 
 # CNN require huge amounts of RAM, specially during training
 # Computational requirements for a single CNN layer:
@@ -55,43 +57,6 @@ import matplotlib.pyplot as plt
 # - Double number of filters after each pooling layer
 # - Add keras.layers.Dropout(0.5) to reduce overfitting between dense layers
 
-class Sampling(layers.Layer):
-    """Uses (z_mean, z_log_var) to sample z, the vector encoding a digit."""
-
-    def call(self, inputs):
-        z_mean, z_log_var = inputs
-        batch = tf.shape(z_mean)[0]
-        dim = tf.shape(z_mean)[1]
-        epsilon = tf.keras.backend.random_normal(shape=(batch, dim))
-        return z_mean + tf.exp(0.5 * z_log_var) * epsilon
-
-
-def build_encoder(latent_dim, height, width, channels, n_conv_layers = 2, kernel_size = 3, strides = 2, base_filters = 32):
-    encoder_inputs = keras.Input(shape=(height, width, channels))
-    # Number of filters: 32
-    # kernel_size: 3 (integer or list of two integers) -> Width and height of the 2D convolution window or receptive field
-    # strides: Shift from one window to the next. The output size is the input size size divided by the stride (rounded up)
-    # pading:
-    #     - same: Uses zero padding when stride and filter width don't match input width
-    #     - valid: Ignores inputs to fit the input width to the stride and filter width
-    #x = layers.Conv2D(32, 20, activation="relu", strides=(7,10), padding="same")(encoder_inputs)
-
-    for l in range(n_conv_layers):
-        n_filters = int(base_filters*np.power(2, l))
-        if l == 0:
-            x = layers.Conv2D(n_filters, kernel_size, activation="relu", strides=strides, padding="same")(encoder_inputs)
-        else:
-            x = layers.Conv2D(n_filters, kernel_size, activation="relu", strides=strides, padding="same")(x)
-        # FIXME: Why are there no pooling layers?
-
-    x = layers.Flatten()(x)
-    x = layers.Dense(8, activation="relu")(x)
-    z_mean = layers.Dense(latent_dim, name="z_mean")(x)
-    z_log_var = layers.Dense(latent_dim, name="z_log_var")(x)
-    z = Sampling()([z_mean, z_log_var])
-    encoder = keras.Model(encoder_inputs, [z_mean, z_log_var, z], name="encoder")
-    print(encoder.summary())
-    return encoder
 
 def calculate_final_shape(height, num_conv_2d_layers, stride):
     for n in range(num_conv_2d_layers):
@@ -137,103 +102,6 @@ def _calculate_output_paddings(height, num_conv_layers, stride):
         output_paddings.append(padding)
 
     return output_paddings
-
-def build_decoder(latent_dim, height, width, channels, n_conv_layers = 2, kernel_size = 3, strides = 2, base_filters = 32):
-    latent_inputs = keras.Input(shape=(latent_dim,))
-
-    # Adjusting for the first and last layers!
-    #height = int(height/7)
-    #width = int(width/10)
-
-    final_height = calculate_final_shape(height, n_conv_layers, strides)
-    final_width = calculate_final_shape(width, n_conv_layers, strides)
-    height_paddings = calculate_output_paddings(height, n_conv_layers, strides)
-    width_paddings = calculate_output_paddings(width, n_conv_layers, strides)
-    final_filters = base_filters*np.power(2, n_conv_layers-1)
-
-    x = layers.Dense(final_height * final_width * final_filters, activation="relu")(latent_inputs)
-    x = layers.Reshape((final_height, final_width, final_filters))(x)
-
-    for l in range(n_conv_layers):
-        filters = base_filters*np.power(2, n_conv_layers-l-1)
-        x = layers.Conv2DTranspose(filters, kernel_size, activation="relu", strides = strides, padding="same", output_padding = [height_paddings[l], width_paddings[l]])(x)
-
-    #x = layers.Conv2DTranspose(32, 10, activation="relu", strides=(7,10), padding="same")(x)
-    decoder_outputs = layers.Conv2DTranspose(channels, 3, activation="sigmoid", padding="same")(x)
-    decoder = keras.Model(latent_inputs, decoder_outputs, name="decoder")
-    print(decoder.summary())
-    return decoder
-
-class VAE(keras.Model):
-    def __init__(self, encoder, decoder, loss_scale, **kwargs):
-        super(VAE, self).__init__(**kwargs)
-        self.encoder = encoder
-        self.decoder = decoder
-        self.total_loss_tracker = keras.metrics.Mean(name="total_loss")
-        self.reconstruction_loss_tracker = keras.metrics.Mean(
-            name="reconstruction_loss"
-        )
-        self.kl_loss_tracker = keras.metrics.Mean(name="kl_loss")
-        self.loss_scale = loss_scale
-
-    @property
-    def metrics(self):
-        return [
-            self.total_loss_tracker,
-            self.reconstruction_loss_tracker,
-            self.kl_loss_tracker,
-        ]
-
-    def train_step(self, data):
-
-        with tf.GradientTape() as tape:
-            z_mean, z_log_var, z = self.encoder(data)
-            reconstruction = self.decoder(z)
-            reconstruction_loss = tf.reduce_mean(
-                tf.reduce_sum(
-                    keras.losses.binary_crossentropy(data, reconstruction), axis=(1, 2)
-                )
-            )/self.loss_scale
-            kl_loss = -0.5 * (1 + z_log_var - tf.square(z_mean) - tf.exp(z_log_var))
-            kl_loss = tf.reduce_mean(tf.reduce_sum(kl_loss, axis=1))/self.loss_scale
-            total_loss = (reconstruction_loss + kl_loss)
-        grads = tape.gradient(total_loss, self.trainable_weights)
-        self.optimizer.apply_gradients(zip(grads, self.trainable_weights))
-        self.total_loss_tracker.update_state(total_loss)
-        self.reconstruction_loss_tracker.update_state(reconstruction_loss)
-        self.kl_loss_tracker.update_state(kl_loss)
-        return {
-            "loss": self.total_loss_tracker.result(),
-            "reconstruction_loss": self.reconstruction_loss_tracker.result(),
-            "kl_loss": self.kl_loss_tracker.result(),
-        }
-
-    # Needed to validate (validation loss) and to evaluate
-    def test_step(self, data):
-        if type(data) == tuple:
-            data, _ = data
-
-        z_mean, z_log_var, z = self.encoder(data)
-        reconstruction = self.decoder(z)
-        # FIXME: Normalize loss with the number of features (28*28)
-        reconstruction_loss = tf.reduce_mean(
-            tf.reduce_sum(
-                keras.losses.binary_crossentropy(data, reconstruction), axis=(1, 2)
-            )
-        )/self.loss_scale
-        kl_loss = -0.5 * (1 + z_log_var - tf.square(z_mean) - tf.exp(z_log_var))
-        kl_loss = tf.reduce_mean(tf.reduce_sum(kl_loss, axis=1))/self.loss_scale
-        total_loss = (reconstruction_loss + kl_loss)
-        #grads = tape.gradient(total_loss, self.trainable_weights)
-        #self.optimizer.apply_gradients(zip(grads, self.trainable_weights))
-        self.total_loss_tracker.update_state(total_loss)
-        self.reconstruction_loss_tracker.update_state(reconstruction_loss)
-        self.kl_loss_tracker.update_state(kl_loss)
-        return {
-            "loss": self.total_loss_tracker.result(),
-            "reconstruction_loss": self.reconstruction_loss_tracker.result(),
-            "kl_loss": self.kl_loss_tracker.result(),
-        }
 
 # Only works if latent_dim = 2
 def plot_latent_space(vae, digit_size, channels, n=30, figsize=15, show = False, path = ''):
@@ -288,170 +156,7 @@ def plot_images(images, rows, columns, path = '', show = False):
         plt.show()
     if path:
         plt.savefig(path)
-
-
-def load_cifar10():
-    # https://pgaleone.eu/neural-networks/deep-learning/2016/12/13/convolutional-autoencoders-in-tensorflow/
-    (x_train, y_train), (x_test, y_test) = keras.datasets.cifar10.load_data()
-    cifar10 = np.concatenate([x_train, x_test], axis=0)
-    #cifar10 = np.expand_dims(cifar10, -1).astype("float32") / 255
-    cifar10 = cifar10.astype("float16") / 255
-    return cifar10
-
-def load_pkl(pkl_path):
-    with open(pkl_path, "rb") as input_file:
-        # For use with batch produced pkl files
-        #slp = np.expand_dims(pickle.load(input_file),-1).astype("float16")/110000
-        # For use with the single manual pkl file
-        # Assume data is already normalized.
-        # Assume data is already type selected (float16 or float32).
-        slp = pickle.load(input_file)
-    return slp
-
-def load_many_pkl(pkl_pattern):
-    # Similar to load_pkl but loads several files
-    # that pattern match the submitted string
-    filename_list = glob.glob(pkl_pattern)
-
-    list_arrays = []
-    for filename in filename_list:
-        print('Loading '+filename)
-        with open(filename, "rb") as input_file:
-            # For use with batch produced pkl files
-            # Assume data is already normalized.
-            # Assume data is already type selected (float16 or float32).
-            list_arrays.append(pickle.load(input_file))
-
-    slp = np.concatenate(list_arrays,axis=0)
-    return slp
-
-def load_many_grib(
-        grib_pattern,
-        data_type=np.float16,
-        slow_summary=False,
-        min_max_norm=True):
     
-    import pygrib
-
-    # Similar to load_many_pkl but loads several files
-    # that pattern match the submitted string. Include
-    # asterix, question mark, etc. in the _pattern.
-    filename_list = glob.glob(grib_pattern)
-
-    # For data access, using examples at https://jswhit.github.io/pygrib/api.html
-    # as a template.  Set flag and counter.
-    tt = 0
-    ff = 1
-    first_time_step_flag = True
-    for filename in filename_list:
-        print('Loading '+filename+' file '+str(ff)+' of '+str(len(filename_list)))
-        data = pygrib.open(filename).select(name='Mean sea level pressure')
-        
-        # Advantage to directly grabbing from grib is that we can
-        # check for units with timestep['units'] and dimensions
-        # to preallocate memory.  To keep things fast,
-        # assume same units throughout data set and MSL is in Pa.
-        # Convert to hPa by divide by 100 -> used in weather maps and
-        # fits in float16/int16 range of +- 32767.
-        # We also know in advance the
-        # size of the data we are about to load so we can preallocate
-        # a block of data.  See https://stackoverflow.com/questions/13215525/how-to-extend-an-array-in-place-in-numpy
-        # for why we cannot in general extend array size on the fly.
-        # This is where FORTRAN and C would excel. Get data size for
-        # first file only.
-        if first_time_step_flag:
-            ntime = 0
-            for timestep in data:
-                ntime = ntime + 1
-            nfile = len(filename_list)
-            print("Found "+str(nfile)+" files and "+str(ntime)+" time steps.")
-            
-            batch = nfile*ntime
-            height = data[1]['Nj']
-            width = data[1]['Ni']
-            channel = 1
-            
-            print("Allocating for "+str(batch)+" x "+str(height)+" x "+str(width)+" x "+str(channel)+" shape")
-            output = np.zeros([batch,height,width,1],dtype=data_type)
-
-            print("Allocating mean, min, and max storage")
-            avgs = np.zeros([batch,1],dtype=data_type)
-            maxs = np.zeros([batch,1],dtype=data_type)
-            mins = np.zeros([batch,1],dtype=data_type)
-            stds = np.zeros([batch,1],dtype=data_type)
-            
-            # Set flag to avoid repeating.
-            first_time_step_flag = False
-
-        for timestep in data:
-            # First time step creates the array
-            # Add batch and channel dimensions to first and last axes.
-            # WORKING HERE: Automatic type conversion to ints is truncation!!!
-            #print('Loading timestep '+str(tt)+' of '+str(batch))
-            output[tt,:,:,0] = timestep.values/100
-            avgs[tt,0] = timestep['average']/100
-            stds[tt,0] = timestep['standardDeviation']/100
-            mins[tt,0] = timestep['minimum']/100
-            maxs[tt,0] = timestep['maximum']/100
-            tt = tt + 1
-
-        # Move to the next file
-        ff = ff + 1
-        
-    # Normalize and spit out sanity check statistics at the very end.
-    # Crosscheck with ['average'] and ['standardDeviation']
-    # data attributes.
-    min_out = np.min(mins)
-    max_out = np.max(maxs)
-    del_out = max_out - min_out
-    
-    print('Summary: ------------------')
-    # Taking mean, min, max over all data is time consuming.
-    # Only included here for cross checking.
-    if slow_summary:
-        print('np.mean(output) = '+str(np.mean(output)))
-        
-    print('np.mean(avgs)   = '+str(np.mean(avgs)))
-
-    if slow_summary:
-        print('np.min(output)  = '+str(np.min(output)))
-        
-    print('np.min(mins)    = '+str(min_out))
-
-    if slow_summary:
-        print('np.max(output)  = '+str(np.max(output)))
-        
-    print('np.max(maxs)    = '+str(max_out))
-    # Computing np.std on output takes up huge amount of RAM.
-    # Coalescing different files' standard deviations is complex,
-    # these numbers are just for reference and are not to be
-    # used in production.  Since +/- 3std should encompass most
-    # of the data, max-min ~ 6*mean(stds)
-    # Actually, max-min > 6*mean(std) because a true combined std
-    # has an additional term that takes into account the differences
-    # in the means of the two samples that are being combined.
-    #print('np.std(output)  = '+str(np.std(output)))
-    print('np.mean(stds)   = '+str(np.mean(stds)))
-
-    # Use min-max scaler approach to ensure that all values are
-    # always between 0 and 1.  If we use std as a normalizer, there
-    # could be values outside +/- 1 (and even outside +/- 3).
-    # Direct approach makes copy of data -> large RAM usage
-    #output = (output - np.min(mins))/(np.max(maxs) - np.min(mins))
-    # Replace with inplace operations.  See https://stackoverflow.com/questions/10149416/numpy-modify-array-in-place for even more general code.
-    # Allow for NOT normalizing in case data is loaded piece-wise in __main__
-    # so normalization can be done over multiple loads.
-    if min_max_norm:
-        output -= min_out
-        output /= del_out
-
-        if slow_summary:
-            print('After normalization:')
-            print('np.mean(output) = '+str(np.mean(output)))
-            print('np.min(output)  = '+str(np.min(output)))
-            print('np.max(output)  = '+str(np.max(output)))
-
-    return output, min_out, max_out
 
 def load_gefs_open_data_registry(dataset):
     import xarray as xr
