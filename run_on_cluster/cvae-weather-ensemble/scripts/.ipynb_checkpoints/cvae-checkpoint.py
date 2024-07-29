@@ -55,8 +55,8 @@ def build_decoder(latent_dim):
     # one "missing" filter stamp/convolution because for both Conv2DTranspose
     # operations, output_padding is set to maximum it could be in both dims
     # (i.e. exactly one less than the stride of each filter).
-    x = layers.Conv2DTranspose(64, [5, 9], activation="relu", strides=[5,9], padding="valid", output_padding=[4, 8])(x)
-    x = layers.Conv2DTranspose(32, 11, activation="relu", strides=[9,10], padding="valid", output_padding=[8, 9])(x)
+    x = layers.Conv2DTranspose(64, [5, 9], activation="relu", strides=[5,9], padding="same")(x)
+    x = layers.Conv2DTranspose(32, 11, activation="relu", strides=[9,10], padding="same")(x)
     
     decoder_outputs = layers.Conv2DTranspose(1, 3, activation="sigmoid", padding="same")(x)
     decoder = keras.Model(latent_inputs, decoder_outputs, name="decoder")
