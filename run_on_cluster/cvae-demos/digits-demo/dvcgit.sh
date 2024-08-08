@@ -11,11 +11,14 @@ conda activate cvae_env
 
 file_name=$1
 commit_message="$2"
+dvc_dir="$3"
 
-cd digits_dvc && dvc add "$file_name"
-cd digits_dvc && git add .gitignore 
-cd digits_dvc && git add "${file_name}.dvc"
+cd "$dvc_dir"
 
-cd digits_dvc && dvc push
-cd digits_dvc && git commit -m "$commit_message"
-cd digits_dvc && git push
+dvc add "$file_name"
+git add .gitignore 
+git add "${file_name}.dvc"
+
+dvc push
+git commit -m "$commit_message"
+git push
