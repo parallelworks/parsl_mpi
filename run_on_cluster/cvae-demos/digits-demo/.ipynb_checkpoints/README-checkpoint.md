@@ -12,4 +12,4 @@ To get started with the CVAE Digit Model, follow the instructions below to set u
 2. Run `source ~/pw/.miniconda3c/etc/profile.d/conda.sh` to initiate conda 
 3. Run `conda activate <NAME>` to activate the environment you installed
 4. Run `python -m ipykernel install --user --name=<NAME> --display-name "Python (<NAME>)"` to connect the environment to the notebook
-5. Install `pip install mlflow` to get mlflow on the environment
+4. Install `pip install mlflow` to get mlflow on the environment
