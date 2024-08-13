@@ -1,3 +1,0 @@
-[submodule "run_on_cluster/cvae-demos/digits-demo/digits_dvc"]
-	path = run_on_cluster/cvae-demos/digits-demo/digits_dvc
-	url = git@github.com:oobielodan/digits_dvc.git
