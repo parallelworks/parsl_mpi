@@ -43,5 +43,5 @@ python -m ipykernel install --user --name=<NAME> --display-name "Python (<NAME>)
 
 ## Needed Specifications
 
-**Storage:** Mounted stoarge is required for dvc to run properly.\
+**Storage:** Mounted storage is required for dvc to run properly.\
 **GitHub:** A separate git repo that can be SSH into is also needed for dvc to run properly. SSH connection must be established on the terminal.
