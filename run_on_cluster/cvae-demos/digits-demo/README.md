@@ -26,7 +26,7 @@ conda install -y -c conda-forge dvc
 pip install mlflow
 ```
 
-### Connect Notebook to Environmant:
+### Connect Notebook to Environment:
 ```
 conda install -y ipykernel
 conda install -y requests
