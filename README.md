@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # PARSL MPI
 
 This workflow runs OpenMPI hello world jobs using Parsl. The OpenMPI hello world code is defined in `mpitest.c` and, when compiled and executed, prints the hostname and rank in the format below:
@@ -84,3 +85,6 @@ No combination of `cores_per_worker`, `nodes_per_block` and `cores_per_node` ret
 2. Set `nodes_per_block` to the desired number of nodes per MPI task
 3. Set `cores_per_worker` to the number of cores in a single node
 4. Set `parallelism` to the desired number of nodes per MPI task
+=======
+This repository had been made for the sole purpose of testing DVC. I'm pretty sure I keep destroying my other one so imma start trying to be safer lol.
+>>>>>>> testing-repo/main

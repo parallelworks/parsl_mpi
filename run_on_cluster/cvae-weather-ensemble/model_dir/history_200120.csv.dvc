@@ -1,0 +1,5 @@
+outs:
+- md5: c035f6c0fe76f2c90b0a91574a2b4a17
+  size: 1561
+  hash: md5
+  path: history_200120.csv
