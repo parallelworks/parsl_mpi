@@ -16,6 +16,10 @@ is no `/apps` attached flexible storage, then `module` commands will not work. U
 `step_00_lmod_reset.sh` to delete this initial `module` configuration so you can use
 `module use /path/to/modulefiles` and `module load <package>` later with `spack-stack`.
 
+It seems that `source /etc/profile.d/modules.sh` works better than `source ~/.bashrc`
+for after `step_00_lmod_reset.sh` is run. Perhaps autosetup access to modules was 
+changed from the system bashrc in `/etc` in the newest image?
+
 ### Rocky8
 
 See `step_01_sys_dep_Rocky8.sh` for system install based on these 
@@ -42,6 +46,20 @@ credentials into your running session and those environment variables will
 be used by `step_02_spack_stack_intel.sh` to connect to the cache and
 speed up the build with precompiled binaries. If the credentials are not
 present, it will simply build from scratch (expect a few hours).
+
+On a PW cluster, you can autheticate to the PW CLI with
+```
+pw auth token
+```
+and then use the PW CLI to list buckets and get their
+credentials with:
+```
+# Which buckets do I have access to?
+pw buckets list
+
+# Load short term bucket credentials as env. variables
+eval `pw buckets get-token <spack-buildcache-bucket-name>
+```
 
 ### Testing MPI
 
@@ -94,18 +112,24 @@ so they can be used later. This step is optional.
 The build has two parts: 1) setting up the build environment (i.e. access to the libraries
 and executables in `spack-stack`) and 2) actually compiling the core components of UFS.
 + `source step_04_ufs_build_env_intel.sh` will set up the build environment (there's a lot of unused,
-   commented out code in this script incase I need to revert to situations where 
+   commented out code in this script in case I need to revert to situations where 
    `module load stack-*` does not work - this step is really only 4 commands when all is
    working as it should). Note that I `source` this script to set the environment variables
    in my running session instead of just running the script.
 + `step_05_build.sh` clones the `ufs-weather-model` repo, sets UFS application-specific
-   environment variable flags, and kicks off the build process.
+   environment variable flags, and kicks off the build process. Depending on the exact
+   branch or version of the code, the build process for this default case may or may not 
+   complete. This is why using the unit testing framework (Steps E-G below) may be more useful.
 
-## E) Download input data
+## E) Select unit test
+
+
+
+## F) Download input data
 
 `step_06_get_input_data.sh` automates the process of downloading the input data.
 
-## F) Launch the model and monitor
+## G) Launch the model and monitor
 
 To launch a regression test, we use the `ufs-weather-model/tests/rt.sh` framework. To launch
 a single test, try the following:
@@ -128,6 +152,6 @@ a single test, try the following:
      is assumed that cluster worker nodes have a specific size for each CSP.
    + `tests/compile.sh` is trying to load modules and failing - don't need this since I've preloaded my spack-stack. WORKING HERE
 
-## G) View the results
+## H) View the results
 
 

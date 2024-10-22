@@ -22,8 +22,13 @@
 # Double check the pathname of the baseline you are
 # comparing to with aws s3 ls --no-sign-request s3://...
 #=======================================
-baseline_branch=develop-20240426
-test_case=control_c48_
+
+#baseline_branch=develop-20240426
+#test_case=control_c48_
+#compiler=intel
+
+baseline_branch=develop-20240821
+test_case=control_c192_
 compiler=intel
 
 # Where should I put this data?!
