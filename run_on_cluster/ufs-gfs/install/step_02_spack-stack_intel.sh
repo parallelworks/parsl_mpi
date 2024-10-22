@@ -58,7 +58,7 @@ source setup.sh
 # add here if you can.
 #---------------------------------------------
 # Standard AWS S3 connection
-spack mirror add ufs-cache s3://$BUCKET_NAME
+spack mirror add ufs-cache $BUCKET_URI
 #---------------------------------------------
 # Try with cunoFS (need to be in cuno shell!)
 # Appears to be able to do basic reads like
