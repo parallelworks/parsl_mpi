@@ -123,7 +123,11 @@ and executables in `spack-stack`) and 2) actually compiling the core components 
 
 ## E) Select unit test
 
-
++ control_c48 - very small (single node?)
++ control_c192 - medium size, can test scaling to multiple nodes, 
+                 but `rt.conf` excludes it from `noaacloud`. Test
+                 data is 5.1GB.
++ control_c384 - larger scale, test data is 19.9GB.
 
 ## F) Download input data
 
@@ -134,7 +138,9 @@ and executables in `spack-stack`) and 2) actually compiling the core components 
 To launch a regression test, we use the `ufs-weather-model/tests/rt.sh` framework. To launch
 a single test, try the following:
 1. Set the date of the baseline to compare to in `ufs-weather-model/tests/bl_date.conf`. 
-   I set `export BL_DATE=20240426` since it is present in the cloud data bucket.
+   I set `export BL_DATE=20240426` or `20240821` since it is present in the cloud data 
+   bucket. There are more recent dates in the repo but they are only available on-prem.
+   *IT IS NOT SUFFICIENT TO EXPORT THIS IN YOUR ENV - IT MUST BE IN `bl_date.conf`.*
 2. Due to the `$PW_CSP` environment variable, `ufs-weather-model/tests/detect_machine.sh`
    detects whether the cluster is on GCP, AWS, or Azure and assigns it a `noaacloud` `MACHINE_ID`.
 3. Adjust four key paths in `rt.sh` under the `noaacloud` `MACHINE_ID` `case` switch. In particular,
@@ -145,7 +151,14 @@ a single test, try the following:
    + `DISKNM="${HOME}/RT" # Was "/contrib/ufs-weather-model/RT"`
    If you don't have `/lustre` or `/contrib` configured. The `DISKNM` parameter is the root
    path for accessing the downloaded regression test input files from `step_06_...`.
-4. `./rt.sh -n "control_c48 intel" -a myaccount`
+4. Also in the `noaacloud` switch, adjust the `PARTITION` if a custom partition name is needed.
+   In general, the compile and test jobs will launch on worker nodes. Internally, `sbatch` 
+   "job cards" are created in `./stmp2/` and the number of `tasks-per-node` is set based on
+   the larger, assumed instance types on each CSP as determined by `$PW_CSP`:
+   + `google` -> 30 (for c2-standard-60 with hyperthreading turned off)
+   + `azure`  -> 44 (for HC44rs)
+   + `aws`    -> 36 or 96 (probably for c5n.18xlarge with hyperthreading turned off, or hpc6a) 
+5. `./rt.sh -n "control_c48 intel" -a myaccount`
    + Logs are sent to `ufs-weather-model/tests/logs/log_<MACHINE_ID>`
    + Needed to adjust the number of CPU I can use for compile or running jobs. This value is
      set in `ufs-weather-model/tests/default_vars.sh` and changes based on `PW_CSP` where it

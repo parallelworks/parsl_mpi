@@ -28,7 +28,7 @@
 #compiler=intel
 
 baseline_branch=develop-20240821
-test_case=control_c192_
+test_case=control_c384_
 compiler=intel
 
 # Where should I put this data?!
