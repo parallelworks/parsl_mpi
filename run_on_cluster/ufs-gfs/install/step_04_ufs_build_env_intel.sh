@@ -1,3 +1,19 @@
+#!/bin/bash
+#============================================
+# Set up the build environment for UFS.
+# SOURCE this script, don't just run it
+# because you want the settings here to
+# persist in your build environment. If
+# you just run it, these settings are set
+# in a child process but do not propagate
+# back to your current process.
+#============================================
+echo Get access to updated gcc toolset...
+# The Intel compiler uses some GCC libraries
+# in the background, so it is best to use the
+# same GCC as when the spack-stack was built.
+source /opt/rh/gcc-toolset-11/enable
+
 echo Get access to Intel compiler meta-module...
 # Instructions at: https://spack-stack.readthedocs.io/en/latest/UsingSpackEnvironments.html#usingspackenvironments
 module use /home/sfgary/spack/spack-stack/envs/ufs-weather-model.mylinux/install/modulefiles/Core
