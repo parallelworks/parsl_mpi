@@ -9,6 +9,10 @@
 # scl enable gcc-toolset-11 bash
 # ./step_02_spack-stack.sh
 #
+# An alternative to running it under an scl enable shell
+# is to run this command:
+source /opt/rh/gcc-toolset-11/enable
+
 # Based on the instructions at:
 # https://spack-stack.readthedocs.io/en/latest/NewSiteConfigs.html#newsiteconfigs-linux
 #=====================================
