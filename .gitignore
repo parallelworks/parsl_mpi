@@ -1,3 +1,7 @@
 # Emacs bkup files
 *~
 
+# Deployment logs in format:
+# deploy.<hostname>.std<out|err>
+deploy.*.*
+

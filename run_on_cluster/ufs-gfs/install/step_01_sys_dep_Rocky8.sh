@@ -6,6 +6,8 @@
 #https://spack-stack.readthedocs.io/en/latest/NewSiteConfigs.html#prerequisites-red-hat-centos-8-one-off
 #=====================================
 
+echo Starting step 01 install system dependencies...
+
 #===========================================
 # General update
 # Is this required? May not work with cloud clusters since image is tuned.
@@ -75,3 +77,6 @@ python3 -m pip install boto3
 # in the gcc-toolset-11 enabled bash shell. See the 
 # scl or source commands above.
 #====================================================
+
+echo Done installing system dependencies
+
