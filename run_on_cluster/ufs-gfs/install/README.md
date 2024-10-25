@@ -98,6 +98,27 @@ Some potential indicators of incorrect configuration are:
 + same rank of zero for all processors
 + same node used, in particular the mgmt- (head) node instead of worker nodes
 
+I don't know how to get PMI to talk with Intel MPI, so that's why I used the
+`sbatch` approach to launching the test, above. Trying with a simple 
+`srun --nodes 2 -N 4 ...` (implicit PMI) results in lots of errors.
+
+### OneAPI versus "classic" Intel
+
+Intel is going to transition away from its classic compiler names (e.g. `icc`) and move to 
+the OneAPI compilers (e.g. `icpx`). This is particularly strong starting with 2024 versions
+and spackstack 1.8 supports the OneAPI approach. Within spackstack, however, you need to
+specify `oneapi` instead of `intel` throughout.
+
+Unfortunately, the OneAPI compilers seg fault when building `fms` for versions 2024.1 and 
+lower. So, it only works for 2024.2+. However, spackstack 1.8's internal version of Spack
+does not include OneAPI 2024.2, so in order to use 2024.2 (right now) I had to install
+it direclty as a system install instead of installing it through Spack. This adds complexity
+to the process since it (and compatible Intel MPI) needs to be installed directly on each node
+instead of through Spack because the install location is not shared among nodes in `/opt/intel`.
+Hopefully, this will be resolved in a future version of spackstack and we can resume with
+Spack installed Intel compilers. But for now, the `*_oneapi*` designation applies to build
+scripts that depend on Intel OneAPI as an **external** dependency to Spack, not an internal.
+
 ### GCC, OpenMPI and MPICH inside Spack
 
 Coming soon
