@@ -9,7 +9,7 @@ echo ENVIRONMENT ALREADY SET!
 echo "=========================================="
 spack_install=${HOME}/spack/spack-stack
 mirror_name="ufs-cache"
-spack_env="ufs-weather-model.my-linux"
+spack_env="ufs-weather-model.mylinux"
 echo "spack install: ${spack_install}"
 echo "mirror name:   ${mirror_name}"
 echo "spack_env: ${spack_env}"
