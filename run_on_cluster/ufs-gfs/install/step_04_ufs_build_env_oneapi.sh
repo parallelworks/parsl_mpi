@@ -20,7 +20,7 @@ source /opt/intel/oneapi/setvars.sh
 echo Get access to Intel compiler meta-module...
 # Instructions at: https://spack-stack.readthedocs.io/en/latest/UsingSpackEnvironments.html#usingspackenvironments
 module use /home/sfgary/spack/spack-stack/envs/ufs-weather-model.mylinux/install/modulefiles/Core
-module load stack-intel
+module load stack-oneapi
 
 # These two don't work unless you have MPI listed
 # in spack-stack/envs/<env>/site/packages.yaml.
@@ -88,5 +88,5 @@ export CMAKE_Fortran_COMPILER=mpiifort
 #export CMAKE_CXX_COMPILER=`which mpiicpc`
 #export CMAKE_Fortran_COMPILER=`which mpiifort`
 
-export CMAKE_Platform=linux.intel
+export CMAKE_Platform=linux.linux
 

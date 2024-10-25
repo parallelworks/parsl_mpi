@@ -186,6 +186,11 @@ a single test, try the following:
      is assumed that cluster worker nodes have a specific size for each CSP.
    + `tests/compile.sh` is trying to load modules and failing - don't need this since I've preloaded my spack-stack. WORKING HERE
 
+
+   + As of summer 2024, ufs-weather-model is in the process of going from sp 2.3.3 to ip 5.0.0: https://github.com/JCSDA/spack-stack/discussions/1206. In order to compile directly, need to change out reference to sp in the CMakeLists.txt in `ufs-weather-model`, `FV3`, `FV3/ccpp/physics` to references to ip and compilation seems to run OK. It should be a one-to-one replacement...
+   + ufs-weather-model compilation aborts due to an OpenMP directive error caught by the compiler. This is a very "deep" error, my hypothesis is that using ifx as the base fortran compiler in mpiifort from the OneAPI installation is the issue and I need to change how the paths are loaded in OneAPI to allow ifort to be the base fortran compiler while still allowing icpx and icx as the C compilers). This is based on the spack-stack 1.8.0 release notes that say that ifx usage is still experimental.
+
+
 ## H) View the results
 
 
