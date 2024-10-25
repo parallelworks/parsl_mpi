@@ -58,8 +58,12 @@ sudo yum -y install patch
 sudo yum -y install automake
 sudo yum -y install xorg-x11-xauth
 sudo yum -y install xterm
+sudo yum -y install perl-IPC-Cmd
 sudo yum -y install texlive
 # Do not install qt@5 for now
+
+# Autopoint needed for autoconf, spack-stack 1.8.0
+sudo yum -y install gettext-devel
 
 # Note - only needed for running JCSDA's
 # JEDI-Skylab system (using R2D2 localhost)
