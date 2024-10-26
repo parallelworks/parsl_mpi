@@ -16,7 +16,13 @@ source /opt/rh/gcc-toolset-11/enable
 # For Spack-stack 1.8.0, need to do a direct install
 # of OneAPI since spack-stack1.8.0 is pinned to OneAPI 2024.1.0
 # but this segfaults when compiling FMS.
-source /opt/intel/oneapi/setvars.sh
+#source /opt/intel/oneapi/setvars.sh
+
+# This does not work - can't find all compilers
+#source /opt/intel/oneapi/2024.2/oneapi-vars.sh
+
+# Be explicit about specific versions
+/opt/intel/oneapi/setvars.sh --config=${PWD}/oneapi.config
 
 # Based on the instructions at:
 # https://spack-stack.readthedocs.io/en/latest/NewSiteConfigs.html#newsiteconfigs-linux
@@ -90,7 +96,14 @@ spack buildcache list
 #intel_mpi_ver="2021.10.0"
 # Try updated with spack-stack 1.8.0. 
 # Note, this is spack v0.22, so the newest Intel OneAPI versions are:
-intel_compiler_ver="2024.2.0"
+# This worked in mid-October...
+intel_compiler_ver="2024.2.1"
+# But Intel released at 2025 version:
+# There is something strange with this version - it's glibc says it
+# depends on OneAPI 2024.2.1, and although it doesn't need it to compile
+# it shows up as a duplicate package and this messes up the module creation
+# process.
+#intel_compiler_ver="2025.0.0"
 # But that fails unless you set the compile to oneapi in the packages conf below, so roll back to the most recent version that still has icc, icpc
 # Internal compiler error with fms:
 #intel_compiler_ver="2023.2.4"
@@ -99,7 +112,7 @@ intel_compiler_ver="2024.2.0"
 
 # Latest in OneAPI but not in spack-stack's pinned repos
 intel_mpi_ver="2021.13"
-
+#intel_mpi_ver="2021.14"
 #----------------------------------------
 # Do not install OneAPI here - instead it
 # is installed on the system level/image.

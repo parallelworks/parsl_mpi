@@ -31,18 +31,22 @@ EOF
 sudo mv /tmp/oneAPI.repo /etc/yum.repos.d
 
 # Keep a copy of the .rpms on this image in case we need to reinstall
-sudo mkdir -p /opt/rpms
-yum install -y --downloadonly --downloaddir=/opt/rpms intel-hpckit
+#sudo mkdir -p /opt/rpms
+#yum install -y --downloadonly --downloaddir=/opt/rpms intel-hpckit-2024.2.1
 
 # Install - everything goes to /opt/intel/oneapi/
 # and it is NOT automatically included in the path.
 # To put it on your path, source /opt/intel/oneapi/setvars.sh
-sudo yum -y install intel-hpckit
+sudo yum -y install intel-hpckit-2024.2.1
 
 # In mid 2024, the above installs only mpiifx. mpiifort is
 # automatically replaced with mpifx. If you really do want
 # ifort as the backend compiler with Intel MPI (i.e. true
 # mpiifort) then you need to install this extra package:
-yum install -y --downloadonly --downloaddir=/opt/rpms intel-oneapi-mpi-devel
-sudo yum install intel-oneapi-mpi-devel
+#
+# This seems to install for 2024.2.1, not 2025.0
+#yum install -y --downloadonly --downloaddir=/opt/rpms intel-oneapi-mpi-devel
+#sudo yum install intel-oneapi-mpi-devel-2021.13
+
+echo You can now use Intel OneAPI with /opt/intel/oneapi/setvars.sh --config=/full/path/to/oneapi.config
 
