@@ -30,14 +30,20 @@ EOF
 # Allow yum to use this file
 sudo mv /tmp/oneAPI.repo /etc/yum.repos.d
 
+# I think there's something going on with the linking
+# or paths in intel-hpckit-2024.2.1. When spack adds the
+# compiler in this version, there are always duplicates.
+
 # Keep a copy of the .rpms on this image in case we need to reinstall
-#sudo mkdir -p /opt/rpms
-#yum install -y --downloadonly --downloaddir=/opt/rpms intel-hpckit-2024.2.1
+sudo mkdir -p /opt/rpms
+sudo mkdir -p /tmp/rpms
+yum install -y --downloadonly --downloaddir=/tmp/rpms intel-hpckit
+rsync -av /tmp/rpms/ /opt/rpms
 
 # Install - everything goes to /opt/intel/oneapi/
 # and it is NOT automatically included in the path.
 # To put it on your path, source /opt/intel/oneapi/setvars.sh
-sudo yum -y install intel-hpckit-2024.2.1
+sudo yum -y install intel-hpckit
 
 # In mid 2024, the above installs only mpiifx. mpiifort is
 # automatically replaced with mpifx. If you really do want
@@ -45,8 +51,9 @@ sudo yum -y install intel-hpckit-2024.2.1
 # mpiifort) then you need to install this extra package:
 #
 # This seems to install for 2024.2.1, not 2025.0
-#yum install -y --downloadonly --downloaddir=/opt/rpms intel-oneapi-mpi-devel
-#sudo yum install intel-oneapi-mpi-devel-2021.13
+yum install -y --downloadonly --downloaddir=/tmp/rpms intel-oneapi-mpi-devel-2021.13
+rsync -av /tmp/rpms/ /opt/rpms
+sudo yum install -y intel-oneapi-mpi-devel
 
 echo You can now use Intel OneAPI with /opt/intel/oneapi/setvars.sh --config=/full/path/to/oneapi.config
 

@@ -16,13 +16,33 @@ source /opt/rh/gcc-toolset-11/enable
 # For Spack-stack 1.8.0, need to do a direct install
 # of OneAPI since spack-stack1.8.0 is pinned to OneAPI 2024.1.0
 # but this segfaults when compiling FMS.
-#source /opt/intel/oneapi/setvars.sh
 
-# This does not work - can't find all compilers
+# Get access to Intel OneAPI installed as an external
+# package. Intel updated from 2024.2.1 to 2025.0.0
+# while I was developing this script - 2025.0.0 does not
+# work with spack-stack yet since it has duplicate dependencies
+# for glibc in the concretized environment.
+#
+# So... get ifort...
+source /opt/intel/oneapi/compilers/2024.2/env/vars.sh
+# ...and then get everything else? This loads mpiifort, which
+# uses mpiifx which in turn calls ifort. But if you don't do
+# the first line, you can't get ifort.
+source /opt/intel/oneapi/setvars.sh
+
+# This does not work - can't find all compilers? spack-stack
+# ends up using gcc for most of the build.
 #source /opt/intel/oneapi/2024.2/oneapi-vars.sh
 
 # Be explicit about specific versions
-/opt/intel/oneapi/setvars.sh --config=${PWD}/oneapi.config
+# This does NOT work - Spack can't find icx, icpx, etc.
+# and so it defaults to gcc.
+#source /opt/intel/oneapi/setvars.sh --config=${PWD}/oneapi.config
+
+# It seems that there are some assumptions baked into
+# how Spack and spack-stack detect external compilers (and
+# their supporting libraries), so we are stuck with the
+# default initialization of OneAPI (thus bypassing ifort).
 
 # Based on the instructions at:
 # https://spack-stack.readthedocs.io/en/latest/NewSiteConfigs.html#newsiteconfigs-linux
@@ -75,6 +95,9 @@ source setup.sh
 # add here if you can.
 #---------------------------------------------
 # Standard AWS S3 connection
+# Need to pre-authenticate to PW CLI to grab bucket
+# credentials.
+eval `pw buckets get-token pw://sfgary/spackstack18`
 spack mirror add ufs-cache $BUCKET_URI
 #---------------------------------------------
 # Try with cunoFS (need to be in cuno shell!)
@@ -97,7 +120,7 @@ spack buildcache list
 # Try updated with spack-stack 1.8.0. 
 # Note, this is spack v0.22, so the newest Intel OneAPI versions are:
 # This worked in mid-October...
-intel_compiler_ver="2024.2.1"
+intel_compiler_ver="2025.0.0"
 # But Intel released at 2025 version:
 # There is something strange with this version - it's glibc says it
 # depends on OneAPI 2024.2.1, and although it doesn't need it to compile
