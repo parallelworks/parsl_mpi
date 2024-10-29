@@ -14,6 +14,10 @@ echo "spack install: ${spack_install}"
 echo "mirror name:   ${mirror_name}"
 echo "spack_env: ${spack_env}"
 
+# After running `pw auth token`, you can grab bucket 
+# credentials with your PW bucket name:
+eval `pw buckets get-token pw://sfgary/spackstack18`
+
 # This works in two steps:
 # 1) grab the packages from the "base Spack" (in particular compilers)
 # 2) grab the packages from the build environment.
