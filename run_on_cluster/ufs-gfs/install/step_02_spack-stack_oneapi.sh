@@ -24,7 +24,7 @@ source /opt/rh/gcc-toolset-11/enable
 # for glibc in the concretized environment.
 #
 # So... get ifort...
-source /opt/intel/oneapi/compilers/2024.2/env/vars.sh
+#source /opt/intel/oneapi/compilers/2024.2/env/vars.sh
 # ...and then get everything else? This loads mpiifort, which
 # uses mpiifx which in turn calls ifort. But if you don't do
 # the first line, you can't get ifort.
@@ -134,8 +134,8 @@ intel_compiler_ver="2025.0.0"
 #intel_compiler_ver="2023.1.0"
 
 # Latest in OneAPI but not in spack-stack's pinned repos
-intel_mpi_ver="2021.13"
-#intel_mpi_ver="2021.14"
+#intel_mpi_ver="2021.13"
+intel_mpi_ver="2021.14"
 #----------------------------------------
 # Do not install OneAPI here - instead it
 # is installed on the system level/image.

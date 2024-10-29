@@ -188,8 +188,7 @@ a single test, try the following:
 
 
    + As of summer 2024, ufs-weather-model is in the process of going from sp 2.3.3 to ip 5.0.0: https://github.com/JCSDA/spack-stack/discussions/1206. In order to compile directly, need to change out reference to sp in the CMakeLists.txt in `ufs-weather-model`, `FV3`, `FV3/ccpp/physics` to references to ip and compilation seems to run OK. It should be a one-to-one replacement...
-   + ufs-weather-model compilation aborts due to an OpenMP directive error caught by the compiler. This is a very "deep" error, my hypothesis is that using ifx as the base fortran compiler in mpiifort from the OneAPI installation is the issue and I need to change how the paths are loaded in OneAPI to allow ifort to be the base fortran compiler while still allowing icpx and icx as the C compilers). This is based on the spack-stack 1.8.0 release notes that say that ifx usage is still experimental.
-
+   + With OneAPI, need to add an & to end of: https://github.com/earth-system-radiation/rte-rrtmgp/blob/74a0e098b2163425e4b5466c2dfcf8ae26d560a5/rrtmgp/mo_gas_optics_rrtmgp.F90#L1770 This seems to be a valid syntax error based on the structure of other usage of this OMP command.
 
 ## H) View the results
 

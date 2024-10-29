@@ -37,8 +37,8 @@ sudo mv /tmp/oneAPI.repo /etc/yum.repos.d
 # Keep a copy of the .rpms on this image in case we need to reinstall
 sudo mkdir -p /opt/rpms
 sudo mkdir -p /tmp/rpms
-yum install -y --downloadonly --downloaddir=/tmp/rpms intel-hpckit
-rsync -av /tmp/rpms/ /opt/rpms
+sudo yum install -y --downloadonly --downloaddir=/tmp/rpms intel-hpckit
+sudo rsync -av /tmp/rpms/ /opt/rpms
 
 # Install - everything goes to /opt/intel/oneapi/
 # and it is NOT automatically included in the path.
@@ -51,9 +51,14 @@ sudo yum -y install intel-hpckit
 # mpiifort) then you need to install this extra package:
 #
 # This seems to install for 2024.2.1, not 2025.0
-yum install -y --downloadonly --downloaddir=/tmp/rpms intel-oneapi-mpi-devel-2021.13
-rsync -av /tmp/rpms/ /opt/rpms
-sudo yum install -y intel-oneapi-mpi-devel
+# This installs the newest version by default with
+# the hpckit (2021.14) - my successful build had
+# used 2021.14 with the default source /opt/intel/oneapi/setvars.sh
+# but I had run yum install intel-oneapi-mpi-devel-2021.13 beforehand
+# - double check without this.
+#sudo yum install -y --downloadonly --downloaddir=/tmp/rpms intel-oneapi-mpi-devel-2021.13
+#sudo rsync -av /tmp/rpms/ /opt/rpms
+#sudo yum install -y intel-oneapi-mpi-devel
 
 echo You can now use Intel OneAPI with /opt/intel/oneapi/setvars.sh --config=/full/path/to/oneapi.config
 
