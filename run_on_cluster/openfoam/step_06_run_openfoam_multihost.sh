@@ -4,6 +4,7 @@
 #SBATCH --output=singularity-openfoam.out
 #SBATCH --ntasks-per-node=2
 
+source $HOME/parsl_mpi/run_on_cluster/openfoam/openfoam_env.sh
 # LOAD OpenMPI ENVIRONMENT HERE!
 # This is the OpenMPI env if installed
 # with step_02_install_openmpi.sh

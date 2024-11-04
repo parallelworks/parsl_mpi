@@ -67,7 +67,12 @@ sudo yum -y install gettext-devel
 
 # Note - only needed for running JCSDA's
 # JEDI-Skylab system (using R2D2 localhost)
-sudo yum -y install mysql-server
+# Currently mysql-server is incompatible with 
+# mariadb installation on PW Rocky8 images
+# (The two have near duplicate functionality?)
+# You can force install, which will remove 
+# mariadb. Comment out for now.
+#sudo yum -y install --allowerasing mysql-server
 
 # Set a specific version of Python
 sudo yum -y install python39-devel
