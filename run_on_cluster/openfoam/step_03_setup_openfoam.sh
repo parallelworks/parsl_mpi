@@ -10,8 +10,7 @@
 #========================
 
 echo "Sourcing environment..."
-source openmpi_env.sh
-source openfoam_env.sh
+source main_env.sh
 
 echo "Setting up OpenFOAM cyclone example..."
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 #---------------------
 echo "Sourcing environment..."
-source openmpi_env.sh
+source main_env.sh
 
 echo "Building container..."
 # Container (.sif) is based on defintion file (.def)

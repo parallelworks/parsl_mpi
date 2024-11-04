@@ -19,7 +19,7 @@ echo "===> Set up OpenMPI build environment variables"
 #export MANPATH=$OMPI_DIR/share/man:$MANPATH
 #
 # or configure from here:
-source openmpi_env.sh
+source main_env.sh
 
 # Double check presence
 mkdir -p $OMPI_DIR/bin

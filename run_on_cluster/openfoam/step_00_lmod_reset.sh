@@ -15,7 +15,7 @@ sudo yum reinstall -y environment-modules
 
 # After these commands, source .bashrc or /etc/profile.d/modules.sh
 # or log out and log back in to reload the profile.d scripts.
-source ~/.bashrc
-
+#source ~/.bashrc
+source /etc/profile.d/modules.sh
 echo "You now need to log back in or source ~/.bashrc to setup modules environment!"
 

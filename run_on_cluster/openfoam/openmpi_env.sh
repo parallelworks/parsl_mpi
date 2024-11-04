@@ -1,8 +1,9 @@
 # Set persistent environment variables
 # for using an OpenMPI installation.
 
-# Get some base paths
-source main_env.sh
+# OPENFOAM_SHARED_DIR is in main_env.sh.
+# Access these vars from there instead
+# of running directly.
 
 # Some OpenMPI paths
 export OMPI_DIR=${OPENFOAM_SHARED_DIR}/ompi

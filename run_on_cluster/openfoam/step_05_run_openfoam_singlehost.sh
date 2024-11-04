@@ -21,8 +21,8 @@
 #=======================
 
 # LOAD OpenMPI ENVIRONMENT HERE!
-source $HOME/parsl_mpi/run_on_cluster/openfoam/openfoam_env.sh
-source $HOME/parsl_mpi/run_on_cluster/openfoam/openmpi_env.sh
+source $HOME/parsl_mpi/run_on_cluster/openfoam/main_env.sh
+
 #source /contrib/alvaro/ompi/env.sh
 
 # SET RUN DIR (same as #SBATCH --chdir=/path/to/OpenFOAM/case(
