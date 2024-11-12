@@ -42,11 +42,26 @@
 # Configuration for using
 # 6 Azure HC44rs nodes
 # Runs in 72s for 0.2s simulation time
-export NTASKS_PER_NODE=24
-export NNODES=6
-export NPROCS_MPI=144
-export RUN_TIME=0.2
-export DOMAIN_DECOMP="(4 6 6)"
+#export NTASKS_PER_NODE=24
+#export NNODES=6
+#export NPROCS_MPI=144
+#export RUN_TIME=0.2
+#export DOMAIN_DECOMP="(4 6 6)"
 
-# Done!
+#============================
+# Configuration for using 10
+# nodes with 2 CPU each
+# (i.e. small workers)
+export NTASKS_PER_NODE=10
+export NNODES=2
+#----------------------
+# Shouldn't be necessary as SLURM can compute 
+# this from NTASKS_PER_NODE x NNODES but needed
+# for OpenFOAM configuration (step3).
+export NPROCS_MPI=20
+#----------------------
+export RUN_TIME=0.2
+export DOMAIN_DECOMP="(2 2 5)"
+
+# Done
 

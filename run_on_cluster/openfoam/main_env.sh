@@ -17,7 +17,7 @@ export OPENFOAM_SHARED_DIR=/openfoam
 #
 # Custom OpenMPI installed locally
 # (You will normally need to build it yourself!)
-#source ${HOME}/parsl_mpi/run_on_cluster/openfoam/openmpi_env.sh
+source ${HOME}/parsl_mpi/run_on_cluster/openfoam/openmpi_env.sh
 #
 # Use this if you install Intel OneAPI directly
 # to the system, e.g. sudo yum install intel-hpckit
@@ -30,12 +30,12 @@ export OPENFOAM_SHARED_DIR=/openfoam
 # This source line should be already in /etc/bashrc
 #source ${SPACK_ROOT}/share/spack/setup-env.sh
 # So you already have direct access to MPI in Spack:
-spack load intel-oneapi-mpi
+#spack load intel-oneapi-mpi
 
 #=====================================
 # Specify the configuration of OpenFOAM
 #=====================================
-source openfoam_env.sh
+source ${HOME}/parsl_mpi/run_on_cluster/openfoam/openfoam_env.sh
 
 # Done!
 
