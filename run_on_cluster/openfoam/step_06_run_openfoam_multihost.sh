@@ -70,11 +70,16 @@ singularity exec \${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; d
 # Launch for OpenMPI - verbose!
 #mpiexec --mca btl_tcp_if_include eth0 --mca btl_base_verbose 100 --mca orte_base_help_aggregate 0 -np ${NPROCS_MPI} singularity exec ${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"
 
-# Launch for OpenMPI - standard
+# Launch for OpenMPI
+
 # GCP --mca btl_if_include eth0
-# AWS --mca 
+time mpiexec --mca btl_if_include eth0 -np \$SLURM_NTASKS singularity exec \$SIF_PATH /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"
+
+# AWS --mca
+
+
 # AZU --mca btl_openib_allow_ib true --mca btl vader,self,openib
-time mpiexec --mca btl_openib_allow_ib true --mca btl vader,self,openib -np \$SLURM_NTASKS singularity exec \$SIF_PATH /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"
+#time mpiexec --mca btl_openib_allow_ib true --mca btl vader,self,openib -np \$SLURM_NTASKS singularity exec \$SIF_PATH /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"
 
 #==========================================
 # Launch for OneAPI MPI
