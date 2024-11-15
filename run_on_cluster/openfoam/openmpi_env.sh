@@ -6,6 +6,9 @@
 # of running directly.
 
 # Some OpenMPI paths
+# AWS images have OpenMPI preinstalled
+#export OMPI_DIR=/opt/amazon/openmpi
+# Custom OpenMPI
 export OMPI_DIR=${OPENFOAM_SHARED_DIR}/ompi
 export PATH=${OMPI_DIR}/bin:$PATH
 export LD_LIBRARY_PATH=$OMPI_DIR/lib:$LD_LIBRARY_PATH

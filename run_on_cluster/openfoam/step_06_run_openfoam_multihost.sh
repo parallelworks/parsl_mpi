@@ -73,10 +73,11 @@ singularity exec \${SIF_PATH} /bin/bash -c "source /opt/openfoam11/etc/bashrc; d
 # Launch for OpenMPI
 
 # GCP --mca btl_tcp_if_include eth0
-time mpiexec --mca btl_tcp_if_include eth0 -np \$SLURM_NTASKS singularity exec \$SIF_PATH /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"
-
+#time mpiexec --mca btl_tcp_if_include eth0 -np \$SLURM_NTASKS singularity exec \$SIF_PATH /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"
+ 
 # AWS --mca
-
+#time mpiexec --mca pml cm --mca mtl ofi --mca mtl_ofi_provider_include efa -np \$SLURM_NTASKS singularity exec \$SIF_PATH /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"
+time mpiexec --mca btl_tcp_if_include eth0 -np \$SLURM_NTASKS singularity exec \$SIF_PATH /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"
 
 # AZU --mca btl_openib_allow_ib true --mca btl vader,self,openib
 #time mpiexec --mca btl_openib_allow_ib true --mca btl vader,self,openib -np \$SLURM_NTASKS singularity exec \$SIF_PATH /bin/bash -c "source /opt/openfoam11/etc/bashrc; foamRun -parallel"

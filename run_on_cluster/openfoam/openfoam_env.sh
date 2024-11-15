@@ -52,16 +52,16 @@
 # Configuration for using 10
 # nodes with 2 CPU each
 # (i.e. small workers)
-export NTASKS_PER_NODE=5
+export NTASKS_PER_NODE=20
 export NNODES=2
 #----------------------
 # Shouldn't be necessary as SLURM can compute 
 # this from NTASKS_PER_NODE x NNODES but needed
 # for OpenFOAM configuration (step3).
-export NPROCS_MPI=10
+export NPROCS_MPI=40
 #----------------------
 export RUN_TIME=0.2
-export DOMAIN_DECOMP="(1 2 5)"
+export DOMAIN_DECOMP="(2 4 5)"
 
 # Done
 
