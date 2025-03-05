@@ -21,22 +21,31 @@ yellow_msg() {
 }
 
 all_checks_passed=true
-arch=$(dpkg --print-architecture)
-bold_msg "Checking Architecture: Required (amd64 or arm64), Current ($arch)"
-if [[ "$arch" == "amd64" || "$arch" == "arm64" ]]; then
-    green_msg "OK"
-else
-    red_msg "NG"
-    all_checks_passed=false
-fi
-ubuntu_version=$(lsb_release -rs)
-bold_msg "Checking Ubuntu Version: Required (22.04 or 24.04), Current ($ubuntu_version)"
-if [[ "$ubuntu_version" == "22.04" || "$ubuntu_version" == "24.04" ]]; then
-    green_msg "OK"
-else
-    red_msg "NG"
-    all_checks_passed=false
-fi
+
+#===================================
+# Remove architecture check for now
+#===================================
+#arch=$(dpkg --print-architecture)
+#bold_msg "Checking Architecture: Required (amd64 or arm64), Current ($arch)"
+#if [[ "$arch" == "amd64" || "$arch" == "arm64" ]]; then
+#    green_msg "OK"
+#else
+#    red_msg "NG"
+#    all_checks_passed=false
+#fi
+
+#======================================
+# Remove release version check for now
+#======================================
+#ubuntu_version=$(lsb_release -rs)
+#bold_msg "Checking Ubuntu Version: Required (22.04 or 24.04), Current ($ubuntu_version)"
+#if [[ "$ubuntu_version" == "22.04" || "$ubuntu_version" == "24.04" ]]; then
+#    green_msg "OK"
+#else
+#    red_msg "NG"
+#    all_checks_passed=false
+#fi
+
 desktop_check=$(lsb_release -d | grep -i "desktop")
 bold_msg "Checking Server Edition: Required (Server), Current ($(lsb_release -d))"
 if [[ -z "$desktop_check" ]]; then
