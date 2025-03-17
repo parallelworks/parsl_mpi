@@ -20,7 +20,78 @@ When nodes are allocated jobs, `idle` changes to `alloc`.
 Node statuses (i.e. `~` means powered down, `%` means powering down)
 are defined more fully in the [SLURM documentation](https://slurm.schedmd.com/sinfo.html#SECTION_NODE-STATE-CODES).
 
-### OpenMPI 
+### OpenMPI + Tau + Flux example
+
+With devtools-7 (gcc 7.3.1), I can install tau directly on the system. 
+I can also use that compiler to build OpenMPI outside of Spack. So, use
+first built OpenMPI outside of Spack, add it as an external package,
+and finally install Tau with Spack with the following:
+```
+spack install tau +mpi +papi +pthreads ^openmpi
+``` 
+and Tau does finish installing. To get Tau profiling to work, I need to 
+first jump into an allocation and then use `mpiexec`. For example,
+```
+# Load tau (two different taus are installed, one doesn't have mpi by default)
+spack load tau+mpi+papi+pthreads 
+
+# Get allocation
+salloc -N 2 -n 4 -p small
+
+# Run with mpiexec
+mpiexec -np 4 tau_exec ~/a.out
+
+#OR, you can use sbatch:
+sbatch -N 2 -n 4 -p small --wrap "mpiexec -np 4 tau_exec ~/a.out"
+```
+So, next, we want to test Tau profiling with a Flux-launched MPI job.
+Here is an example:
+```
+#Start a Flux instance
+srun -N2 -n4 --pty -p small flux start
+
+# The above wasn't happy because devtools-7 is not installed on all nodes.  Let's see to what extent we need that...
+# Simple test of flux alloc did not work...
+# Test resource list
+[~]$ flux resource list
+     STATE NNODES   NCORES    NGPUS NODELIST
+      free      4        4        0 sfgary-cloud2-00065-2-[0001,0001-0002,0002]
+ allocated      0        0        0 
+      down      0        0        0 
+
+# Flux thinks I have too many nodes... but at least it can count all the CPUS
+[~]$ flux exec flux getattr rank
+0
+1
+2
+3
+
+# So now, let's send a job... Flux run works!!!
+[~]$ flux run -n4 --label-io hostname
+1: sfgary-cloud2-00065-2-0001
+2: sfgary-cloud2-00065-2-0002
+3: sfgary-cloud2-00065-2-0002
+0: sfgary-cloud2-00065-2-0001
+
+[~]$ flux run -n 4 ~/a.out
+Hello world from processor sfgary-cloud2-00065-2-0001, rank 0 out of 4 processors
+Hello world from processor sfgary-cloud2-00065-2-0002, rank 2 out of 4 processors
+Hello world from processor sfgary-cloud2-00065-2-0002, rank 3 out of 4 processors
+Hello world from processor sfgary-cloud2-00065-2-0001, rank 1 out of 4 processors
+
+[~]$ ls
+a.out  ompi  parsl_flux  parsl_mpi  weather-cluster-demo
+
+[~]$ flux run -n 4 tau_exec -io ~/a.out
+Hello world from processor sfgary-cloud2-00065-2-0002, rank 3 out of 4 processors
+Hello world from processor sfgary-cloud2-00065-2-0001, rank 1 out of 4 processors
+Hello world from processor sfgary-cloud2-00065-2-0002, rank 2 out of 4 processors
+Hello world from processor sfgary-cloud2-00065-2-0001, rank 0 out of 4 processors
+
+[~]$ ls
+a.out  parsl_flux  profile.0.0.0  profile.1.0.0  profile.2.0.0  profile.3.0.0  weather-cluster-demo
+ompi   parsl_mpi   profile.0.0.1  profile.1.0.1  profile.2.0.1  profile.3.0.1
+```
 
 ## Setting up a Spack build cache
 
