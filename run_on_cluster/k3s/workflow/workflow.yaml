@@ -1,0 +1,37 @@
+permissions:
+  - '*'
+
+jobs:
+  preprocessing:
+    steps:
+      - name: Hostname test
+        env:
+          sshcmd: ssh -o StrictHostKeyChecking=no ${{ inputs.pwrl_host.resource.ip }}
+        run: |
+          ${sshcmd} "hostname"
+      - name: Copy code to compute resource
+        env:
+          sshcmd: ssh -o StrictHostKeyChecking=no ${{ inputs.pwrl_host.resource.ip }}
+        run: |
+          echo Copying code to compute resource...
+          ${sshcmd} "curl -OL https://gist.githubusercontent.com/masezou/43014c04e560c7397463dc8f3571a8c6/raw/cb625c17104cb0733b278cadf529b49281f5c80c/k3s-rhel8-9-setup.sh"
+      - name: Run k3s
+        env:
+          sshcmd: ssh -o StrictHostKeyChecking=no ${{ inputs.pwrl_host.resource.ip }}
+        run: |
+          echo Running k3s...
+          ${sshcmd} "sudo bash ./k3s-rhel8-9-setup.sh"
+    
+'on':
+  execute:
+    inputs:
+      pwrl_host:
+        type: group
+        label: Compute resource
+        items:
+          resource:
+            type: compute-clusters
+            label: Workflow host
+            include-workspace: false
+            tooltip: Resource to host the workflow
+
