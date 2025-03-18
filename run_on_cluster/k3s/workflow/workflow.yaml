@@ -9,6 +9,12 @@ jobs:
           sshcmd: ssh -o StrictHostKeyChecking=no ${{ inputs.pwrl_host.resource.ip }}
         run: |
           ${sshcmd} "hostname"
+      - name: Install kubectl
+        env:
+          sshcmd: ssh -o StrictHostKeyChecking=no ${{ inputs.pwrl_host.resource.ip }}
+        run: |
+          echo Installing kubectl...
+          ${sshcmd} "sudo dnf -y install kubectl"
       - name: Copy code to compute resource
         env:
           sshcmd: ssh -o StrictHostKeyChecking=no ${{ inputs.pwrl_host.resource.ip }}
@@ -20,7 +26,7 @@ jobs:
           sshcmd: ssh -o StrictHostKeyChecking=no ${{ inputs.pwrl_host.resource.ip }}
         run: |
           echo Running k3s...
-          ${sshcmd} "sudo bash ./k3s-rhel8-9-setup.sh"
+          ${sshcmd} "sudo PATH=$PATH:/usr/local/bin bash ./k3s-rhel8-9-setup.sh"
     
 'on':
   execute:
