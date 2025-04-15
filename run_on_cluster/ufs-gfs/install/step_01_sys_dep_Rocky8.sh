@@ -46,6 +46,8 @@ sudo yum -y install gcc-toolset-${gcc_ver}-gdb
 #===========================================
 # Other dependencies (may already be present on the image)
 #===========================================
+# binutils-devel added here spack-stack 1.9.1
+sudo yum -y install binutils-devel
 sudo yum -y install m4
 sudo yum -y install wget
 # Do not install cmake (it's 3.20.2, which doesn't work with eckit)
@@ -59,11 +61,12 @@ sudo yum -y install automake
 sudo yum -y install xorg-x11-xauth
 sudo yum -y install xterm
 sudo yum -y install perl-IPC-Cmd
+# Autopoint needed for autoconf, in gettext, spack-stack 1.8.0
+sudo yum -y install gettext-devel
 sudo yum -y install texlive
 # Do not install qt@5 for now
-
-# Autopoint needed for autoconf, spack-stack 1.8.0
-sudo yum -y install gettext-devel
+# bison added here spack-stack 1.9.1
+sudo yum -y install bison
 
 # Note - only needed for running JCSDA's
 # JEDI-Skylab system (using R2D2 localhost)
@@ -73,6 +76,11 @@ sudo yum -y install gettext-devel
 # You can force install, which will remove 
 # mariadb. Comment out for now.
 #sudo yum -y install --allowerasing mysql-server
+
+# For screen utility (optional) - SKIPPED
+# yum -y remove https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+# yum -y update --nobest
+# yum -y install screen
 
 # Set a specific version of Python
 sudo yum -y install python39-devel
