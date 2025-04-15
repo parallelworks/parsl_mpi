@@ -95,5 +95,11 @@ python3 -m pip install boto3
 # scl or source commands above.
 #====================================================
 
+echo Increase the stacksize limit...
+echo "ulimit -S -s unlimited" >> ~/.bashrc
+
+echo Test if module environment functions...
+module available
+
 echo Done installing system dependencies
 

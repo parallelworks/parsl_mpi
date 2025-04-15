@@ -13,12 +13,36 @@
 # is to run this command:
 source /opt/rh/gcc-toolset-11/enable
 
-# For Spack-stack 1.8.0, needed to do a direct install
+# For Spack-stack 1.8.0, need to do a direct install
 # of OneAPI since spack-stack1.8.0 is pinned to OneAPI 2024.1.0
 # but this segfaults when compiling FMS.
+
+# Get access to Intel OneAPI installed as an external
+# package. Intel updated from 2024.2.1 to 2025.0.0
+# while I was developing this script - 2025.0.0 does not
+# work with spack-stack yet since it has duplicate dependencies
+# for glibc in the concretized environment.
 #
-# Spack-stack 1.9.1 release notes say it is compatible with
-# OneAPI 2025.0.0.
+# So... get ifort...
+#source /opt/intel/oneapi/compilers/2024.2/env/vars.sh
+# ...and then get everything else? This loads mpiifort, which
+# uses mpiifx which in turn calls ifort. But if you don't do
+# the first line, you can't get ifort.
+source /opt/intel/oneapi/setvars.sh
+
+# This does not work - can't find all compilers? spack-stack
+# ends up using gcc for most of the build.
+#source /opt/intel/oneapi/2024.2/oneapi-vars.sh
+
+# Be explicit about specific versions
+# This does NOT work - Spack can't find icx, icpx, etc.
+# and so it defaults to gcc.
+#source /opt/intel/oneapi/setvars.sh --config=${PWD}/oneapi.config
+
+# It seems that there are some assumptions baked into
+# how Spack and spack-stack detect external compilers (and
+# their supporting libraries), so we are stuck with the
+# default initialization of OneAPI (thus bypassing ifort).
 
 # Based on the instructions at:
 # https://spack-stack.readthedocs.io/en/latest/NewSiteConfigs.html#newsiteconfigs-linux
@@ -30,6 +54,9 @@ source /opt/rh/gcc-toolset-11/enable
 #==========================================
 # Step 1: Where do you want to put Spack?
 
+# Default location for spack-stack?
+#spack_dir=/contrib/spack-stack/spack-stack-1.6.0
+
 # Try $HOME for now...
 spack_dir=${HOME}/spack
 
@@ -39,7 +66,17 @@ spack_dir=${HOME}/spack
 mkdir -p $spack_dir
 cd $spack_dir
 
-spack_stack_tag='1.9.1'
+# Standard spack
+#git clone -c feature.manyFiles=true https://github.com/spack/spack.git
+# source ${PWD}/spack/share/spack/setup-env.sh
+
+# JCSDA spack-stack, UFS is probably at 1.5.1
+# Works well
+#spack_stack_tag=spack-stack-1.5.1
+# Move to more recent version for cloud deployment
+# Is this tag the same as the other?
+#spack_stack_tag=spack-stack-1.8.0
+spack_stack_tag='release/1.8.0'
 git clone --recurse-submodules -b ${spack_stack_tag} https://github.com/jcsda/spack-stack.git
 cd spack-stack
 # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
@@ -47,12 +84,9 @@ source setup.sh
 
 #==========================================
 # Step 3: Connect to a buildcache and compiler
-# Note that here we assume you have already
-# authenticated to the PW CLI which can then
-# automatically grab cloud bucket credentials
-# for use as environment variables to use a 
-# bucket-based buildcache.
-#
+# Note that here we assume you have already exported
+# your cloud bucket credentials into environment
+# variables to use a bucket-based buildcache.
 # You can replace the s3:// URL here with a path
 # if using an attached storage based buildcache.
 #
@@ -60,8 +94,18 @@ source setup.sh
 # of spack-stack/Spack, but could be convenient to
 # add here if you can.
 #---------------------------------------------
+# Standard AWS S3 connection
+# Need to pre-authenticate to PW CLI to grab bucket
+# credentials.
 eval `pw buckets get-token pw://sfgary/spackstack18`
 spack mirror add ufs-cache $BUCKET_URI
+#---------------------------------------------
+# Try with cunoFS (need to be in cuno shell!)
+# Appears to be able to do basic reads like
+# spack buildcache list, but package transfers 
+# result in seg faults.
+#spack mirror add ufs-cache /cuno/s3/$BUCKET_NAME
+#--------------------------------------------
 spack buildcache list
 
 # Select an Intel compiler
@@ -140,18 +184,15 @@ spack env activate -p .
 export SPACK_SYSTEM_CONFIG_PATH="$PWD/site"
 
 spack external find --scope system \
-    --exclude cmake \
+    --exclude bison --exclude cmake \
     --exclude curl --exclude openssl \
     --exclude openssh --exclude python
 
-spack external find --scope system grep
-spack external find --scope system sed
-spack external find --scope system perl
 spack external find --scope system wget
 
 # Note - only needed for running JCSDA's
 # JEDI-Skylab system (using R2D2 localhost)
-#spack external find --scope system mysql
+spack external find --scope system mysql
 
 # Note - only needed for generating documentation
 spack external find --scope system texlive
@@ -160,32 +201,21 @@ spack compiler find --scope system
 
 # Done finding external packages, so unset
 unset SPACK_SYSTEM_CONFIG_PATH
-spack_packages="site/packages.yaml"
 
-#====================================================================
-# EXTERNALLY INSTALLED ONEAPI
-#====================================================================
 # Need to add intel-oneapi-mpi to env/<env_name>/sites/packages.yaml
 # Normally, you should be able to do this with a spack config command,
 # but I'm doing it manually here.
-#mpi_path=`dirname $(which mpicc) | cut -d "/" -f 1,2,3,4,5,6`
-#echo "Adding OneAPI MPI to ${spack_packages} for spack stack setup-meta-modules."
+spack_packages="site/packages.yaml"
+mpi_path=`dirname $(which mpicc) | cut -d "/" -f 1,2,3,4,5,6`
+echo "Adding OneAPI MPI to ${spack_packages} for spack stack setup-meta-modules."
 #===============================================
-#echo "  mpi:" >> $spack_packages
-#echo "    buildable: False" >> $spack_packages
-#echo "  intel-oneapi-mpi:" >> $spack_packages
-#echo "    externals:" >> $spack_packages
-#echo "    - spec: intel-oneapi-mpi@${intel_mpi_ver}" >> $spack_packages
-#echo "      prefix: /opt/intel/oneapi" >> $spack_packages
-
-#======================================================================
-# SPACK INSTALLED ONEAPI
-#======================================================================
-spack install --add --no-check-signature intel-oneapi-compilers@${intel_compiler_ver}
-spack load intel-oneapi-compilers
-spack compiler find
-spack unload
-spack install --add --no-check-signature intel-oneapi-mpi@${intel_mpi_ver}
+echo "  mpi:" >> $spack_packages
+echo "    buildable: False" >> $spack_packages
+echo "  intel-oneapi-mpi:" >> $spack_packages
+echo "    externals:" >> $spack_packages
+echo "    - spec: intel-oneapi-mpi@${intel_mpi_ver}" >> $spack_packages
+echo "      prefix: /opt/intel/oneapi" >> $spack_packages
+#==============================================
 
 # Set default compiler and MPI library
 # This information is going into envs/<env_name>/spack.yaml
@@ -194,6 +224,7 @@ spack install --add --no-check-signature intel-oneapi-mpi@${intel_mpi_ver}
 # Need to remove the version specifier on intel-oneapi-mpi?
 # Or, looks like Spack is gravitating torwards only IntelMPI@2021.9.0
 # but if that's not installed above, fails.
+# WORKING HERE: CONSIDER CHANGING 'intel@' to 'oneapi@' if using intel-oneapi-compilers 2024+
 spack config add "packages:all:compiler:[oneapi@${intel_compiler_ver}]"
 spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@${intel_mpi_ver}]"
 
