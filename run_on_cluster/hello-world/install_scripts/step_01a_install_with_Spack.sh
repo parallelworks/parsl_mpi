@@ -26,7 +26,7 @@ echo Downloading spack...
 
 # --depth shortens the history contained in the clone
 # --branch selects a specific release, UPDATE THIS
-git clone --depth=100 --branch=releases/v0.20 https://github.com/spack/spack.git $SPACK_ROOT
+git clone --depth=100 -b v0.22.5 -c feature.manyFiles=true https://github.com/spack/spack.git $SPACK_ROOT
 
 #==============================
 echo Set up Spack environment...
@@ -73,16 +73,22 @@ echo Configuring external packages for Spack...
 #    or with other OpenMPI, MPICH, and IntelMPI,
 #    some of which are inside and others are outside Spack.
 
+# Slurm version changes depending on image:
+# CentOS7
+#slurm_version="20.02.7"
+# Rocky8
+slurm_version="23.11.9"
+
 spack_packages=${SPACK_ROOT}/etc/spack/packages.yaml
 echo "packages:" > $spack_packages
 echo "  slurm:" >> $spack_packages
 echo "    externals:" >> $spack_packages
-echo "    - spec: slurm@20.02.7 +pmix sysconfdir=/mnt/shared/etc/slurm" >> $spack_packages
+echo "    - spec: slurm@${slurm_version} +pmix sysconfdir=/mnt/shared/etc/slurm" >> $spack_packages
 echo "      prefix: /usr" >> $spack_packages
 echo "    buildable: False" >> $spack_packages
 echo "  openmpi:" >> $spack_packages
 echo "    externals:" >> $spack_packages
-echo "    - spec: openmpi@4.1.5%gcc@7.3.1" >> $spack_packages
+echo "    - spec: openmpi@4.1.5%gcc@8.5.0" >> $spack_packages
 echo "      prefix: /home/sfgary/ompi" >> $spack_packages
 echo "    buildable: False" >> $spack_packages
 echo "    require: +pmi" >> $spack_packages
@@ -136,15 +142,16 @@ echo Installing spack packages...
 #spack install -j 30 gcc@12.2.0; \
 #spack load gcc@12.2.0; \
 
-echo 'source ~/.bashrc; \
-spack compiler find; \
-spack install -j 30 tau; \
-spack install -j 30 flux-core@0.51.0%gcc@7.3.1; \
-spack install -j 30 flux-sched%gcc@7.3.1; \
-spack install intel-oneapi-compilers@2021.1.2; \
-spack load intel-oneapi-compilers; \
-spack compiler find; \
-spack install -j 30 intel-oneapi-mpi%oneapi;' | /bin/bash
+source ~/.bashrc;
+spack compiler find;
+spack mirror add flux-buildcache /flux-buildcache
+spack install -j 30 tau;
+spack install -j 30 flux-core%gcc@8.5.0;
+spack install -j 30 flux-sched%gcc@8.5.0;
+#spack install intel-oneapi-compilers@2021.1.2;
+#spack load intel-oneapi-compilers; \
+#spack compiler find; \
+#spack install -j 30 intel-oneapi-mpi%oneapi;' | /bin/bash
 
 # Alternatives - removed while I check whether forcing
 # pmi on openmpi is a good idea. I get the same PMIX/orte/MPI
