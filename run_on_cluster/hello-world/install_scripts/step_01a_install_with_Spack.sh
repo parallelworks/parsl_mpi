@@ -144,10 +144,10 @@ echo Installing spack packages...
 
 source ~/.bashrc;
 spack compiler find;
-spack mirror add flux-buildcache /flux-buildcache
-spack install -j 30 tau;
-spack install -j 30 flux-core%gcc@8.5.0;
-spack install -j 30 flux-sched%gcc@8.5.0;
+#spack mirror add flux-buildcache /flux-buildcache
+spack install --no-check-signature -j 30 tau;
+spack install --no-check-signature -j 30 flux-core%gcc@8.5.0;
+spack install --no-check-signature -j 30 flux-sched%gcc@8.5.0;
 #spack install intel-oneapi-compilers@2021.1.2;
 #spack load intel-oneapi-compilers; \
 #spack compiler find; \
