@@ -8,7 +8,8 @@
 #==============================
 
 #install_dir=/scratch/sfg3866/flux
-install_dir=${HOME}/parsl_flux
+##install_dir=${HOME}/parsl_flux
+install_dir=/ompi-tau-flux
 #install_dir=/var/lib/pworks
 
 #==============================
@@ -89,7 +90,7 @@ echo "    buildable: False" >> $spack_packages
 echo "  openmpi:" >> $spack_packages
 echo "    externals:" >> $spack_packages
 echo "    - spec: openmpi@4.1.5%gcc@8.5.0" >> $spack_packages
-echo "      prefix: /home/sfgary/ompi" >> $spack_packages
+echo "      prefix: /ompi-tau-flux/ompi" >> $spack_packages
 echo "    buildable: False" >> $spack_packages
 echo "    require: +pmi" >> $spack_packages
 echo "  mpi:" >> $spack_packages
@@ -144,7 +145,7 @@ echo Installing spack packages...
 
 source ~/.bashrc;
 spack compiler find;
-#spack mirror add flux-buildcache /flux-buildcache
+#spack mirror add flux-buildcache ${HOME}/flux-buildcache
 spack install --no-check-signature -j 30 tau;
 spack install --no-check-signature -j 30 flux-core%gcc@8.5.0;
 spack install --no-check-signature -j 30 flux-sched%gcc@8.5.0;
