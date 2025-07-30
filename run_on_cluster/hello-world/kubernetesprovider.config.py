@@ -1,0 +1,53 @@
+import parsl
+print(parsl.__version__, flush = True)
+
+from parsl.config import Config
+from parsl.providers import KubernetesProvider
+from parsl.executors import HighThroughputExecutor
+
+# Need os here to create config
+import os
+
+################
+# DESCRIPTION  #
+################
+"""
+Parsl configuration for use with parsl-perf
+SLURM cluster
+"""
+
+##############
+# Parameters #
+##############
+max_cpu = 2
+cores_per_worker = 1
+nodes_per_block = 2
+namespace = "alvaro-k8s-testing"
+exec_label = 'parsl-perf_kubernetes_provider'
+
+##########
+# CONFIG #
+##########
+
+config = Config(
+    executors = [
+        HighThroughputExecutor(
+            label = exec_label,
+            cores_per_worker =  cores_per_worker,
+            worker_debug = True,            
+            working_dir =  os.getcwd(),
+            worker_logdir_root = os.getcwd(),
+            provider = KubernetesProvider(
+                namespace = namespace,
+                image = "busybox",
+                nodes_per_block = nodes_per_block,
+                min_blocks = 0,
+                max_blocks = 2,
+                max_cpu = max_cpu,
+                parallelism = float(1),
+                run_as_non_root = True
+            )
+        )
+    ]
+)
+

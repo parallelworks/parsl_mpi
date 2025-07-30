@@ -184,9 +184,24 @@ spack install --no-check-signature -j 30 flux-sched%gcc@8.5.0;
 #============================
 echo Install Parsl...
 #============================
+# A simple `pip install parsl` used to install 
+# Parsl into Flux's Python but it does not appear 
+# to work anymore. Instead, go for the full
+# Spack-integrated route. An alternative
+# is to install only `py-pip` and then
+# manually install Parsl later since
+# you may need specific Parsl modules
+# like kubernetes or monitoring that are
+# not included in the default package.
+# Or you need a more up to date version
+# of Parsl (i.e. the MPIExecutor or GlobusComputeExecutor)
+# This takes a surprisingly long time
+# mostly due to building rust if it's
+# present otherwise.
 source $HOME/.bashrc
 spack load flux-sched
-pip install "parsl[monitoring]==2023.9.11"
+#pip install "parsl[monitoring]==2023.9.11"
+spack install py-parsl@2023.08.21
 
 #==============================
 echo Set permissions if in a shared directory...
