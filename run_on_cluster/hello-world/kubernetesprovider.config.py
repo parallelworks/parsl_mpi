@@ -13,7 +13,7 @@ import os
 ################
 """
 Parsl configuration for use with parsl-perf
-SLURM cluster
+Kubernetes cluster
 """
 
 ##############
@@ -22,7 +22,7 @@ SLURM cluster
 max_cpu = 2
 cores_per_worker = 1
 nodes_per_block = 2
-namespace = "alvaro-k8s-testing"
+namespace = "default"
 exec_label = 'parsl-perf_kubernetes_provider'
 
 ##########
@@ -39,13 +39,15 @@ config = Config(
             worker_logdir_root = os.getcwd(),
             provider = KubernetesProvider(
                 namespace = namespace,
-                image = "busybox",
+                image = "jupyter/datascience-notebook",
                 nodes_per_block = nodes_per_block,
                 min_blocks = 0,
                 max_blocks = 2,
                 max_cpu = max_cpu,
                 parallelism = float(1),
-                run_as_non_root = True
+                run_as_non_root = True,
+                worker_init = "pip install parsl[kubernetes,monitoring]",
+                pod_name = exec_label+"_pod"
             )
         )
     ]
