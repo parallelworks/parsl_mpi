@@ -45,6 +45,7 @@ config = Config(
                 init_blocks = 1,
                 max_blocks = 1,
                 max_cpu = max_cpu,
+                max_mem = "2Gi",
                 parallelism = float(1),
                 run_as_non_root = True,
                 #worker_init = "pip install parsl[kubernetes,monitoring]",
