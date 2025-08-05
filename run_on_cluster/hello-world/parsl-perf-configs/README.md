@@ -39,9 +39,17 @@ cd slurm-cluster
 docker-compose up -d
 
 # Clean up when done
+docker-compose stop
 cd ..
 rm -rf slurm-cluster
 ```
+The cluster comes up, but there is something not quite right OOB - I cannot `srun`
+since SLURM in the container thinks the nodes are down.  Try MELISSA instead
+based on [instructions here](https://melissa.gitlabpages.inria.fr/melissa/creating-a-slurm-docker-cluster/) 
+with the added advantage of a simpler cluster so it may be easier to add more nodes
+to the cluster.
+```
 
+```
 
 ## Distributed Slurm cluster
