@@ -20,9 +20,9 @@ SLURM cluster
 ##############
 # Parameters #
 ##############
-cores_per_node = 2
-nodes_per_block = 2
-partition = "small"
+cores_per_node = 1
+nodes_per_block = 1
+partition = "normal"
 exec_label = 'slurm_provider'
 
 ##########
@@ -44,7 +44,8 @@ config = Config(
                 max_blocks = 2,
                 walltime ="01:00:00",
                 launcher = SimpleLauncher(),
-                parallelism = float(1)
+                parallelism = float(1),
+                worker_init = "source /data/miniconda/etc/profile.d/conda.sh; conda activate base"
             )
         )
     ]
