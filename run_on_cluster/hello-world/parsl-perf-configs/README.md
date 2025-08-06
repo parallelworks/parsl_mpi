@@ -47,9 +47,35 @@ The cluster comes up, but there is something not quite right OOB - I cannot `sru
 since SLURM in the container thinks the nodes are down.  Try MELISSA instead
 based on [instructions here](https://melissa.gitlabpages.inria.fr/melissa/creating-a-slurm-docker-cluster/) 
 with the added advantage of a simpler cluster so it may be easier to add more nodes
-to the cluster.
+to the cluster. MELISSA is, in turn, based on [slurm-docker-cluster](https://github.com/giovtorres/slurm-docker-cluster.git),
+which I will use as the starting point:
 ```
+# Get code and configs
+https://github.com/giovtorres/slurm-docker-cluster.git
 
+# Build (takes about 5 mins)
+# Consider adding Parsl and Flux to the container.
+cd slurm-docker-cluster
+docker build --build-arg SLURM_TAG="slurm-21-08-6-1" -t slurm-docker-cluster:21.08.6 .
+
+# Start cluster
+docker compose up -d
+
+# Register (says it didn't do anything?)
+./register_cluster.sh
+
+# Easy enough to add more nodes (containers) on the fly.
+# Modify slurm.conf in three places - the two lists of nodes in 
+# NodeName and PartitionName, and MaxNodes in PartitionName.
+# Then run:
+./update_slurmfiles.sh slurm.conf slurmdbd.conf
+docker compose restart
+
+# Stop
+docker compose stop
+
+# Clean up
+docker compose down -v
 ```
 
 ## Distributed Slurm cluster
