@@ -230,7 +230,7 @@ jobs:
       gh_org:
         label: GitHub organization/owner
         type: string
-        default: parallelworks
+        default: jcsda
       gh_repo:
         label: GitHub repository
         type: string
@@ -238,4 +238,4 @@ jobs:
       gh_branch:
         label: GitHub branch
         type: string
-        default: canary
+        default: feature/update_to_spack_v1
