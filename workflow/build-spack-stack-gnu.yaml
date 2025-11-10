@@ -13,8 +13,8 @@ jobs:
     - name: prepare-directories
       run: |
         # DH* REVERT ME AFTER MERGE
-        mkdir -p ${BUILD_CACHE_PATH}
-        mkdir -p ${SOURCE_CACHE_PATH}
+        mkdir -pv ${BUILD_CACHE_PATH}
+        mkdir -pv ${SOURCE_CACHE_PATH}
     - name: create-buildcache
       run: |
         # Get day of week to decide whether to use build caches or not
@@ -29,6 +29,7 @@ jobs:
         fi
 
         # Set up spack-stack
+	cd ${{ inputs.gh_repo }}
         source ./setup.sh
 
         declare -a TEMPLATES=("unified-dev" "skylab-dev" "cylc-dev" "neptune-dev")
