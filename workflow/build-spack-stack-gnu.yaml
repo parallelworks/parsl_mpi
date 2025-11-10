@@ -1,4 +1,5 @@
 env:
+  BUILD_WORK_PATH: /spack-stack
   BUILD_CACHE_PATH: /spack-stack/build-cache-new-spack-v1
   SOURCE_CACHE_PATH: /spack-stack/source-cache
 jobs:
@@ -6,8 +7,9 @@ jobs:
     steps:
     - name: checkout
       run: |
+        cd ${BUILD_WORK_PATH}
         echo Cloning repo to $PWD
-        git clone https://github.com/${{ inputs.gh_org }}/${{ inputs.gh_repo }}
+        git clone --recurse-submodules https://github.com/${{ inputs.gh_org }}/${{ inputs.gh_repo }}
         cd ${{ inputs.gh_repo }}
         git checkout ${{ inputs.gh_branch }}
     - name: prepare-directories
@@ -29,7 +31,7 @@ jobs:
         fi
 
         # Set up spack-stack
-        cd ${{ inputs.gh_repo }}
+        cd ${BUILD_WORK_PATH}/${{ inputs.gh_repo }}
         source ./setup.sh
 
         declare -a TEMPLATES=("unified-dev" "skylab-dev" "cylc-dev" "neptune-dev")
