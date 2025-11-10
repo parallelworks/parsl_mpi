@@ -34,6 +34,18 @@ jobs:
         cd ${BUILD_WORK_PATH}/${{ inputs.gh_repo }}
         source ./setup.sh
 
+	#==============================
+	# Normally in setup.sh, why commented out in this branch?
+	#==============================
+        # Register the spack extensions
+        libpath=${SPACK_STACK_DIR}/spack-ext/lib/jcsda-emc/spack-stack
+        if [ -d ${libpath}/stack/cmd ]; then
+	  spack config --scope defaults add "config:extensions:$libpath"
+        else
+          echo "FATAL ERROR: Could not find spack-stack extensions in ${libpath}"
+          return 1
+        fi
+        
         declare -a TEMPLATES=("unified-dev" "skylab-dev" "cylc-dev" "neptune-dev")
         for TEMPLATE in "${TEMPLATES[@]}"; do
           if [[ "${TEMPLATE}" == *"unified-dev"* ]]; then
